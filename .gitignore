@@ -1,1 +1,4 @@
 .env
+.DS_store
+infrastructure/.DS_store
+platforms/.DS_store
