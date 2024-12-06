@@ -1,0 +1,71 @@
+services:
+  express:
+    build:
+      context: ./infrastructure/platforms/express
+      dockerfile: Dockerfile
+    container_name: express_platform
+    ports:
+      - "4004:4004"
+    volumes:
+      - ./application:/usr/app/application
+      - ./domain:/usr/app/domain
+      - ./infrastructure/platforms/express:/usr/app/infrastructure/platforms/express
+      - /usr/app/infrastructure/platforms/express/node_modules
+    command: /bin/sh -c "npm install && npm run dev"
+
+  adonis:
+    build:
+      context: ./infrastructure/platforms/adonis-ts
+      dockerfile: Dockerfile
+    container_name: adonis_platform
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./application:/usr/app/application
+      - ./domain:/usr/app/domain
+      - ./infrastructure/platforms/adonis-ts:/usr/app/infrastructure/platforms/adonis-ts
+      - /usr/app/infrastructure/platforms/adonis-ts/node_modules
+    command: /bin/sh -c "npm install && npm run dev"
+
+  next:
+    build:
+      context: ./infrastructure/platforms/next
+      dockerfile: Dockerfile
+    container_name: next_platform
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./application:/usr/app/application
+      - ./domain:/usr/app/domain
+      - ./infrastructure/platforms/next:/usr/app/infrastructure/platforms/next
+      - /usr/app/infrastructure/platforms/next/node_modules
+    command: /bin/sh -c "npm install && npm run dev"
+    environment:
+      - NODE_ENV=${NODE_ENV}
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    volumes:
+      - mongodb-data:/usr/app/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+
+  postgresql:
+    image: postgres:latest
+    container_name: postgres_db
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+volumes:
+  mongodb-data:
+  postgresql-data:
