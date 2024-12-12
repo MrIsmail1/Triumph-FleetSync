@@ -10,6 +10,7 @@ export class UserEntity {
     public email: Email,
     public passwordHash: string,
     public role: Role,
+    public isVerified: boolean,
     public createdAt: Date,
     public updatedAt: Date
   ) {}
@@ -19,8 +20,9 @@ export class UserEntity {
     lastName: ValidString,
     email: Email,
     passwordHash: string,
-    role: Role
-  ) {
+    role: Role,
+    isVerfied: boolean = false
+  ): UserEntity {
     const identifier = crypto.randomUUID();
     const createdAt = new Date();
     const updatetAt = new Date();
@@ -31,6 +33,7 @@ export class UserEntity {
       email,
       passwordHash,
       role,
+      isVerfied,
       updatetAt,
       createdAt
     );

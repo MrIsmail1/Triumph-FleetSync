@@ -2,6 +2,7 @@ import { InvalidCredentialsError } from "../../domain/errors/InvalidCredentialsE
 import { Email } from "../../domain/types/Email";
 import { UserRepository } from "../repositories/UserRepository";
 import { PasswordHasherService } from "../services/PasswordHasherService";
+import { TokenGeneratorService } from "../services/TokenGeneratorService";
 
 export class UserLoginUsecase {
   public constructor(
