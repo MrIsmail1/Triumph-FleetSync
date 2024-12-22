@@ -49,6 +49,7 @@ export class UserRegisterUsecase {
                 userRoleOrError
               );
               await this.userRepository.save(newUser);
+              return newUser;
             } else {
               return userRoleOrError;
             }
