@@ -1,3 +1,4 @@
+import { RoleDoesNotExistError } from "../errors/RoleDoesNotExistError";
 import { RoleSelectionError } from "../errors/RoleSelectionError";
 
 export class Role {
@@ -12,12 +13,16 @@ export class Role {
   public static from(value: string) {
     const role = value.trim();
     if (!this.validRoles.includes(role)) {
-      return new RoleSelectionError();
+      return new RoleDoesNotExistError();
     }
     return new Role(role);
   }
 
-  public isClient(): boolean {
-    return this.value === "Client";
+  public static isClient(value: string) {
+    const role = value.trim();
+    if (role != "Client") {
+      return new RoleSelectionError();
+    }
+    return new Role(role);
   }
 }

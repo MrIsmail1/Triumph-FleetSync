@@ -10,6 +10,7 @@ services:
       - ./application:/usr/app/application
       - ./domain:/usr/app/domain
       - ./infrastructure/platforms/express:/usr/app/infrastructure/platforms/express
+      - ./infrastructure/adapters:/usr/app/infrastructure/adapters
       - /usr/app/infrastructure/platforms/express/node_modules
     command: /bin/sh -c "npm install && npm run dev"
 
@@ -24,6 +25,7 @@ services:
       - ./application:/usr/app/application
       - ./domain:/usr/app/domain
       - ./infrastructure/platforms/adonis-ts:/usr/app/infrastructure/platforms/adonis-ts
+      - ./infrastructure/adapters:/usr/app/infrastructure/adapters
       - /usr/app/infrastructure/platforms/adonis-ts/node_modules
     command: /bin/sh -c "npm install && npm run dev"
 

@@ -21,49 +21,47 @@ export class UserRegisterUsecase {
     role: string
   ) {
     const firstNameOrError = ValidString.from(firstName);
-    const lastNameOrError = ValidString.from(lastName);
-    const userEmailOrError = Email.from(email);
-    const userPasswordOrError = Password.from(password);
-    const userRoleOrError = Role.from(role);
-
-    if (!(firstNameOrError instanceof Error)) {
-      if (!(lastNameOrError instanceof Error)) {
-        if (!(userEmailOrError instanceof Error)) {
-          if (!(userPasswordOrError instanceof Error)) {
-            if (
-              !(userRoleOrError instanceof Error) &&
-              userRoleOrError.isClient()
-            ) {
-              const userAlreadyExists = await this.userRepository.findByEmail(
-                userEmailOrError
-              );
-              if (userAlreadyExists) {
-                return new UserAlreadyExistsError();
-              }
-              const passwordHash = await this.hasher.hash(userPasswordOrError);
-              const newUser = UserEntity.create(
-                firstNameOrError,
-                lastNameOrError,
-                userEmailOrError,
-                passwordHash,
-                userRoleOrError
-              );
-              await this.userRepository.save(newUser);
-              return newUser;
-            } else {
-              return userRoleOrError;
-            }
-          } else {
-            return userPasswordOrError;
-          }
-        } else {
-          return userEmailOrError;
-        }
-      } else {
-        return lastNameOrError;
-      }
-    } else {
+    if (firstNameOrError instanceof Error) {
       return firstNameOrError;
     }
+
+    const lastNameOrError = ValidString.from(lastName);
+    if (lastNameOrError instanceof Error) {
+      return lastNameOrError;
+    }
+
+    const userEmailOrError = Email.from(email);
+    if (userEmailOrError instanceof Error) {
+      return userEmailOrError;
+    }
+
+    const userPasswordOrError = Password.from(password);
+    if (userPasswordOrError instanceof Error) {
+      return userPasswordOrError;
+    }
+
+    const userRoleOrError = Role.isClient(role);
+    if (userRoleOrError instanceof Error) {
+      return userRoleOrError;
+    }
+
+    const userAlreadyExists = await this.userRepository.findByEmail(
+      userEmailOrError
+    );
+    if (userAlreadyExists) {
+      return new UserAlreadyExistsError();
+    }
+
+    const passwordHash = await this.hasher.hash(userPasswordOrError);
+    const newUser = UserEntity.create(
+      firstNameOrError,
+      lastNameOrError,
+      userEmailOrError,
+      passwordHash,
+      userRoleOrError
+    );
+
+    await this.userRepository.save(newUser);
+    return newUser;
   }
 }
