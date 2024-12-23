@@ -13,4 +13,7 @@ export class ValidString {
     }
     return new ValidString(trimmedValue);
   }
+  public static reconstitute(value: string) {
+    return new ValidString(value);
+  }
 }

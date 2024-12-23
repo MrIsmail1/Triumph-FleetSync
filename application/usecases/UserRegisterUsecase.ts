@@ -3,7 +3,7 @@ import { UserAlreadyExistsError } from "../../domain/errors/UserAlreadyExistsErr
 import { Email } from "../../domain/types/Email";
 import { Password } from "../../domain/types/Password";
 import { Role } from "../../domain/types/Role";
-import { ValidString } from "../../domain/types/String";
+import { ValidString } from "../../domain/types/ValidString";
 import { UserRepository } from "../repositories/UserRepository";
 import { PasswordHasherService } from "../services/PasswordHasherService";
 

@@ -1,7 +1,7 @@
 import { InvalidCredentialsError } from "../../domain/errors/InvalidCredentialsError";
 import { UserNotFoundError } from "../../domain/errors/UserNotFoundError";
 import { Email } from "../../domain/types/Email";
-import { ValidString } from "../../domain/types/String";
+import { ValidString } from "../../domain/types/ValidString";
 import { UserRepository } from "../repositories/UserRepository";
 import { PasswordHasherService } from "../services/PasswordHasherService";
 

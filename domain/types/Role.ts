@@ -25,4 +25,7 @@ export class Role {
     }
     return new Role(role);
   }
+  public static reconstitute(value: string) {
+    return new Role(value);
+  }
 }

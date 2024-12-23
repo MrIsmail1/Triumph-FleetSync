@@ -22,9 +22,26 @@ export class VerificationCodeEntity {
       identifier,
       userId,
       type,
-      expiresAt,
       createdAt,
-      updatedAt
+      updatedAt,
+      expiresAt
+    );
+  }
+  public static reconstitute(data: {
+    type: VerificationCodeType;
+    userId: string;
+    id: string;
+    expiresAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+  }): VerificationCodeEntity {
+    return new VerificationCodeEntity(
+      data.id,
+      data.userId,
+      data.type,
+      data.expiresAt,
+      data.createdAt,
+      data.updatedAt
     );
   }
 }

@@ -1,6 +1,6 @@
 import { Email } from "../types/Email";
 import { Role } from "../types/Role";
-import { ValidString } from "../types/String";
+import { ValidString } from "../types/ValidString";
 
 export class UserEntity {
   private constructor(
@@ -21,7 +21,7 @@ export class UserEntity {
     email: Email,
     passwordHash: string,
     role: Role,
-    isVerfied: boolean = false
+    isVerified: boolean = false
   ): UserEntity {
     const identifier = crypto.randomUUID();
     const createdAt = new Date();
@@ -33,9 +33,32 @@ export class UserEntity {
       email,
       passwordHash,
       role,
-      isVerfied,
-      updatetAt,
-      createdAt
+      isVerified,
+      createdAt,
+      updatetAt
+    );
+  }
+  public static reconstitute(data: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    passwordHash: string;
+    role: string;
+    isVerified: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  }): UserEntity {
+    return new UserEntity(
+      data.id,
+      ValidString.reconstitute(data.firstName),
+      ValidString.reconstitute(data.lastName),
+      Email.reconstitute(data.email),
+      data.passwordHash,
+      Role.reconstitute(data.role),
+      data.isVerified,
+      data.createdAt,
+      data.updatedAt
     );
   }
 }

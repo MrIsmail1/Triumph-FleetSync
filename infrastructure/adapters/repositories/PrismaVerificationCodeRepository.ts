@@ -7,7 +7,10 @@ export class PrismaVerificationCodeRepository
 {
   public constructor(readonly database: Prisma) {}
   findById(identifier: string): Promise<VerificationCodeEntity | null> {
-    throw new Error("Method not implemented.");
+    const verificationCode = this.database.verificationCode.findFirst({
+      where: { id: identifier },
+    });
+    return VerificationCodeEntity.reconstitute(verificationCode);
   }
   /* async findById(identifier: string): Promise<VerificationCodeEntity | null> {
     const verificationCode = await this.database.verificationCode.findFirst({

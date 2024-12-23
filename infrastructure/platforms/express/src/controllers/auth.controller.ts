@@ -1,12 +1,12 @@
-import { SessionRepository } from "@application/repositories/SessionRepository";
-import { UserRepository } from "@application/repositories/UserRepository";
-import { VerificationCodeRepository } from "@application/repositories/VerificationCodeRepository";
-import { SessionCreateUsecase } from "@application/usecases/SessionCreateUsecase";
-import { UserRegisterUsecase } from "@application/usecases/UserRegisterUsecase";
-import { VerificationCodeCreateUsecase } from "@application/usecases/VerificationCodeCreateUsecase";
-import { VerificationCodeType } from "@domain/types/VerificationCodeType";
 import jwt from "jsonwebtoken";
 import zod from "zod";
+import { SessionRepository } from "../../../../../application/repositories/SessionRepository";
+import { UserRepository } from "../../../../../application/repositories/UserRepository";
+import { VerificationCodeRepository } from "../../../../../application/repositories/VerificationCodeRepository";
+import { SessionCreateUsecase } from "../../../../../application/usecases/SessionCreateUsecase";
+import { UserRegisterUsecase } from "../../../../../application/usecases/UserRegisterUsecase";
+import { VerificationCodeCreateUsecase } from "../../../../../application/usecases/VerificationCodeCreateUsecase";
+import { VerificationCodeType } from "../../../../../domain/types/VerificationCodeType";
 import { BcryptPasswordHasherService } from "../../services/BcryptPasswordHasherService";
 import { JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
 import { BAD_REQUEST, CREATED } from "../constants/http";
@@ -53,7 +53,8 @@ export class AuthController {
     );
     //if error return error
     if (userOrError instanceof Error) {
-      return response.status(BAD_REQUEST).json({ error: userOrError.message });
+      console.log(userOrError);
+      return response.status(BAD_REQUEST).json({ error: userOrError.name });
     }
 
     //create email verification code
