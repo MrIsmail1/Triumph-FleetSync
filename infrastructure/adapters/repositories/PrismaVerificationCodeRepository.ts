@@ -6,18 +6,14 @@ export class PrismaVerificationCodeRepository
   implements VerificationCodeRepository
 {
   public constructor(readonly database: Prisma) {}
-  findById(identifier: string): Promise<VerificationCodeEntity | null> {
-    const verificationCode = this.database.verificationCode.findFirst({
-      where: { id: identifier },
-    });
-    return VerificationCodeEntity.reconstitute(verificationCode);
-  }
-  /* async findById(identifier: string): Promise<VerificationCodeEntity | null> {
+  async findById(identifier: string): Promise<VerificationCodeEntity | null> {
     const verificationCode = await this.database.verificationCode.findFirst({
       where: { id: identifier },
     });
-    return Promise.resolve(verificationCode);
-  } */
+    return verificationCode
+      ? VerificationCodeEntity.reconstitute(verificationCode)
+      : null;
+  }
   async save(verificationCode: VerificationCodeEntity): Promise<void> {
     await this.database.verificationCode.create({
       data: {

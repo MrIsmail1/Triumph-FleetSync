@@ -7,7 +7,7 @@ export class Password {
     const passwordPattern =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     const password = value.trim();
-    if (passwordPattern.test(password)) {
+    if (!passwordPattern.test(password)) {
       return new PasswordBadFormatError();
     }
     return new Password(password);

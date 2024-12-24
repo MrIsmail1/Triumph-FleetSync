@@ -9,10 +9,13 @@ import { VerificationCodeCreateUsecase } from "../../../../../application/usecas
 import { VerificationCodeType } from "../../../../../domain/types/VerificationCodeType";
 import { BcryptPasswordHasherService } from "../../services/BcryptPasswordHasherService";
 import { JWT_REFRESH_SECRET, JWT_SECRET } from "../constants/env";
-import { BAD_REQUEST, CREATED } from "../constants/http";
+import { CREATED } from "../constants/http";
+import { registerSchema } from "../schemas/registerSchema";
+import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 import { setAuthCookies } from "../utils/cookies";
 import { oneYearFromNow, thirtyDaysFromNow } from "../utils/date";
+import { mapDomainErrorToHttp } from "../utils/errorsMapper";
 
 export class AuthController {
   public constructor(
@@ -22,20 +25,9 @@ export class AuthController {
     private readonly bcryptPasswordHasher: BcryptPasswordHasherService
   ) {}
 
-  registerSchema = zod
-    .object({
-      firstName: zod.string().min(2).max(255),
-      lastName: zod.string().min(2).max(255),
-      email: zod.string().email().min(6).max(255),
-      password: zod.string().min(6).max(255),
-      confirmPassword: zod.string().min(6).max(255),
-      userAgent: zod.string().optional(),
-    })
-    .refine((data) => data.password === data.confirmPassword);
-
   registerHandler = catchErrors(async (request, response) => {
     //validate user using zod
-    const validatedRequestData = this.registerSchema.parse({
+    const validatedRequestData = registerSchema.parse({
       ...request.body,
       userAgent: request.headers["user-agent"],
     });
@@ -52,10 +44,11 @@ export class AuthController {
       "Client"
     );
     //if error return error
-    if (userOrError instanceof Error) {
-      console.log(userOrError);
-      return response.status(BAD_REQUEST).json({ error: userOrError.name });
-    }
+
+    appAssert(
+      !(userOrError instanceof Error), // Assert no error occurred
+      ...mapDomainErrorToHttp(userOrError as Error) // Map the error to HTTP response
+    );
 
     //create email verification code
     const verificationCodeCreateUsecase = new VerificationCodeCreateUsecase(
@@ -77,25 +70,31 @@ export class AuthController {
       validatedRequestData.userAgent
     );
 
-    //create refresh token and access token
-    const refreshToken = jwt.sign(
-      { sessionId: session.identifier },
-      JWT_REFRESH_SECRET,
-      {
-        audience: ["Client"],
-        expiresIn: "30d",
-      }
-    );
-    const accessToken = jwt.sign(
-      { userId: userOrError.identifier, session: session.identifier },
-      JWT_SECRET,
-      {
-        audience: ["Client"],
-        expiresIn: "15m",
-      }
-    );
-    return setAuthCookies({ response, refreshToken, accessToken })
-      .status(CREATED)
-      .json(userOrError);
+    if (session) {
+      //create refresh token and access token
+      const refreshToken = jwt.sign(
+        { sessionId: session.identifier },
+        JWT_REFRESH_SECRET,
+        {
+          audience: ["Client"],
+          expiresIn: "30d",
+        }
+      );
+      const accessToken = jwt.sign(
+        { userId: userOrError.identifier, session: session.identifier },
+        JWT_SECRET,
+        {
+          audience: ["Client"],
+          expiresIn: "15m",
+        }
+      );
+      return setAuthCookies({ response, refreshToken, accessToken })
+        .status(CREATED)
+        .json(userOrError);
+    }
+  });
+
+  loginHandler = catchErrors(async (request, response) => {
+    const request = this.loginSchema.parse(request.body);
   });
 }

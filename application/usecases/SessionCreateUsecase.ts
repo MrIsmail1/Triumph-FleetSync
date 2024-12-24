@@ -6,7 +6,7 @@ export class SessionCreateUsecase {
 
   public async execute(userId: string, expiresAt: Date, userAgent?: string) {
     const existingSession = await this.sessionRepository.findById(userId);
-    if (!existingSession) {
+    if (existingSession) {
       return existingSession;
     }
     const newSession = SessionEntity.create(userId, expiresAt, userAgent);
