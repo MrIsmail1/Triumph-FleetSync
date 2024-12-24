@@ -13,25 +13,17 @@ const prismaVerificationCodeRepository = new PrismaVerificationCodeRepository(
 );
 const prismaSessionRepository = new PrismaSessionRepository(prisma);
 const bcryptPasswordHasher = new BcryptPasswordHasherService();
-
-authRoutes.post(
-  "/register",
-  new AuthController(
-    prismaUserRepository,
-    prismaVerificationCodeRepository,
-    prismaSessionRepository,
-    bcryptPasswordHasher
-  ).registerHandler
+const authController = new AuthController(
+  prismaUserRepository,
+  prismaVerificationCodeRepository,
+  prismaSessionRepository,
+  bcryptPasswordHasher
 );
 
-authRoutes.post(
-  "/login",
-  new AuthController(
-    prismaUserRepository,
-    prismaVerificationCodeRepository,
-    prismaSessionRepository,
-    bcryptPasswordHasher
-  ).registerHandler
-);
+authRoutes.post("/register", authController.registerHandler);
+
+authRoutes.post("/login", authController.loginHandler);
+
+authRoutes.post("/logout", authController.logoutHandler);
 
 export default authRoutes;

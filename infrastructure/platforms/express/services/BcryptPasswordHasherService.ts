@@ -1,6 +1,6 @@
 import { PasswordHasherService } from "@application/services/PasswordHasherService";
-import { Password } from "@domain/types/Password";
 import bcrypt from "bcrypt";
+import { Password } from "../../../../domain/types/Password";
 
 export class BcryptPasswordHasherService implements PasswordHasherService {
   public async hash(password: Password): Promise<string> {

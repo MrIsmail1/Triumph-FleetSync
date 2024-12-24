@@ -20,7 +20,9 @@ export class PrismaSessionRepository implements SessionRepository {
     });
     return Promise.resolve();
   }
-  delete(userSession: SessionEntity): Promise<void> {
-    throw new Error("Method not implemented.");
+  async delete(identifier: string): Promise<void> {
+    console.log(identifier);
+    await this.database.session.delete({ where: { id: identifier } });
+    return Promise.resolve();
   }
 }

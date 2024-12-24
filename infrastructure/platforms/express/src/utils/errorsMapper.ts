@@ -1,4 +1,5 @@
 import { EmailBadFormatError } from "../../../../../domain/errors/EmailBadFormatError";
+import { InvalidCredentialsError } from "../../../../../domain/errors/InvalidCredentialsError";
 import { PasswordBadFormatError } from "../../../../../domain/errors/PasswordBadFormatError";
 import { RoleSelectionError } from "../../../../../domain/errors/RoleSelectionError";
 import { StringTooLongError } from "../../../../../domain/errors/StringTooLongError";
@@ -9,6 +10,7 @@ import {
   CONFLICT,
   HttpStatusCode,
   INTERNAL_SERVER_ERROR,
+  UNAUTHORIZED,
 } from "../constants/http";
 
 export function mapDomainErrorToHttp(
@@ -31,6 +33,9 @@ export function mapDomainErrorToHttp(
   }
   if (error instanceof UserAlreadyExistsError) {
     return [CONFLICT, error.name, "User already exists."];
+  }
+  if (error instanceof InvalidCredentialsError) {
+    return [UNAUTHORIZED, error.name, "Invalid credentials."];
   }
 
   return [
