@@ -1,6 +1,7 @@
 import { UserRepository } from "../../../application/repositories/UserRepository";
 import { UserEntity } from "../../../domain/entities/UserEntity";
 import { Email } from "../../../domain/types/Email";
+import { is } from "../../platforms/express/node_modules/@types/whatwg-url/lib/URL.d";
 import { Prisma } from "../../platforms/express/src/config/prisma.db";
 export class PrismaUserRepository implements UserRepository {
   public constructor(private readonly database: Prisma) {}
@@ -24,6 +25,7 @@ export class PrismaUserRepository implements UserRepository {
   public async save(user: UserEntity): Promise<void> {
     await this.database.user.create({
       data: {
+        id: user.identifier,
         firstName: user.firstName.value,
         lastName: user.lastName.value,
         email: user.email.value,
@@ -33,8 +35,8 @@ export class PrismaUserRepository implements UserRepository {
     });
     return Promise.resolve();
   }
-  public async update(user: UserEntity): Promise<void> {
-    await this.database.user.update({
+  public async update(user: UserEntity): Promise<UserEntity | null> {
+    const updatedUser = await this.database.user.update({
       where: { id: user.identifier },
       data: {
         firstName: user.firstName.value,
@@ -42,10 +44,13 @@ export class PrismaUserRepository implements UserRepository {
         email: user.email.value,
         passwordHash: user.passwordHash,
         role: user.role.value,
+        isVerified: user.isVerified,
       },
     });
+    return updatedUser ? UserEntity.reconstitute(updatedUser) : null;
   }
-  public async delete(user: UserEntity): Promise<void> {
-    throw new Error("Method not implemented.");
+  public async delete(identifier: string): Promise<void> {
+    await this.database.user.delete({ where: { id: identifier } });
+    return Promise.resolve();
   }
 }

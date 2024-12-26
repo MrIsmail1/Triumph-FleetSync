@@ -11,8 +11,10 @@ export class PrismaSessionRepository implements SessionRepository {
     return session ? SessionEntity.reconstitute(session) : null;
   }
   async save(userSession: SessionEntity): Promise<void> {
+    console.log(userSession);
     await this.database.session.create({
       data: {
+        id: userSession.identifier,
         userId: userSession.userId,
         expiresAt: userSession.expiresAt,
         userAgent: userSession.userAgent,
@@ -21,7 +23,6 @@ export class PrismaSessionRepository implements SessionRepository {
     return Promise.resolve();
   }
   async delete(identifier: string): Promise<void> {
-    console.log(identifier);
     await this.database.session.delete({ where: { id: identifier } });
     return Promise.resolve();
   }

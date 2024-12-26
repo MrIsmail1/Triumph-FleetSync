@@ -3,6 +3,7 @@ import { PrismaSessionRepository } from "../../../../adapters/repositories/Prism
 import { PrismaUserRepository } from "../../../../adapters/repositories/PrismaUserRepository";
 import { PrismaVerificationCodeRepository } from "../../../../adapters/repositories/PrismaVerificationCodeRepository";
 import { BcryptPasswordHasherService } from "../../services/BcryptPasswordHasherService";
+import { ResendEmailService } from "../../services/ResendEmailService";
 import { prisma } from "../config/prisma.db";
 import { AuthController } from "../controllers/AuthController";
 
@@ -13,17 +14,23 @@ const prismaVerificationCodeRepository = new PrismaVerificationCodeRepository(
 );
 const prismaSessionRepository = new PrismaSessionRepository(prisma);
 const bcryptPasswordHasher = new BcryptPasswordHasherService();
+const resendEmailService = new ResendEmailService();
 const authController = new AuthController(
   prismaUserRepository,
   prismaVerificationCodeRepository,
   prismaSessionRepository,
-  bcryptPasswordHasher
+  bcryptPasswordHasher,
+  resendEmailService
 );
 
 authRoutes.post("/register", authController.registerHandler);
 
 authRoutes.post("/login", authController.loginHandler);
 
-authRoutes.post("/logout", authController.logoutHandler);
+authRoutes.get("/logout", authController.logoutHandler);
+
+authRoutes.get("/refresh", authController.refreshHandler);
+
+authRoutes.get("/email/verify/:code", authController.verifyEmailHandler);
 
 export default authRoutes;

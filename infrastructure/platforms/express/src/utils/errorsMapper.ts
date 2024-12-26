@@ -5,6 +5,10 @@ import { RoleSelectionError } from "../../../../../domain/errors/RoleSelectionEr
 import { StringTooLongError } from "../../../../../domain/errors/StringTooLongError";
 import { StringTooShortError } from "../../../../../domain/errors/StringTooShortError";
 import { UserAlreadyExistsError } from "../../../../../domain/errors/UserAlreadyExistsError";
+import { UserEmailVerificationFailedError } from "../../../../../domain/errors/UserEmailVerificationFailedError";
+import { VerificationCodeNotFoundError } from "../../../../../domain/errors/VerificationCodeNotFoundError";
+import { VerificationEmailUnsentError } from "../../../../../domain/errors/VerificationEmailUnsentError";
+
 import {
   BAD_REQUEST,
   CONFLICT,
@@ -37,7 +41,21 @@ export function mapDomainErrorToHttp(
   if (error instanceof InvalidCredentialsError) {
     return [UNAUTHORIZED, error.name, "Invalid credentials."];
   }
+  if (error instanceof VerificationCodeNotFoundError) {
+    return [BAD_REQUEST, error.name, "Verification code not found."];
+  }
 
+  if (error instanceof UserEmailVerificationFailedError) {
+    return [INTERNAL_SERVER_ERROR, error.name, "Email verification failed."];
+  }
+
+  if (error instanceof VerificationEmailUnsentError) {
+    return [
+      INTERNAL_SERVER_ERROR,
+      error.name,
+      "Verification email was not sent.",
+    ];
+  }
   return [
     INTERNAL_SERVER_ERROR,
     "UNKNOWN_ERROR",

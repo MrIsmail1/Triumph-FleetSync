@@ -23,7 +23,7 @@ export const refreshTokenSignOptions: SignOptionsAndSecret = {
   secret: JWT_REFRESH_SECRET,
 };
 export const signToken = (
-  payload: RefreshTokenPayload | AccessTokenPayload,
+  payload: AccessTokenPayload | RefreshTokenPayload,
   options?: SignOptionsAndSecret
 ) => {
   const { secret, ...signOptions } = options || accessTokenSignOptions;

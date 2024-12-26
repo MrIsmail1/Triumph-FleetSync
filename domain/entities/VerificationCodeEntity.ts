@@ -22,9 +22,9 @@ export class VerificationCodeEntity {
       identifier,
       userId,
       type,
+      expiresAt,
       createdAt,
-      updatedAt,
-      expiresAt
+      updatedAt
     );
   }
   public static reconstitute(data: {
