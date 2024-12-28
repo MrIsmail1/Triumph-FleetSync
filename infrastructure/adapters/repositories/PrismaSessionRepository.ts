@@ -4,13 +4,20 @@ import { Prisma } from "../../platforms/express/src/config/prisma.db";
 
 export class PrismaSessionRepository implements SessionRepository {
   public constructor(readonly database: Prisma) {}
-  async findById(identifier: string): Promise<SessionEntity | null> {
+  findByUserId(userId: string): Promise<SessionEntity | null> {
+    throw new Error("Method not implemented.");
+  }
+  public async deleteByUserId(userId: string): Promise<void> {
+    await this.database.session.deleteMany({ where: { userId: userId } });
+    return Promise.resolve();
+  }
+  public async findById(identifier: string): Promise<SessionEntity | null> {
     const session = await this.database.session.findFirst({
       where: { id: identifier },
     });
     return session ? SessionEntity.reconstitute(session) : null;
   }
-  async save(userSession: SessionEntity): Promise<void> {
+  public async save(userSession: SessionEntity): Promise<void> {
     console.log(userSession);
     await this.database.session.create({
       data: {
@@ -22,8 +29,21 @@ export class PrismaSessionRepository implements SessionRepository {
     });
     return Promise.resolve();
   }
-  async delete(identifier: string): Promise<void> {
+  public async delete(identifier: string): Promise<void> {
     await this.database.session.delete({ where: { id: identifier } });
     return Promise.resolve();
+  }
+  public async findUnexpiredByUserId(
+    conditions: Partial<SessionEntity>
+  ): Promise<SessionEntity | null> {
+    const session = await this.database.session.findFirst({
+      where: {
+        userId: conditions.userId,
+        expiresAt: {
+          gt: conditions.expiresAt,
+        },
+      },
+    });
+    return session ? SessionEntity.reconstitute(session) : null;
   }
 }

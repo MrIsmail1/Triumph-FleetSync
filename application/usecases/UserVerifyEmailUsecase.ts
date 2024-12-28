@@ -12,11 +12,12 @@ export class UserVerifyEmailUsecase {
   ) {}
 
   public async execute(code: string) {
-    const verificationCode = await this.verificationCodeRepository.findOne({
-      identifier: code,
-      type: VerificationCodeType.EmailVerification,
-      expiresAt: new Date(),
-    });
+    const verificationCode =
+      await this.verificationCodeRepository.findUnexpired({
+        identifier: code,
+        type: VerificationCodeType.EmailVerification,
+        expiresAt: new Date(),
+      });
 
     if (!verificationCode) {
       return new VerificationCodeNotFoundError();

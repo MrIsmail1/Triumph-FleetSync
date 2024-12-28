@@ -4,8 +4,11 @@ import { PasswordBadFormatError } from "../../../../../domain/errors/PasswordBad
 import { RoleSelectionError } from "../../../../../domain/errors/RoleSelectionError";
 import { StringTooLongError } from "../../../../../domain/errors/StringTooLongError";
 import { StringTooShortError } from "../../../../../domain/errors/StringTooShortError";
+import { TooManyPasswordResetRequestsError } from "../../../../../domain/errors/TooManyPasswordResetRequestsError";
 import { UserAlreadyExistsError } from "../../../../../domain/errors/UserAlreadyExistsError";
 import { UserEmailVerificationFailedError } from "../../../../../domain/errors/UserEmailVerificationFailedError";
+import { UserNotFoundError } from "../../../../../domain/errors/UserNotFoundError";
+import { UserPasswordUpdateFailedError } from "../../../../../domain/errors/UserPasswordUpdateFailedError";
 import { VerificationCodeNotFoundError } from "../../../../../domain/errors/VerificationCodeNotFoundError";
 import { VerificationEmailUnsentError } from "../../../../../domain/errors/VerificationEmailUnsentError";
 
@@ -14,6 +17,7 @@ import {
   CONFLICT,
   HttpStatusCode,
   INTERNAL_SERVER_ERROR,
+  TOO_MANY_REQUESTS,
   UNAUTHORIZED,
 } from "../constants/http";
 
@@ -38,6 +42,9 @@ export function mapDomainErrorToHttp(
   if (error instanceof UserAlreadyExistsError) {
     return [CONFLICT, error.name, "User already exists."];
   }
+  if (error instanceof UserNotFoundError) {
+    return [BAD_REQUEST, error.name, "User not found."];
+  }
   if (error instanceof InvalidCredentialsError) {
     return [UNAUTHORIZED, error.name, "Invalid credentials."];
   }
@@ -55,6 +62,18 @@ export function mapDomainErrorToHttp(
       error.name,
       "Verification email was not sent.",
     ];
+  }
+
+  if (error instanceof TooManyPasswordResetRequestsError) {
+    return [
+      TOO_MANY_REQUESTS,
+      error.name,
+      "Too many password reset requests. Please try again later.",
+    ];
+  }
+
+  if (error instanceof UserPasswordUpdateFailedError) {
+    return [INTERNAL_SERVER_ERROR, error.name, "User password update failed."];
   }
   return [
     INTERNAL_SERVER_ERROR,

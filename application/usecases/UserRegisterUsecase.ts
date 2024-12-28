@@ -62,7 +62,7 @@ export class UserRegisterUsecase {
     );
 
     await this.userRepository.save(newUser);
-    const { passwordHash: _, ...user } = newUser;
-    return user;
+    const { passwordHash: _, ...userWithoutPassword } = newUser;
+    return userWithoutPassword;
   }
 }

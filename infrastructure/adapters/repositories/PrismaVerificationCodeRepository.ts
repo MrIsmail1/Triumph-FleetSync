@@ -6,7 +6,20 @@ export class PrismaVerificationCodeRepository
   implements VerificationCodeRepository
 {
   public constructor(readonly database: Prisma) {}
-  async findOne(
+  public async countPasswordResetAttempts(
+    conditions: Partial<VerificationCodeEntity>
+  ): Promise<number> {
+    return await this.database.verificationCode.count({
+      where: {
+        userId: conditions.userId,
+        type: conditions.type,
+        createdAt: {
+          gt: conditions.createdAt,
+        },
+      },
+    });
+  }
+  public async findUnexpired(
     conditions: Partial<VerificationCodeEntity>
   ): Promise<VerificationCodeEntity | null> {
     const verificationCode = await this.database.verificationCode.findFirst({
@@ -22,7 +35,9 @@ export class PrismaVerificationCodeRepository
       ? VerificationCodeEntity.reconstitute(verificationCode)
       : null;
   }
-  async findById(identifier: string): Promise<VerificationCodeEntity | null> {
+  public async findById(
+    identifier: string
+  ): Promise<VerificationCodeEntity | null> {
     const verificationCode = await this.database.verificationCode.findFirst({
       where: { id: identifier },
     });
@@ -30,7 +45,7 @@ export class PrismaVerificationCodeRepository
       ? VerificationCodeEntity.reconstitute(verificationCode)
       : null;
   }
-  async save(verificationCode: VerificationCodeEntity): Promise<void> {
+  public async save(verificationCode: VerificationCodeEntity): Promise<void> {
     await this.database.verificationCode.create({
       data: {
         id: verificationCode.identifier,
@@ -41,8 +56,8 @@ export class PrismaVerificationCodeRepository
     });
     return Promise.resolve();
   }
-  delete(identifier: string): Promise<void> {
-    this.database.verificationCode.delete({
+  public async delete(identifier: string): Promise<void> {
+    await this.database.verificationCode.delete({
       where: { id: identifier },
     });
     return Promise.resolve();

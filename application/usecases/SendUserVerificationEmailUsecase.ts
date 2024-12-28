@@ -7,10 +7,15 @@ type Params = {
   html: string;
 };
 
-export class SendVerificationEmailUsecase {
+export class SendUserVerificationEmailUsecase {
   public constructor(private readonly mailService: MailService) {}
 
-  public async execute({ to, subject, text, html }: Params) {
+  public async execute({
+    to,
+    subject,
+    text,
+    html,
+  }: Params): Promise<boolean | VerificationEmailUnsentError> {
     const emailSentOrError = await this.mailService.send({
       to,
       subject,
@@ -18,8 +23,8 @@ export class SendVerificationEmailUsecase {
       html,
     });
     if (emailSentOrError instanceof Error) {
-      return VerificationEmailUnsentError;
+      return new VerificationEmailUnsentError();
     }
-    return { success: true };
+    return true;
   }
 }

@@ -1,8 +1,10 @@
 import { SessionRepository } from "../../../../../application/repositories/SessionRepository";
 import { UserRepository } from "../../../../../application/repositories/UserRepository";
 import { VerificationCodeRepository } from "../../../../../application/repositories/VerificationCodeRepository";
-import { SendVerificationEmailUsecase } from "../../../../../application/usecases/SendVerificationEmailUsecase";
+import { SendPasswordResetEmailUsecase } from "../../../../../application/usecases/SendPasswordResetEmailUsecase";
+import { SendUserVerificationEmailUsecase } from "../../../../../application/usecases/SendUserVerificationEmailUsecase";
 import { SessionCreateUsecase } from "../../../../../application/usecases/SessionCreateUsecase";
+import { UserCreatePasswordResetLinkUsecase } from "../../../../../application/usecases/UserCreatePasswordResetLinkUsecase";
 import { UserLoginUsecase } from "../../../../../application/usecases/UserLoginUsecase";
 import { UserRegisterUsecase } from "../../../../../application/usecases/UserRegisterUsecase";
 import { UserVerifyEmailUsecase } from "../../../../../application/usecases/UserVerifyEmailUsecase";
@@ -11,15 +13,21 @@ import { VerificationCodeType } from "../../../../../domain/types/VerificationCo
 import { BcryptPasswordHasherService } from "../../services/BcryptPasswordHasherService";
 import { ResendEmailService } from "../../services/ResendEmailService";
 import { APP_ORIGIN } from "../constants/env";
+
+import { UserResetPasswordUsecase } from "../../../../../application/usecases/UserResetPasswordUsecase";
 import {
   CREATED,
   INTERNAL_SERVER_ERROR,
   OK,
   UNAUTHORIZED,
 } from "../constants/http";
-import { loginSchema } from "../schemas/loginSchema";
-import { registerSchema } from "../schemas/registerSchema";
-import { verificationCodeSchema } from "../schemas/verificationCodeSchema";
+import {
+  emailSchema,
+  loginSchema,
+  passwordResetSchema,
+  registerSchema,
+  verificationCodeSchema,
+} from "../schemas/authSchema";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 import {
@@ -28,8 +36,17 @@ import {
   getRefreshTokenCookieOptions,
   setAuthCookies,
 } from "../utils/cookies";
-import { ONE_DAY_MS, oneYearFromNow, thirtyDaysFromNow } from "../utils/date";
-import { getVerifyEmailTemplate } from "../utils/emailTemplates";
+import {
+  fiveMinutesAgo,
+  ONE_DAY_MS,
+  oneHourFromNow,
+  oneYearFromNow,
+  thirtyDaysFromNow,
+} from "../utils/date";
+import {
+  getPasswordResetTemplate,
+  getVerifyEmailTemplate,
+} from "../utils/emailTemplates";
 import { mapDomainErrorToHttp } from "../utils/errorsMapper";
 
 import {
@@ -82,16 +99,20 @@ export class AuthController {
       oneYearFromNow()
     );
 
-    const emailVerificationUsecase = new SendVerificationEmailUsecase(
+    const emailVerificationUsecase = new SendUserVerificationEmailUsecase(
       this.resendEmailService
     );
     const emailVerificationUrl = `${APP_ORIGIN}/email/verify/${verificationCode.identifier}`;
 
-    await emailVerificationUsecase.execute({
+    const emailSentOrError = await emailVerificationUsecase.execute({
       to: userOrError.email.value,
       ...getVerifyEmailTemplate(emailVerificationUrl),
     });
 
+    appAssert(
+      !(emailSentOrError instanceof Error),
+      ...mapDomainErrorToHttp(emailSentOrError as Error)
+    );
     //create session
     const sessionCreateUsecase = new SessionCreateUsecase(
       this.sessionRepository
@@ -159,7 +180,9 @@ export class AuthController {
 
       return setAuthCookies({ response, accessToken, refreshToken })
         .status(OK)
-        .json("Login successful.");
+        .json({
+          message: "Login successful",
+        });
     }
   });
 
@@ -169,7 +192,9 @@ export class AuthController {
     if (payload) {
       await this.sessionRepository.delete(payload.sessionIdentifier);
     }
-    return clearAuthCookies(response).status(OK).json("Logout successful.");
+    return clearAuthCookies(response)
+      .status(OK)
+      .json({ message: "Logout successful" });
   });
 
   refreshHandler = catchErrors(async (request, response) => {
@@ -255,6 +280,63 @@ export class AuthController {
 
     return response.status(OK).json({
       message: "User email verified successfully",
+    });
+  });
+
+  sendPasswordResetHandler = catchErrors(async (request, response) => {
+    const userEmail = emailSchema.parse(request.body.email);
+    const userCreatePasswordResetLinkUsecase =
+      new UserCreatePasswordResetLinkUsecase(
+        this.userRepository,
+        this.verificationCodeRepository
+      );
+    const passwordResetLinkDataOrError =
+      await userCreatePasswordResetLinkUsecase.execute(
+        userEmail,
+        fiveMinutesAgo(), //request time limit
+        oneHourFromNow(), //request expires at
+        APP_ORIGIN
+      );
+
+    appAssert(
+      !(passwordResetLinkDataOrError instanceof Error),
+      ...mapDomainErrorToHttp(passwordResetLinkDataOrError as Error)
+    );
+
+    const sendPasswordResetEmailUsecase = new SendPasswordResetEmailUsecase(
+      this.resendEmailService
+    );
+    const emailSentOrError = await sendPasswordResetEmailUsecase.execute({
+      to: passwordResetLinkDataOrError.userEmail,
+      ...getPasswordResetTemplate(passwordResetLinkDataOrError.resetLink),
+    });
+    appAssert(
+      emailSentOrError.data?.id,
+      INTERNAL_SERVER_ERROR,
+      emailSentOrError?.name,
+      emailSentOrError?.message
+    );
+
+    return response.status(OK).json({
+      message: "Password reset link sent successfully",
+    });
+  });
+
+  resetPasswordHandler = catchErrors(async (request, response) => {
+    const requestData = passwordResetSchema.parse(request.body);
+    const userResetPasswordUsecase = new UserResetPasswordUsecase(
+      this.userRepository,
+      this.verificationCodeRepository,
+      this.sessionRepository,
+      this.bcryptPasswordHasher
+    );
+    const userOrError = await userResetPasswordUsecase.execute(requestData);
+    appAssert(
+      !(userOrError instanceof Error),
+      ...mapDomainErrorToHttp(userOrError as Error)
+    );
+    return clearAuthCookies(response).status(OK).json({
+      message: "Password reset successfully",
     });
   });
 }
