@@ -8,6 +8,7 @@ export type RefreshTokenPayload = {
 export type AccessTokenPayload = {
   userIdentifier: string;
   sessionIdentifier: string;
+  role: string;
 };
 type SignOptionsAndSecret = SignOptions & { secret: string };
 

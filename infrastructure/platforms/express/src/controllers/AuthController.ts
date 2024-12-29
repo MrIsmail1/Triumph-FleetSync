@@ -176,6 +176,7 @@ export class AuthController {
       const accessToken = signToken({
         sessionIdentifier: session.identifier,
         userIdentifier: userOrError.identifier,
+        role: userOrError.role.value,
       });
 
       return setAuthCookies({ response, accessToken, refreshToken })
