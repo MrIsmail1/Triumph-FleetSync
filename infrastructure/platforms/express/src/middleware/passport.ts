@@ -30,7 +30,6 @@ const options: StrategyOptionsWithRequest = {
 passport.use(
   new JwtStrategy(options, async (req, payload: AccessTokenPayload, done) => {
     try {
-      console.log(payload);
       appAssert(payload, UNAUTHORIZED, "Unauthorized", "Invalid access token");
 
       done(null, {

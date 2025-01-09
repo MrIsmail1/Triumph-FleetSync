@@ -52,7 +52,6 @@ export class UserCreatePasswordResetLinkUsecase {
     const resetPasswordUrl = `${baseUrl}/password/reset?code=${
       verificationCode.identifier
     }&exp=${requestExpiresAt.getTime()}`;
-    console.log("resetPasswordUrl", resetPasswordUrl);
     return {
       userEmail: user.email.value,
       resetLink: resetPasswordUrl,

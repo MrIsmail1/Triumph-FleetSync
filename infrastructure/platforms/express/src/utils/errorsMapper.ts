@@ -1,3 +1,4 @@
+import { AccessDeniedError } from "../../../../../domain/errors/AccessDeniedError";
 import { EmailBadFormatError } from "../../../../../domain/errors/EmailBadFormatError";
 import { InvalidCredentialsError } from "../../../../../domain/errors/InvalidCredentialsError";
 import { PasswordBadFormatError } from "../../../../../domain/errors/PasswordBadFormatError";
@@ -74,6 +75,10 @@ export function mapDomainErrorToHttp(
 
   if (error instanceof UserPasswordUpdateFailedError) {
     return [INTERNAL_SERVER_ERROR, error.name, "User password update failed."];
+  }
+
+  if (error instanceof AccessDeniedError) {
+    return [UNAUTHORIZED, error.name, "Access denied."];
   }
   return [
     INTERNAL_SERVER_ERROR,

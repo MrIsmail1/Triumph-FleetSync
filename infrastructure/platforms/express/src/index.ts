@@ -20,9 +20,7 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(cookieParser());
 app.use(passport.initialize());
-console.log(passport.strategies);
 
 //auth routes
 app.use("/api/auth", authRoutes);
