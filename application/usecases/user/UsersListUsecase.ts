@@ -1,6 +1,6 @@
-import { AccessDeniedError } from "../../domain/errors/AccessDeniedError";
-import { UserNotFoundError } from "../../domain/errors/UserNotFoundError";
-import { UserRepository } from "../repositories/UserRepository";
+import { AccessDeniedError } from "../../../domain/errors/AccessDeniedError";
+import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError";
+import { UserRepository } from "../../repositories/UserRepository";
 
 export class UsersListUsecase {
   public constructor(private readonly userRepository: UserRepository) {}
@@ -13,7 +13,7 @@ export class UsersListUsecase {
       return new UserNotFoundError();
     }
 
-    if (currentUser.role.value !== "Admin") {
+    if (currentUser.role.value !== "admin") {
       return new AccessDeniedError();
     }
 

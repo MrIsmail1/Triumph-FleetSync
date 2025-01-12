@@ -1,10 +1,10 @@
-import { VerificationCodeEntity } from "../../domain/entities/VerificationCodeEntity";
-import { TooManyPasswordResetRequestsError } from "../../domain/errors/TooManyPasswordResetRequestsError";
-import { UserNotFoundError } from "../../domain/errors/UserNotFoundError";
-import { Email } from "../../domain/types/Email";
-import { VerificationCodeType } from "../../domain/types/VerificationCodeType";
-import { UserRepository } from "../repositories/UserRepository";
-import { VerificationCodeRepository } from "../repositories/VerificationCodeRepository";
+import { VerificationCodeEntity } from "../../../domain/entities/VerificationCodeEntity";
+import { TooManyPasswordResetRequestsError } from "../../../domain/errors/TooManyPasswordResetRequestsError";
+import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError";
+import { Email } from "../../../domain/types/Email";
+import { VerificationCodeType } from "../../../domain/types/VerificationCodeType";
+import { UserRepository } from "../../repositories/UserRepository";
+import { VerificationCodeRepository } from "../../repositories/VerificationCodeRepository";
 
 export class UserCreatePasswordResetLinkUsecase {
   public constructor(

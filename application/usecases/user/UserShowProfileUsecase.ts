@@ -1,5 +1,5 @@
-import { UserNotFoundError } from "../../domain/errors/UserNotFoundError";
-import { UserRepository } from "../repositories/UserRepository";
+import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError";
+import { UserRepository } from "../../repositories/UserRepository";
 
 export class UserShowProfileUsecase {
   constructor(private userRepository: UserRepository) {}

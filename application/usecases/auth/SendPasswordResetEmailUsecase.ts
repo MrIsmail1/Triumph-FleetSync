@@ -1,4 +1,4 @@
-import { MailService } from "@application/services/MailService";
+import { MailService } from "../../services/MailService";
 type Params = {
   to: string;
   subject: string;

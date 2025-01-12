@@ -1,11 +1,11 @@
-import { UserEntity } from "../../domain/entities/UserEntity";
-import { UserAlreadyExistsError } from "../../domain/errors/UserAlreadyExistsError";
-import { Email } from "../../domain/types/Email";
-import { Password } from "../../domain/types/Password";
-import { Role } from "../../domain/types/Role";
-import { ValidString } from "../../domain/types/ValidString";
-import { UserRepository } from "../repositories/UserRepository";
-import { PasswordHasherService } from "../services/PasswordHasherService";
+import { UserEntity } from "../../../domain/entities/UserEntity";
+import { UserAlreadyExistsError } from "../../../domain/errors/UserAlreadyExistsError";
+import { Email } from "../../../domain/types/Email";
+import { Password } from "../../../domain/types/Password";
+import { Role } from "../../../domain/types/Role";
+import { ValidString } from "../../../domain/types/ValidString";
+import { UserRepository } from "../../repositories/UserRepository";
+import { PasswordHasherService } from "../../services/PasswordHasherService";
 
 export class UserRegisterUsecase {
   public constructor(

@@ -1,20 +1,20 @@
 import { SessionRepository } from "../../../../../application/repositories/SessionRepository";
 import { UserRepository } from "../../../../../application/repositories/UserRepository";
 import { VerificationCodeRepository } from "../../../../../application/repositories/VerificationCodeRepository";
-import { SendPasswordResetEmailUsecase } from "../../../../../application/usecases/SendPasswordResetEmailUsecase";
-import { SendUserVerificationEmailUsecase } from "../../../../../application/usecases/SendUserVerificationEmailUsecase";
-import { SessionCreateUsecase } from "../../../../../application/usecases/SessionCreateUsecase";
-import { UserCreatePasswordResetLinkUsecase } from "../../../../../application/usecases/UserCreatePasswordResetLinkUsecase";
-import { UserLoginUsecase } from "../../../../../application/usecases/UserLoginUsecase";
-import { UserRegisterUsecase } from "../../../../../application/usecases/UserRegisterUsecase";
-import { UserVerifyEmailUsecase } from "../../../../../application/usecases/UserVerifyEmailUsecase";
-import { VerificationCodeCreateUsecase } from "../../../../../application/usecases/VerificationCodeCreateUsecase";
+import { SendPasswordResetEmailUsecase } from "../../../../../application/usecases/auth/SendPasswordResetEmailUsecase";
+import { SendUserVerificationEmailUsecase } from "../../../../../application/usecases/auth/SendUserVerificationEmailUsecase";
+import { SessionCreateUsecase } from "../../../../../application/usecases/auth/SessionCreateUsecase";
+import { UserCreatePasswordResetLinkUsecase } from "../../../../../application/usecases/auth/UserCreatePasswordResetLinkUsecase";
+import { UserLoginUsecase } from "../../../../../application/usecases/auth/UserLoginUsecase";
+import { UserRegisterUsecase } from "../../../../../application/usecases/auth/UserRegisterUsecase";
+import { UserVerifyEmailUsecase } from "../../../../../application/usecases/auth/UserVerifyEmailUsecase";
+import { VerificationCodeCreateUsecase } from "../../../../../application/usecases/auth/VerificationCodeCreateUsecase";
 import { VerificationCodeType } from "../../../../../domain/types/VerificationCodeType";
 import { BcryptPasswordHasherService } from "../../services/BcryptPasswordHasherService";
 import { ResendEmailService } from "../../services/ResendEmailService";
 import { APP_ORIGIN } from "../constants/env";
 
-import { UserResetPasswordUsecase } from "../../../../../application/usecases/UserResetPasswordUsecase";
+import { UserResetPasswordUsecase } from "../../../../../application/usecases/auth/UserResetPasswordUsecase";
 import {
   CREATED,
   INTERNAL_SERVER_ERROR,
@@ -81,7 +81,7 @@ export class AuthController {
       validatedUserData.lastName,
       validatedUserData.email,
       validatedUserData.password,
-      "Client"
+      "client"
     );
     //if error return error
     appAssert(

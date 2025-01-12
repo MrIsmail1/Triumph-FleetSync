@@ -1,9 +1,9 @@
-import { UserEmailVerificationFailedError } from "../../domain/errors/UserEmailVerificationFailedError";
-import { UserNotFoundError } from "../../domain/errors/UserNotFoundError";
-import { VerificationCodeNotFoundError } from "../../domain/errors/VerificationCodeNotFoundError";
-import { VerificationCodeType } from "../../domain/types/VerificationCodeType";
-import { UserRepository } from "../repositories/UserRepository";
-import { VerificationCodeRepository } from "../repositories/VerificationCodeRepository";
+import { UserEmailVerificationFailedError } from "../../../domain/errors/UserEmailVerificationFailedError";
+import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError";
+import { VerificationCodeNotFoundError } from "../../../domain/errors/VerificationCodeNotFoundError";
+import { VerificationCodeType } from "../../../domain/types/VerificationCodeType";
+import { UserRepository } from "../../repositories/UserRepository";
+import { VerificationCodeRepository } from "../../repositories/VerificationCodeRepository";
 
 export class UserVerifyEmailUsecase {
   public constructor(

@@ -13,7 +13,7 @@ export type AccessTokenPayload = {
 type SignOptionsAndSecret = SignOptions & { secret: string };
 
 const defaults: SignOptions = {
-  audience: ["Client"],
+  audience: ["client"],
 };
 const accessTokenSignOptions: SignOptionsAndSecret = {
   expiresIn: "15m",

@@ -4,10 +4,10 @@ import { RoleSelectionError } from "../errors/RoleSelectionError";
 export class Role {
   private constructor(readonly value: string) {}
   private static readonly validRoles = [
-    "Admin",
-    "Technician",
-    "Client",
-    "Manager",
+    "admin",
+    "technician",
+    "client",
+    "manager",
   ];
 
   public static from(value: string) {
@@ -20,7 +20,7 @@ export class Role {
 
   public static isClient(value: string) {
     const role = value.trim();
-    if (role != "Client") {
+    if (role != "client") {
       return new RoleSelectionError();
     }
     return new Role(role);

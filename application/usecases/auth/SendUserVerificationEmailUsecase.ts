@@ -1,5 +1,5 @@
-import { VerificationEmailUnsentError } from "../../domain/errors/VerificationEmailUnsentError";
-import { MailService } from "../services/MailService";
+import { VerificationEmailUnsentError } from "../../../domain/errors/VerificationEmailUnsentError";
+import { MailService } from "../../services/MailService";
 type Params = {
   to: string;
   subject: string;

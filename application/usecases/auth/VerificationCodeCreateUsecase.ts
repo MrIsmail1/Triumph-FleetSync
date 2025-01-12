@@ -1,6 +1,6 @@
-import { VerificationCodeEntity } from "../../domain/entities/VerificationCodeEntity";
-import { VerificationCodeType } from "../../domain/types/VerificationCodeType";
-import { VerificationCodeRepository } from "../repositories/VerificationCodeRepository";
+import { VerificationCodeEntity } from "../../../domain/entities/VerificationCodeEntity";
+import { VerificationCodeType } from "../../../domain/types/VerificationCodeType";
+import { VerificationCodeRepository } from "../../repositories/VerificationCodeRepository";
 
 export class VerificationCodeCreateUsecase {
   public constructor(

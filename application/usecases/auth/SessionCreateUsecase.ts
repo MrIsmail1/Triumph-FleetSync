@@ -1,5 +1,5 @@
-import { SessionEntity } from "../../domain/entities/SessionEntity";
-import { SessionRepository } from "../repositories/SessionRepository";
+import { SessionEntity } from "../../../domain/entities/SessionEntity";
+import { SessionRepository } from "../../repositories/SessionRepository";
 
 export class SessionCreateUsecase {
   public constructor(private readonly sessionRepository: SessionRepository) {}

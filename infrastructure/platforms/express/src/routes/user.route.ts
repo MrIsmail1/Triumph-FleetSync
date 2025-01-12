@@ -12,12 +12,12 @@ const userController = new UserController(prismaUserRepository);
 
 userRoutes.get(
   "/profile",
-  authorize(["Admin", "Technician", "Client", "Manager"]),
+  authorize(["admin", "technician", "client", "manager"]),
   userController.showProfileHandler
 );
 userRoutes.get(
   "/list",
-  authorize(["Admin, Manager"]),
+  authorize(["admin, manager"]),
   userController.listUsersHandler
 );
 

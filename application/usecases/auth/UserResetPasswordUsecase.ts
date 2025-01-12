@@ -1,12 +1,12 @@
-import { UserNotFoundError } from "../../domain/errors/UserNotFoundError";
-import { UserPasswordUpdateFailedError } from "../../domain/errors/UserPasswordUpdateFailedError";
-import { VerificationCodeNotFoundError } from "../../domain/errors/VerificationCodeNotFoundError";
-import { Password } from "../../domain/types/Password";
-import { VerificationCodeType } from "../../domain/types/VerificationCodeType";
-import { SessionRepository } from "../repositories/SessionRepository";
-import { UserRepository } from "../repositories/UserRepository";
-import { VerificationCodeRepository } from "../repositories/VerificationCodeRepository";
-import { PasswordHasherService } from "../services/PasswordHasherService";
+import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError";
+import { UserPasswordUpdateFailedError } from "../../../domain/errors/UserPasswordUpdateFailedError";
+import { VerificationCodeNotFoundError } from "../../../domain/errors/VerificationCodeNotFoundError";
+import { Password } from "../../../domain/types/Password";
+import { VerificationCodeType } from "../../../domain/types/VerificationCodeType";
+import { SessionRepository } from "../../repositories/SessionRepository";
+import { UserRepository } from "../../repositories/UserRepository";
+import { VerificationCodeRepository } from "../../repositories/VerificationCodeRepository";
+import { PasswordHasherService } from "../../services/PasswordHasherService";
 
 type ResetPasswordParams = {
   password: string;
