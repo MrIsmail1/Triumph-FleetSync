@@ -7,6 +7,6 @@ export interface UserRepository {
   findById(userId: string): Promise<UserEntity | null>;
 
   save(user: UserEntity): Promise<void>;
-  update(user: UserEntity): Promise<void>;
-  delete(user: UserEntity): Promise<void>;
+  update(user: UserEntity): Promise<UserEntity | null>;
+  delete(identifier: string): Promise<void>;
 }

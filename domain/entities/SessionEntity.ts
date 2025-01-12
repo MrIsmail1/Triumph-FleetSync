@@ -4,10 +4,14 @@ export class SessionEntity {
     public userId: string,
     public expiresAt: Date,
     public createdAt: Date,
-    public userAgent?: string
+    public userAgent?: string | null
   ) {}
 
-  public static create(userId: string, expiresAt: Date, userAgent?: string) {
+  public static create(
+    userId: string,
+    expiresAt: Date,
+    userAgent?: string | null
+  ): SessionEntity {
     const identifier = crypto.randomUUID();
     const createdAt = new Date();
     return new SessionEntity(
@@ -16,6 +20,21 @@ export class SessionEntity {
       expiresAt,
       createdAt,
       userAgent
+    );
+  }
+  public static reconstitute(data: {
+    id: string;
+    userId: string;
+    expiresAt: Date;
+    createdAt: Date;
+    userAgent: string | null;
+  }): SessionEntity {
+    return new SessionEntity(
+      data.id,
+      data.userId,
+      data.expiresAt,
+      data.createdAt,
+      data.userAgent
     );
   }
 }

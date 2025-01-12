@@ -27,4 +27,22 @@ export class VerificationCodeEntity {
       updatedAt
     );
   }
+  public static reconstitute(data: {
+    type: string;
+    userId: string;
+    id: string;
+    expiresAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+  }): VerificationCodeEntity {
+    const type = data.type as VerificationCodeType;
+    return new VerificationCodeEntity(
+      data.id,
+      data.userId,
+      type,
+      data.expiresAt,
+      data.createdAt,
+      data.updatedAt
+    );
+  }
 }

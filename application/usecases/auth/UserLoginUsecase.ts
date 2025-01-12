@@ -1,14 +1,12 @@
-import { InvalidCredentialsError } from "../../domain/errors/InvalidCredentialsError";
-import { Email } from "../../domain/types/Email";
-import { UserRepository } from "../repositories/UserRepository";
-import { PasswordHasherService } from "../services/PasswordHasherService";
-import { TokenGeneratorService } from "../services/TokenGeneratorService";
+import { InvalidCredentialsError } from "../../../domain/errors/InvalidCredentialsError";
+import { Email } from "../../../domain/types/Email";
+import { UserRepository } from "../../repositories/UserRepository";
+import { PasswordHasherService } from "../../services/PasswordHasherService";
 
 export class UserLoginUsecase {
   public constructor(
     private readonly userRepository: UserRepository,
-    private hasher: PasswordHasherService,
-    private tokenGenerator: TokenGeneratorService
+    private hasher: PasswordHasherService
   ) {}
 
   public async execute(email: string, password: string) {
@@ -26,7 +24,7 @@ export class UserLoginUsecase {
       if (!isCorrectPassword) {
         return new InvalidCredentialsError();
       }
-      return this.tokenGenerator.generateToken(user);
+      return user;
     } else {
       return userEmailOrError;
     }

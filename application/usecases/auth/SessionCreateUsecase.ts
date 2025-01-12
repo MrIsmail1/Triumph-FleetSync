@@ -1,12 +1,15 @@
-import { SessionEntity } from "../../domain/entities/SessionEntity";
-import { SessionRepository } from "../repositories/SessionRepository";
+import { SessionEntity } from "../../../domain/entities/SessionEntity";
+import { SessionRepository } from "../../repositories/SessionRepository";
 
 export class SessionCreateUsecase {
   public constructor(private readonly sessionRepository: SessionRepository) {}
 
   public async execute(userId: string, expiresAt: Date, userAgent?: string) {
-    const existingSession = await this.sessionRepository.findById(userId);
-    if (!existingSession) {
+    const existingSession = await this.sessionRepository.findUnexpiredByUserId({
+      userId: userId,
+      expiresAt: new Date(),
+    });
+    if (existingSession) {
       return existingSession;
     }
     const newSession = SessionEntity.create(userId, expiresAt, userAgent);
