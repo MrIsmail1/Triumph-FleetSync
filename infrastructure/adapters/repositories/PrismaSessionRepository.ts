@@ -46,4 +46,31 @@ export class PrismaSessionRepository implements SessionRepository {
     });
     return session ? SessionEntity.reconstitute(session) : null;
   }
+
+  public async findAllUnexpiredByUserId(
+    conditions: Partial<SessionEntity>
+  ): Promise<SessionEntity[] | null> {
+    const sessions = await this.database.session.findMany({
+      where: {
+        userId: conditions.userId,
+        expiresAt: {
+          gt: conditions.expiresAt,
+        },
+      },
+    });
+    return sessions.map((session) => SessionEntity.reconstitute(session));
+  }
+
+  public async deleteUserSession(
+    sessionIdentifier: string,
+    userIdentifier: string
+  ): Promise<void | null> {
+    await this.database.session.deleteMany({
+      where: {
+        id: sessionIdentifier,
+        userId: userIdentifier,
+      },
+    });
+    return Promise.resolve();
+  }
 }

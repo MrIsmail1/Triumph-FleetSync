@@ -8,4 +8,11 @@ export interface SessionRepository {
   delete(identifier: string): Promise<void>;
   deleteByUserId(userId: string): Promise<void>;
   findById(identifier: string): Promise<SessionEntity | null>;
+  findAllUnexpiredByUserId(
+    conditions: Partial<SessionEntity>
+  ): Promise<SessionEntity[] | null>;
+  deleteUserSession(
+    sessionIdentifier: string,
+    userIdentifier: string
+  ): Promise<void | null>;
 }

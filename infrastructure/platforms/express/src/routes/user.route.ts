@@ -35,4 +35,10 @@ userRoutes.put(
   userController.updateUserProfileHandler
 );
 
+userRoutes.delete(
+  "/delete",
+  authorize(["admin"]),
+  userController.deleteUserHandler
+);
+
 export default userRoutes;
