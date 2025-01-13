@@ -1,5 +1,5 @@
-import { PasswordHasherService } from "@application/services/PasswordHasherService";
 import bcrypt from "bcrypt";
+import { PasswordHasherService } from "../../../../application/services/PasswordHasherService";
 import { Password } from "../../../../domain/types/Password";
 
 export class BcryptPasswordHasherService implements PasswordHasherService {

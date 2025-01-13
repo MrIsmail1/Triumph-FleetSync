@@ -8,7 +8,7 @@ export const authorize = (requiredRoles: string[]): RequestHandler => {
     const user = request.user as AccessTokenPayload;
     appAssert(user, UNAUTHORIZED, "Unauthorized", "Invalid access token");
     appAssert(
-      !requiredRoles.includes(user.role),
+      requiredRoles.includes(user.role),
       FORBIDDEN,
       "Unauthorized",
       "Access denied"
