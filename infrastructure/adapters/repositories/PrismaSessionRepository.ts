@@ -18,7 +18,6 @@ export class PrismaSessionRepository implements SessionRepository {
     return session ? SessionEntity.reconstitute(session) : null;
   }
   public async save(userSession: SessionEntity): Promise<void> {
-    console.log(userSession);
     await this.database.session.create({
       data: {
         id: userSession.identifier,
@@ -64,13 +63,16 @@ export class PrismaSessionRepository implements SessionRepository {
   public async deleteUserSession(
     sessionIdentifier: string,
     userIdentifier: string
-  ): Promise<void | null> {
-    await this.database.session.deleteMany({
+  ): Promise<void | false> {
+    const deleted = await this.database.session.deleteMany({
       where: {
         id: sessionIdentifier,
         userId: userIdentifier,
       },
     });
+    if (deleted.count == 0) {
+      return false;
+    }
     return Promise.resolve();
   }
 }

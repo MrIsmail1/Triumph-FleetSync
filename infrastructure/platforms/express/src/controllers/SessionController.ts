@@ -39,9 +39,12 @@ export class SessionController {
       sessionIdentifier,
       currentUser.userIdentifier
     );
-
-    appAssert(deleted, NOT_FOUND, "SessionNotFoundError", "Session not found");
-
+    appAssert(
+      deleted != false,
+      NOT_FOUND,
+      "SessionNotFoundError",
+      "Session not found"
+    );
     return response.status(OK).json({
       message: "Session deleted",
     });

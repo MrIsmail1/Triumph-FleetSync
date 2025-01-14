@@ -14,5 +14,5 @@ export interface SessionRepository {
   deleteUserSession(
     sessionIdentifier: string,
     userIdentifier: string
-  ): Promise<void | null>;
+  ): Promise<void | false>;
 }
