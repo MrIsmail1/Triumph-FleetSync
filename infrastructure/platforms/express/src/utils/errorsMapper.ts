@@ -10,6 +10,7 @@ import { UserAlreadyExistsError } from "../../../../../domain/errors/UserAlready
 import { UserEmailVerificationFailedError } from "../../../../../domain/errors/UserEmailVerificationFailedError";
 import { UserNotFoundError } from "../../../../../domain/errors/UserNotFoundError";
 import { UserPasswordUpdateFailedError } from "../../../../../domain/errors/UserPasswordUpdateFailedError";
+import { UserUpdateProfileError } from "../../../../../domain/errors/UserUpdateProfileError";
 import { VerificationCodeNotFoundError } from "../../../../../domain/errors/VerificationCodeNotFoundError";
 import { VerificationEmailUnsentError } from "../../../../../domain/errors/VerificationEmailUnsentError";
 
@@ -79,6 +80,10 @@ export function mapDomainErrorToHttp(
 
   if (error instanceof AccessDeniedError) {
     return [UNAUTHORIZED, error.name, "Access denied."];
+  }
+
+  if (error instanceof UserUpdateProfileError) {
+    return [BAD_REQUEST, error.name, "Failed to update user profile."];
   }
   return [
     INTERNAL_SERVER_ERROR,

@@ -18,7 +18,6 @@ export class PrismaSessionRepository implements SessionRepository {
     return session ? SessionEntity.reconstitute(session) : null;
   }
   public async save(userSession: SessionEntity): Promise<void> {
-    console.log(userSession);
     await this.database.session.create({
       data: {
         id: userSession.identifier,
@@ -45,5 +44,35 @@ export class PrismaSessionRepository implements SessionRepository {
       },
     });
     return session ? SessionEntity.reconstitute(session) : null;
+  }
+
+  public async findAllUnexpiredByUserId(
+    conditions: Partial<SessionEntity>
+  ): Promise<SessionEntity[] | null> {
+    const sessions = await this.database.session.findMany({
+      where: {
+        userId: conditions.userId,
+        expiresAt: {
+          gt: conditions.expiresAt,
+        },
+      },
+    });
+    return sessions.map((session) => SessionEntity.reconstitute(session));
+  }
+
+  public async deleteUserSession(
+    sessionIdentifier: string,
+    userIdentifier: string
+  ): Promise<void | false> {
+    const deleted = await this.database.session.deleteMany({
+      where: {
+        id: sessionIdentifier,
+        userId: userIdentifier,
+      },
+    });
+    if (deleted.count == 0) {
+      return false;
+    }
+    return Promise.resolve();
   }
 }
