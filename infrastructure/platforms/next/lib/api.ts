@@ -6,3 +6,6 @@ export const login = async (data: LoginSchema) => API.post("/auth/login", data);
 
 export const register = async (data: RegisterSchema) =>
   API.post("/auth/register", data);
+
+export const verifyEmail = async (verificationCode: string) =>
+  API.get(`/auth/email/verify/${verificationCode}`);
