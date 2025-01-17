@@ -7,6 +7,7 @@ export class MotorbikeEntity {
         public identifier: string,
         public modelId: string,
         public fleetId: string,
+        public clientId: string,
         public color: string,
         public licensePlate: FrenchMotorbikeLicensePlate,
         public vehicleIdentificationNumber: VehicleIdentificationNumber,
@@ -19,6 +20,7 @@ export class MotorbikeEntity {
     public static create(
         modelId: string,
         fleetId: string,
+        clientId: string,
         color: string,
         licensePlate: FrenchMotorbikeLicensePlate,
         vehicleIdentificationNumber: VehicleIdentificationNumber,
@@ -28,13 +30,14 @@ export class MotorbikeEntity {
         const identifier = crypto.randomUUID();
         const createdAt = new Date();
         const updatedAt = new Date();
-        return new MotorbikeEntity(identifier, modelId, fleetId, color, licensePlate, vehicleIdentificationNumber, mileage, status, createdAt, updatedAt);
+        return new MotorbikeEntity(identifier, modelId, fleetId, clientId, color, licensePlate, vehicleIdentificationNumber, mileage, status, createdAt, updatedAt);
     }
 
     public static reconstitute(data: {
         id: string;
         modelId: string;
         fleetId: string;
+        clientId: string;
         color: string;
         licensePlate: string;
         vehicleIdentificationNumber: string;
@@ -47,6 +50,7 @@ export class MotorbikeEntity {
             data.id,
             data.modelId,
             data.fleetId,
+            data.clientId,
             data.color,
             FrenchMotorbikeLicensePlate.reconstitute(data.licensePlate),
             VehicleIdentificationNumber.reconstitute(data.vehicleIdentificationNumber),
