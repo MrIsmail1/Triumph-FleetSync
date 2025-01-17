@@ -10,6 +10,7 @@ import "./middleware/passport";
 import authRoutes from "./routes/auth.route";
 import sessionRoutes from "./routes/session.route";
 import userRoutes from "./routes/user.route";
+import maintenanceRoutes from "./routes/maintenance.route";
 
 const app = express();
 app.use(express.json());
@@ -37,6 +38,8 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   sessionRoutes
 );
+
+app.use("/api/maintenance", maintenanceRoutes);
 
 app.use(errorHandler);
 app.listen(PORT, async () => {
