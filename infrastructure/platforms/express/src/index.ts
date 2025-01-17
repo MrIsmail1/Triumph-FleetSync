@@ -8,6 +8,7 @@ import { APP_ORIGIN, NODE_ENV, PORT } from "./constants/env";
 import errorHandler from "./middleware/errorHandler";
 import "./middleware/passport";
 import authRoutes from "./routes/auth.route";
+import sessionRoutes from "./routes/session.route";
 import userRoutes from "./routes/user.route";
 import maintenanceRoutes from "./routes/maintenance.route";
 
@@ -31,6 +32,11 @@ app.use(
   "/api/user",
   passport.authenticate("jwt", { session: false }),
   userRoutes
+);
+app.use(
+  "/api/session",
+  passport.authenticate("jwt", { session: false }),
+  sessionRoutes
 );
 
 app.use("/api/maintenance", maintenanceRoutes);
