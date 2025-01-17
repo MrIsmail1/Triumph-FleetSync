@@ -12,6 +12,7 @@ import { UserNotFoundError } from "../../../../../domain/errors/UserNotFoundErro
 import { UserPasswordUpdateFailedError } from "../../../../../domain/errors/UserPasswordUpdateFailedError";
 import { VerificationCodeNotFoundError } from "../../../../../domain/errors/VerificationCodeNotFoundError";
 import { VerificationEmailUnsentError } from "../../../../../domain/errors/VerificationEmailUnsentError";
+import { InvalidMaintenanceError } from "../../../../../domain/errors/InvalidMaintenanceError";
 
 import {
   BAD_REQUEST,
@@ -20,6 +21,7 @@ import {
   INTERNAL_SERVER_ERROR,
   TOO_MANY_REQUESTS,
   UNAUTHORIZED,
+  NOT_FOUND,
 } from "../constants/http";
 
 export function mapDomainErrorToHttp(
@@ -80,6 +82,11 @@ export function mapDomainErrorToHttp(
   if (error instanceof AccessDeniedError) {
     return [UNAUTHORIZED, error.name, "Access denied."];
   }
+
+  if (error instanceof InvalidMaintenanceError) {
+    return [NOT_FOUND, error.name, "Invalid maintenance."];
+  }
+
   return [
     INTERNAL_SERVER_ERROR,
     "UNKNOWN_ERROR",

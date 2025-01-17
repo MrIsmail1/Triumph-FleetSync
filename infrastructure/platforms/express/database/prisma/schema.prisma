@@ -36,4 +36,38 @@ model Session {
   userAgent  String?
 }
 
+model Maintenance {
+  id                     String     @id @default(uuid())
+  motorbikeId            String
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+  maintenanceDate        DateTime
+  mileageAtMaintenance   Int
+  maintenanceType        String
+  maintenanceCost        Float
+  maintenanceDescription String
+  breakdownId            String?    @unique
+  warrantyId             String?    @unique
+  breakdown              Breakdown? @relation(fields: [breakdownId], references: [id])
+  warranty               Warranty?  @relation(fields: [warrantyId], references: [id])
 
+  @@index([motorbikeId])
+}
+
+model Breakdown {
+  id          String      @id @default(uuid())
+  description String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  maintenance Maintenance?
+}
+
+model Warranty {
+  id           String      @id @default(uuid())
+  validFrom    DateTime
+  validUntil   DateTime
+  providerName String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  maintenance  Maintenance?
+}
