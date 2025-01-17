@@ -112,7 +112,7 @@ export default function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Adresse E-mail</FormLabel>
+                  <FormLabel>Adresse e-mail</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
@@ -165,7 +165,7 @@ export default function RegisterForm() {
 
             <Button type="submit" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting || isPending
-                ? "Connexion en cours..."
+                ? "Création..."
                 : "Créer un compte"}
             </Button>
 

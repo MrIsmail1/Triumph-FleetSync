@@ -46,7 +46,7 @@ export default function VerifyEmailPage() {
             <span className="text-sm">
               Le lien de vérification a expiré ou est invalide. <br />
               Veuillez demander un{" "}
-              <Link href="/register" className="text-black underline">
+              <Link href="/password/forgot" className="text-black underline">
                 nouveau lien.
               </Link>
               <br />
