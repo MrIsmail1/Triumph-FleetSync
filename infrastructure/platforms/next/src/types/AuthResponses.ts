@@ -1,9 +1,9 @@
 export interface User {
   id: string;
-  email: string;
-  firstName?: string;
-  lastName?: string;
-  role: string;
+  email: { value: string };
+  firstName?: { value: string };
+  lastName?: { value: string };
+  role: { value: string };
 }
 
 export interface LoginResponse {

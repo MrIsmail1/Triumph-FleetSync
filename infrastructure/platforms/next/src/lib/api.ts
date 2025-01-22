@@ -1,7 +1,7 @@
-import API from "@/config/apiClient";
 import { LoginSchema } from "@/components/login/loginSchema";
 import { RegisterSchema } from "@/components/register/registerSchema";
 import { PasswordResetSchema } from "@/components/reset-password/passwordResetSchema";
+import API from "@/config/apiClient";
 import { LoginResponse, User } from "@/types/AuthResponses"; // adjust import paths accordingly
 
 export const login = async (data: LoginSchema) =>
@@ -18,4 +18,8 @@ export const sendPasswordResetEmail = async (email: string) =>
 
 export const resetPassword = async (data: PasswordResetSchema) =>
   API.post<{ message: string }>("/auth/password/reset", data);
-export const getUser = async () => API.get<User>("/user/profile");
+
+export const getUser = async (): Promise<User> =>
+  await API.get<User, User>("/user/profile");
+
+export const logout = () => API.post<{ message: string }>("/auth/logout");

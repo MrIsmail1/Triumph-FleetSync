@@ -96,7 +96,15 @@ export default function LoginForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Mot de passe</FormLabel>
+                  <FormLabel className="flex justify-between">
+                    Mot de passe
+                    <FormDescription className="text-right w-fit">
+                      <Link href="/password/forgot" className="text-slate-600">
+                        Mot de passe oublié ?
+                      </Link>
+                    </FormDescription>
+                  </FormLabel>
+
                   <FormControl>
                     <Input
                       type="password"
@@ -108,11 +116,6 @@ export default function LoginForm() {
                     />
                   </FormControl>
                   <FormMessage />
-                  <FormDescription className="text-right">
-                    <Link href="/password/forgot" className="text-black">
-                      Mot de passe oublié ?
-                    </Link>
-                  </FormDescription>
                 </FormItem>
               )}
             />
