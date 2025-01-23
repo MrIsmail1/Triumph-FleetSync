@@ -1,7 +1,7 @@
 "use client";
 import * as React from "react";
 
-import { SearchForm } from "@/components/common/search-form";
+import { SearchForm } from "@/components/common/SearchForm";
 import {
   Sidebar,
   SidebarContent,
@@ -21,7 +21,7 @@ import { AppSidebarProps, sidebarData } from "@/types/SidebarData";
 import { useMutation } from "@tanstack/react-query";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { NavUser } from "./nav-user";
+import { NavUser } from "./NavUser";
 
 export function AppSidebar({ user, ...props }: AppSidebarProps) {
   const pathname = usePathname();
