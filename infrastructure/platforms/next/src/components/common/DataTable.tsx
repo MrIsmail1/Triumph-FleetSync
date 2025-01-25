@@ -1,9 +1,10 @@
-import { useState } from "react";
-
+"use client";
 import {
   ColumnDef,
   ColumnFiltersState,
-  ColumnOrderState, //HERE
+  ColumnOrderState,
+  SortingState,
+  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFacetedRowModel,
@@ -11,10 +12,9 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
-  VisibilityState,
 } from "@tanstack/react-table";
+import React, { useState } from "react";
 
 import {
   Table,
@@ -33,39 +33,73 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { getDropDownValues } from "@/lib/utils";
-import { DataTableFacetedFilter } from "../common/FacetedFilter";
 import { DataTablePagination } from "../common/PaginationControls";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { Separator } from "../ui/separator";
 
+// --------------------------------
+// 1) OPTIONAL: Define a small type
+//    for "faceted filter configs".
+// --------------------------------
+export interface FacetedFilterConfig<TData> {
+  /** The columnId we want to filter (must match the accessorKey or id of a ColumnDef). */
+  columnId: string;
+  /** Label shown in the filter dropdown (e.g., "Location", "Status", etc.). */
+  title: string;
+  /**
+   * A custom function that, given your data and columnId, returns an array of unique dropdown options.
+   * Defaults to `getDropDownValues(data, columnId)`.
+   */
+  getOptions?: (data: TData[], columnId: string) => string[];
+}
+
+// --------------------------------
+// 2) Define DataTable props
+// --------------------------------
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  // table: TanstackTable<TData>; //HERE
+
+  /** If provided, we show a single text input filter that targets this columnId. */
+  globalFilterColumnId?: string;
+  /** Placeholder text for the global filter input. */
+  globalFilterPlaceholder?: string;
+
+  /** Whether to show a button for toggling column visibility. */
+  showColumnSelection?: boolean;
+
+  /** Initial page size, default is 5. */
+  initialPageSize?: number;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  globalFilterColumnId, // e.g. "name"
+  globalFilterPlaceholder = "Filter...",
+  showColumnSelection = false,
+  initialPageSize = 5,
 }: DataTableProps<TData, TValue>) {
-  //STATES:
+  // --------------------------------
+  // React Table State
+  // --------------------------------
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([]);
 
+  // --------------------------------
+  // Build the TanStack Table
+  // --------------------------------
   const table = useReactTable({
     data,
     columns,
+
+    // Row model
     getCoreRowModel: getCoreRowModel(),
-    //row selection
-    onRowSelectionChange: setRowSelection,
-    //sorting:
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
+
+    // Sorting
     state: {
       sorting,
       columnFilters,
@@ -73,145 +107,121 @@ export function DataTable<TData, TValue>({
       rowSelection,
       columnOrder,
     },
-    //pagination:
-    getPaginationRowModel: getPaginationRowModel(),
-    //Order of columns
-    onColumnOrderChange: setColumnOrder,
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
 
-    //filters
+    // Filters
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-
-    //Faceted filters:
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedRowModel: getFacetedRowModel(),
 
-    //Visibility:
+    // Column Visibility
     onColumnVisibilityChange: setColumnVisibility,
 
-    //Control pagination. Default is 10
+    // Column Order
+    onColumnOrderChange: setColumnOrder,
+
+    // Row Selection
+    onRowSelectionChange: setRowSelection,
+
+    // Pagination
+    getPaginationRowModel: getPaginationRowModel(),
     initialState: {
-      pagination: { pageSize: 5 },
+      pagination: { pageSize: initialPageSize },
     },
 
-    //This can be added to insert custom functions, accessible :table.options.meta.methodName
+    // Example "meta" property
     meta: {
       myOwnMethod: () => {
-        console.log("Custom method");
+        console.log("Custom method in table.options.meta.myOwnMethod()");
       },
     },
   });
 
-  //Used to show reset button
-  const isFiltered = table.getState().columnFilters.length > 0;
-
+  // --------------------------------
+  // RENDER
+  // --------------------------------
   return (
     <div>
-      <div className="flex justify-between py-4">
-        <div className="flex gap-3">
-          <Input
-            placeholder="Filter by name"
-            value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-              table.getColumn("name")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <div className="flex-col">
-            {table.getColumn("location") && (
-              <DataTableFacetedFilter
-                column={table.getColumn("location")}
-                title="Location"
-                options={getDropDownValues(data, "location")}
-              />
-            )}
-          </div>
-          <div>
-            {table.getColumn("status") && (
-              <DataTableFacetedFilter
-                column={table.getColumn("status")}
-                title="Status"
-                options={getDropDownValues(data, "status")}
-              />
-            )}
-          </div>
-
-          {isFiltered && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-              className="w-40 p-2"
-            >
-              Clear filters
-            </Button>
+      {/* Top toolbar with filters */}
+      <div className="flex flex-wrap items-center justify-between gap-4 py-4">
+        <div className="flex items-center gap-3">
+          {/* GLOBAL TEXT FILTER (optional) */}
+          {globalFilterColumnId && (
+            <Input
+              placeholder={globalFilterPlaceholder}
+              value={
+                (table
+                  .getColumn(globalFilterColumnId)
+                  ?.getFilterValue() as string) ?? ""
+              }
+              onChange={(e) =>
+                table
+                  .getColumn(globalFilterColumnId)
+                  ?.setFilterValue(e.target.value)
+              }
+              className="max-w-sm"
+            />
           )}
         </div>
 
-        {/* <Button
-          onClick={() => {
-            table.resetRowSelection(),
-              table.resetColumnFilters(),
-              table.resetColumnVisibility();
-            table.resetColumnOrder();
-          }}
-          variant="outline"
-          className="text-red-800 border-red-800"
-        >
-          Reset table
-        </Button> */}
+        {/* Optional: Show a "Select columns" button to toggle column visibility */}
+        {showColumnSelection && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">Selection des colonnes</Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                // Show only columns that can be hidden
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
 
-      {/* Column selection button */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
-            Select columns
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {table
-            .getAllColumns()
-            .filter((column) => column.getCanHide())
-            .map((column) => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                >
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <div className="mt-3 border rounded-md">
+      {/* The main table */}
+      <div className="border rounded-md">
         <Table>
+          {/* Header */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
+
+          {/* Body */}
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
-                  className=""
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
@@ -223,7 +233,6 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  <Separator orientation="vertical" />
                 </TableRow>
               ))
             ) : (
@@ -232,12 +241,13 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Pas de résultats trouvés.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
 
+          {/* Footer (for column footers) */}
           <TableFooter>
             {table.getFooterGroups().map((footerGroup) => (
               <TableRow key={footerGroup.id}>
@@ -256,8 +266,10 @@ export function DataTable<TData, TValue>({
           </TableFooter>
         </Table>
       </div>
+
+      {/* Pagination */}
       <div className="flex justify-end pt-4">
-        <DataTablePagination table={table}></DataTablePagination>
+        <DataTablePagination table={table} />
       </div>
     </div>
   );

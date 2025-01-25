@@ -23,3 +23,5 @@ export const getUser = async (): Promise<User> =>
   await API.get<User, User>("/user/profile");
 
 export const logout = () => API.post<{ message: string }>("/auth/logout");
+
+export const usersList = async () => API.get<User[], User[]>("/user/list");

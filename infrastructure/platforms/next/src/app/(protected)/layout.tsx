@@ -45,7 +45,9 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <main className="flex flex-1 flex-col mx-auto">{children}</main>
+          <main className="flex flex-1 flex-col p-3 h-[90vh] overflow-y-auto w-full">
+            {children}
+          </main>
         </SidebarInset>
       </SidebarProvider>
     )

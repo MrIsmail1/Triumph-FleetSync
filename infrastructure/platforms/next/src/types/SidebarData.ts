@@ -3,7 +3,7 @@ import { User } from "./AuthResponses";
 
 interface SidebarData {
   title: string;
-  url: string;
+  url?: string;
   isActive?: boolean;
   items?: SidebarData[];
   authorizedRoles?: string[];
@@ -26,11 +26,10 @@ export const sidebarData: SidebarData[] = [
   },
   {
     title: "Utilisateurs",
-    url: "/users",
     items: [
       {
         title: "Liste des utilisateurs",
-        url: "/users/all",
+        url: "/users/list",
         isActive: false,
       },
       {

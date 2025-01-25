@@ -43,7 +43,7 @@ export default function LoginForm() {
   } = useMutation({
     mutationFn: login,
     onSuccess: () => {
-      router.push("/");
+      router.replace("/dashboard");
     },
   });
 
