@@ -1,39 +1,33 @@
 import { MaintenanceRepository } from "../../../../../application/repositories/MaintenanceRepository";
-import { AddMaintenanceUsecase } from "../../../../../application/usecases/maintenance/AddMaintenanceUsecase";
-import { ListMaintenancesUsecase } from "../../../../../application/usecases/maintenance/ListMaintenancesUsecase";
-import { GetMaintenanceUsecase } from "../../../../../application/usecases/maintenance/GetMaintenanceUsecase";
-import { OK, CREATED, NOT_FOUND } from "../constants/http";
+import { UserRepository } from "../../../../../application/repositories/UserRepository";
+import { MaintenanceCreateUsecase } from "../../../../../application/usecases/maintenance/MaintenanceCreateUsecase";
+import { MaintenancesListUsecase } from "../../../../../application/usecases/maintenance/MaintenancesListUsecase";
+import { MaintenanceUpdateUsecase } from "../../../../../application/usecases/maintenance/MaintenanceUpdateUsecase";
+import { MaintenanceDeleteUsecase } from "../../../../../application/usecases/maintenance/MaintenanceDeleteUsecase";
+import { OK, CREATED } from "../constants/http";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 import { mapDomainErrorToHttp } from "../utils/errorsMapper";
+import { maintenanceCreateSchema, maintenanceUpdateSchema } from "../schemas/maintenanceSchema";
 
 export class MaintenanceController {
-  public constructor(private readonly maintenanceRepository: MaintenanceRepository) {}
+  public constructor(
+    private readonly maintenanceRepository: MaintenanceRepository,
+    private readonly userRepository: UserRepository
+  ) {}
 
   addMaintenanceHandler = catchErrors(async (request, response) => {
-    const {
-      motorbikeId,
-      maintenanceDate,
-      mileageAtMaintenance,
-      maintenanceType,
-      maintenanceCost,
-      maintenanceDescription,
-      breakdownId,
-      warrantyId,
-    } = request.body;
+    const currentUser = request.user;
 
-    const addMaintenanceUsecase = new AddMaintenanceUsecase(this.maintenanceRepository);
-
-    const maintenanceOrError = await addMaintenanceUsecase.execute({
-      motorbikeId,
-      maintenanceDate: new Date(maintenanceDate),
-      mileageAtMaintenance,
-      maintenanceType,
-      maintenanceCost,
-      maintenanceDescription,
-      breakdownId,
-      warrantyId,
+    const validatedMaintenanceData = maintenanceCreateSchema.parse({
+      ...request.body,
+      clientId: currentUser.userIdentifier,
+      userRole: currentUser.role,
     });
+
+    const maintenanceCreateUsecase = new MaintenanceCreateUsecase(this.maintenanceRepository);
+
+    const maintenanceOrError = await maintenanceCreateUsecase.execute(validatedMaintenanceData);
 
     appAssert(
       !(maintenanceOrError instanceof Error),
@@ -42,39 +36,71 @@ export class MaintenanceController {
 
     response.status(CREATED).json({
       message: "Maintenance ajoutée avec succès.",
+      maintenance: maintenanceOrError,
     });
   });
 
   listMaintenancesHandler = catchErrors(async (request, response) => {
-  const listMaintenancesUsecase = new ListMaintenancesUsecase(this.maintenanceRepository);
+    const currentUser = request.user;
+    const maintenancesListUsecase = new MaintenancesListUsecase(
+      this.maintenanceRepository,
+      this.userRepository
+    );
 
-  const maintenances = await listMaintenancesUsecase.execute();
+    const maintenancesOrError = await maintenancesListUsecase.execute(
+      currentUser.userIdentifier,
+      currentUser.role
+    );
 
-  appAssert(
-    maintenances.length > 0,
-    NOT_FOUND,
-    "NoMaintenancesFound",
-    "Aucune maintenance trouvée."
-  );
+    appAssert(
+      !(maintenancesOrError instanceof Error),
+      ...mapDomainErrorToHttp(maintenancesOrError as Error)
+    );
 
-  response.status(OK).json(maintenances);
-});
+    response.status(OK).json(maintenancesOrError);
+  });
 
+  updateMaintenanceHandler = catchErrors(async (request, response) => {
+    const currentUser = request.user;
+    const { id: maintenanceId } = request.params;
 
-  getMaintenanceHandler = catchErrors(async (request, response) => {
-    const { id } = request.params;
+    const validatedMaintenanceData = maintenanceUpdateSchema.parse(request.body);
 
-    const getMaintenanceUsecase = new GetMaintenanceUsecase(this.maintenanceRepository);
+    const maintenanceUpdateUsecase = new MaintenanceUpdateUsecase(this.maintenanceRepository);
 
-    const maintenanceOrError = await getMaintenanceUsecase.execute(id);
+    const maintenanceOrError = await maintenanceUpdateUsecase.execute(
+      currentUser.userIdentifier,
+      currentUser.role,
+      maintenanceId,
+      validatedMaintenanceData
+    );
 
     appAssert(
       !(maintenanceOrError instanceof Error),
-      NOT_FOUND,
-      "MaintenanceNotFound",
-      "Maintenance non trouvée."
+      ...mapDomainErrorToHttp(maintenanceOrError as Error)
     );
 
-    response.status(OK).json(maintenanceOrError);
+    response.status(OK).json({
+      message: "Maintenance mise à jour avec succès.",
+      maintenance: maintenanceOrError,
+    });
+  });
+
+  deleteMaintenanceHandler = catchErrors(async (request, response) => {
+    const currentUser = request.user;
+    const { id: maintenanceId } = request.params;
+
+    const maintenanceDeleteUsecase = new MaintenanceDeleteUsecase(this.maintenanceRepository);
+
+    const maintenanceDeletedOrError = await maintenanceDeleteUsecase.execute(currentUser.role, maintenanceId);
+
+    appAssert(
+      !(maintenanceDeletedOrError instanceof Error),
+      ...mapDomainErrorToHttp(maintenanceDeletedOrError as Error)
+    );
+
+    response.status(OK).json({
+      message: "Maintenance supprimée avec succès.",
+    });
   });
 }

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { PrismaMaintenanceRepository } from "../../../../adapters/repositories/PrismaMaintenanceRepository";
+import { PrismaUserRepository } from "../../../../adapters/repositories/PrismaUserRepository";
 import { prisma } from "../config/prisma.db";
 import { MaintenanceController } from "../controllers/MaintenanceController";
 import { authorize } from "../middleware/authorize";
@@ -7,24 +8,34 @@ import { authorize } from "../middleware/authorize";
 const maintenanceRoutes = Router();
 
 const prismaMaintenanceRepository = new PrismaMaintenanceRepository(prisma);
-const maintenanceController = new MaintenanceController(prismaMaintenanceRepository);
+const prismaUserRepository = new PrismaUserRepository(prisma);
+const maintenanceController = new MaintenanceController(
+  prismaMaintenanceRepository,
+  prismaUserRepository
+);
 
 maintenanceRoutes.post(
   "/",
-  /* authorize(["admin", "technician"]), */
+  authorize(["admin", "manager"]),
   maintenanceController.addMaintenanceHandler
 );
 
 maintenanceRoutes.get(
   "/",
-  /* authorize(["admin", "technician", "manager"]), */
+  authorize(["admin", "technician", "manager", "client"]),
   maintenanceController.listMaintenancesHandler
 );
 
-maintenanceRoutes.get(
+maintenanceRoutes.put(
   "/:id",
-  /* authorize(["admin", "technician", "manager"]), */
-  maintenanceController.getMaintenanceHandler
+  authorize(["admin", "manager"]),
+  maintenanceController.updateMaintenanceHandler
+);
+
+maintenanceRoutes.delete(
+  "/:id",
+  authorize(["admin"]),
+  maintenanceController.deleteMaintenanceHandler
 );
 
 export default maintenanceRoutes;
