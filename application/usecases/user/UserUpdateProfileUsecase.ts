@@ -13,13 +13,13 @@ export class UserUpdateProfileUsecase {
     userId: string,
     userRole: string,
     dataToUpdate: Partial<{
-      firstName: string;
-      lastName: string;
-      email: string;
-      role: string;
+      firstName: { value: string };
+      lastName: { value: string };
+      email: { value: string };
+      role: { value: string };
     }>
   ) {
-    if (userRole !== "admin" && dataToUpdate.role) {
+    if (userRole !== "admin" && dataToUpdate.role?.value) {
       return new UnauthorizedActionError();
     }
 
@@ -28,8 +28,12 @@ export class UserUpdateProfileUsecase {
       return new UserNotFoundError();
     }
 
+    if (userRole !== "admin" && user.identifier !== userId) {
+      return new UnauthorizedActionError();
+    }
+
     if (dataToUpdate.email) {
-      const userEmailOrError = Email.from(dataToUpdate.email);
+      const userEmailOrError = Email.from(dataToUpdate.email.value);
       if (userEmailOrError instanceof Error) {
         return userEmailOrError;
       }
@@ -38,7 +42,7 @@ export class UserUpdateProfileUsecase {
     }
 
     if (dataToUpdate.firstName) {
-      const firstNameOrError = ValidString.from(dataToUpdate.firstName);
+      const firstNameOrError = ValidString.from(dataToUpdate.firstName.value);
       if (firstNameOrError instanceof Error) {
         return firstNameOrError;
       }
@@ -46,7 +50,7 @@ export class UserUpdateProfileUsecase {
     }
 
     if (dataToUpdate.lastName) {
-      const lastNameOrError = ValidString.from(dataToUpdate.lastName);
+      const lastNameOrError = ValidString.from(dataToUpdate.lastName.value);
       if (lastNameOrError instanceof Error) {
         return lastNameOrError;
       }
@@ -54,7 +58,7 @@ export class UserUpdateProfileUsecase {
     }
 
     if (dataToUpdate.role) {
-      const userRoleOrError = Role.isClient(dataToUpdate.role);
+      const userRoleOrError = Role.isClient(dataToUpdate.role.value);
       if (userRoleOrError instanceof Error) {
         return userRoleOrError;
       }

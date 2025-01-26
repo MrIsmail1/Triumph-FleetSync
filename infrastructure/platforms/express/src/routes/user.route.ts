@@ -23,11 +23,7 @@ userRoutes.get(
   authorize(["admin", "technician", "client", "manager"]),
   userController.showProfileHandler
 );
-userRoutes.get(
-  "/list",
-  authorize(["admin, manager"]),
-  userController.listUsersHandler
-);
+userRoutes.get("/list", authorize(["admin"]), userController.listUsersHandler);
 
 userRoutes.put(
   "/update",

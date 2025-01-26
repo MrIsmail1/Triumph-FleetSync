@@ -1,16 +1,16 @@
 import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity";
-import { MaintenanceRepository } from "../../repositories/MaintenanceRepository";
 import { InvalidMaintenanceError } from "../../../domain/errors/InvalidMaintenanceError";
 import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { ValidString } from "../../../domain/types/ValidString";
 import { Role } from "../../../domain/types/Role";
+import { ValidString } from "../../../domain/types/ValidString";
+import { MaintenanceRepository } from "../../repositories/MaintenanceRepository";
 
 export class MaintenanceCreateUsecase {
   constructor(private maintenanceRepository: MaintenanceRepository) {}
 
   async execute(data: {
     motorbikeId: string;
-    maintenanceDate: Date;
+    maintenanceDate: string;
     mileageAtMaintenance: number;
     maintenanceType: string;
     maintenanceCost: number;
@@ -18,9 +18,9 @@ export class MaintenanceCreateUsecase {
     clientId: string;
     breakdownId?: string;
     warrantyId?: string;
-    userRole: Role;
+    userRole: string;
   }): Promise<void | Error> {
-    if (data.userRole.value !== "admin" && data.userRole.value !== "manager") {
+    if (data.userRole !== "admin" && data.userRole !== "manager") {
       return new UnauthorizedActionError();
     }
 
@@ -47,7 +47,7 @@ export class MaintenanceCreateUsecase {
 
     const maintenance = MaintenanceEntity.create(
       data.motorbikeId,
-      data.maintenanceDate,
+      new Date(data.maintenanceDate),
       data.mileageAtMaintenance,
       maintenanceTypeOrError,
       data.maintenanceCost,

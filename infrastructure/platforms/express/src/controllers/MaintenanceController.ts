@@ -1,14 +1,18 @@
 import { MaintenanceRepository } from "../../../../../application/repositories/MaintenanceRepository";
 import { UserRepository } from "../../../../../application/repositories/UserRepository";
 import { MaintenanceCreateUsecase } from "../../../../../application/usecases/maintenance/MaintenanceCreateUsecase";
+import { MaintenanceDeleteUsecase } from "../../../../../application/usecases/maintenance/MaintenanceDeleteUsecase";
 import { MaintenancesListUsecase } from "../../../../../application/usecases/maintenance/MaintenancesListUsecase";
 import { MaintenanceUpdateUsecase } from "../../../../../application/usecases/maintenance/MaintenanceUpdateUsecase";
-import { MaintenanceDeleteUsecase } from "../../../../../application/usecases/maintenance/MaintenanceDeleteUsecase";
-import { OK, CREATED } from "../constants/http";
+import { CREATED, OK } from "../constants/http";
+import {
+  maintenanceCreateSchema,
+  maintenanceUpdateSchema,
+} from "../schemas/maintenanceSchema";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 import { mapDomainErrorToHttp } from "../utils/errorsMapper";
-import { maintenanceCreateSchema, maintenanceUpdateSchema } from "../schemas/maintenanceSchema";
+import { AccessTokenPayload } from "../utils/jwt";
 
 export class MaintenanceController {
   public constructor(
@@ -17,7 +21,7 @@ export class MaintenanceController {
   ) {}
 
   addMaintenanceHandler = catchErrors(async (request, response) => {
-    const currentUser = request.user;
+    const currentUser = request.user as AccessTokenPayload;
 
     const validatedMaintenanceData = maintenanceCreateSchema.parse({
       ...request.body,
@@ -25,9 +29,13 @@ export class MaintenanceController {
       userRole: currentUser.role,
     });
 
-    const maintenanceCreateUsecase = new MaintenanceCreateUsecase(this.maintenanceRepository);
+    const maintenanceCreateUsecase = new MaintenanceCreateUsecase(
+      this.maintenanceRepository
+    );
 
-    const maintenanceOrError = await maintenanceCreateUsecase.execute(validatedMaintenanceData);
+    const maintenanceOrError = await maintenanceCreateUsecase.execute(
+      validatedMaintenanceData
+    );
 
     appAssert(
       !(maintenanceOrError instanceof Error),
@@ -41,7 +49,7 @@ export class MaintenanceController {
   });
 
   listMaintenancesHandler = catchErrors(async (request, response) => {
-    const currentUser = request.user;
+    const currentUser = request.user as AccessTokenPayload;
     const maintenancesListUsecase = new MaintenancesListUsecase(
       this.maintenanceRepository,
       this.userRepository
@@ -61,12 +69,16 @@ export class MaintenanceController {
   });
 
   updateMaintenanceHandler = catchErrors(async (request, response) => {
-    const currentUser = request.user;
+    const currentUser = request.user as AccessTokenPayload;
     const { id: maintenanceId } = request.params;
 
-    const validatedMaintenanceData = maintenanceUpdateSchema.parse(request.body);
+    const validatedMaintenanceData = maintenanceUpdateSchema.parse(
+      request.body
+    );
 
-    const maintenanceUpdateUsecase = new MaintenanceUpdateUsecase(this.maintenanceRepository);
+    const maintenanceUpdateUsecase = new MaintenanceUpdateUsecase(
+      this.maintenanceRepository
+    );
 
     const maintenanceOrError = await maintenanceUpdateUsecase.execute(
       currentUser.userIdentifier,
@@ -87,12 +99,17 @@ export class MaintenanceController {
   });
 
   deleteMaintenanceHandler = catchErrors(async (request, response) => {
-    const currentUser = request.user;
+    const currentUser = request.user as AccessTokenPayload;
     const { id: maintenanceId } = request.params;
 
-    const maintenanceDeleteUsecase = new MaintenanceDeleteUsecase(this.maintenanceRepository);
+    const maintenanceDeleteUsecase = new MaintenanceDeleteUsecase(
+      this.maintenanceRepository
+    );
 
-    const maintenanceDeletedOrError = await maintenanceDeleteUsecase.execute(currentUser.role, maintenanceId);
+    const maintenanceDeletedOrError = await maintenanceDeleteUsecase.execute(
+      currentUser.role,
+      maintenanceId
+    );
 
     appAssert(
       !(maintenanceDeletedOrError instanceof Error),

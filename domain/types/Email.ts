@@ -9,7 +9,7 @@ export class Email {
     if (!emailPattern.test(email)) {
       return new EmailBadFormatError();
     }
-    return new Email(email);
+    return new Email(email.toLocaleLowerCase());
   }
 
   public static reconstitute(value: string) {

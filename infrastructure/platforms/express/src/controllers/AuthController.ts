@@ -15,6 +15,7 @@ import { ResendEmailService } from "../../services/ResendEmailService";
 import { APP_ORIGIN } from "../constants/env";
 
 import { UserResetPasswordUsecase } from "../../../../../application/usecases/auth/UserResetPasswordUsecase";
+import { UserNotFoundError } from "../../../../../domain/errors/UserNotFoundError";
 import {
   CREATED,
   INTERNAL_SERVER_ERROR,
@@ -246,9 +247,12 @@ export class AuthController {
         )
       : undefined;
 
+    const connectedUser = await this.userRepository.findById(session.userId);
+
     const accessToken = signToken({
       sessionIdentifier: session.identifier,
       userIdentifier: session.userId,
+      role: connectedUser?.role.value,
     });
 
     if (newRefreshToken) {
@@ -299,6 +303,13 @@ export class AuthController {
         APP_ORIGIN
       );
 
+    if (passwordResetLinkDataOrError instanceof UserNotFoundError) {
+      console.error(passwordResetLinkDataOrError);
+      return response.status(OK).json({
+        message: "If the email exists, a password reset link will be sent",
+      });
+    }
+
     appAssert(
       !(passwordResetLinkDataOrError instanceof Error),
       ...mapDomainErrorToHttp(passwordResetLinkDataOrError as Error)
@@ -319,12 +330,13 @@ export class AuthController {
     );
 
     return response.status(OK).json({
-      message: "Password reset link sent successfully",
+      message: "If the email exists, a password reset link will be sent",
     });
   });
 
   resetPasswordHandler = catchErrors(async (request, response) => {
     const requestData = passwordResetSchema.parse(request.body);
+    console.log(requestData);
     const userResetPasswordUsecase = new UserResetPasswordUsecase(
       this.userRepository,
       this.verificationCodeRepository,

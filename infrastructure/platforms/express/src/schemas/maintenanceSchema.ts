@@ -2,9 +2,11 @@ import { z } from "zod";
 
 export const maintenanceCreateSchema = z.object({
   motorbikeId: z.string().uuid(),
-  maintenanceDate: z.string().refine((date: string) => !isNaN(Date.parse(date)), {
-    message: "Invalid date format",
-  }),
+  maintenanceDate: z
+    .string()
+    .refine((date: string) => !isNaN(Date.parse(date)), {
+      message: "Invalid date format",
+    }),
   mileageAtMaintenance: z.number().min(0, "Mileage must be non-negative"),
   maintenanceType: z.string().min(3).max(255),
   maintenanceCost: z.number().min(0, "Maintenance cost must be non-negative"),
@@ -19,7 +21,7 @@ export const maintenanceUpdateSchema = z.object({
   maintenanceDate: z
     .string()
     .optional()
-    .refine((date: string) => !isNaN(Date.parse(date)), {
+    .refine((date?: string) => (date ? !isNaN(Date.parse(date)) : true), {
       message: "Invalid date format",
     }),
   mileageAtMaintenance: z.number().min(0).optional(),
