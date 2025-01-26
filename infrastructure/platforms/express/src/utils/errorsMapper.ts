@@ -14,6 +14,14 @@ import { UserUpdateProfileError } from "../../../../../domain/errors/UserUpdateP
 import { VerificationCodeNotFoundError } from "../../../../../domain/errors/VerificationCodeNotFoundError";
 import { VerificationEmailUnsentError } from "../../../../../domain/errors/VerificationEmailUnsentError";
 import { InvalidMaintenanceError } from "../../../../../domain/errors/InvalidMaintenanceError";
+import { BreakdownNotFoundError } from "../../../../../domain/errors/BreakdownNotFoundError";
+import { InvalidBreakdownDescriptionError } from "../../../../../domain/errors/InvalidBreakdownDescriptionError";
+import { WarrantyNotFoundError } from "../../../../../domain/errors/WarrantyNotFoundError";
+import { InvalidWarrantyDateError } from "../../../../../domain/errors/InvalidWarrantyDateError";
+import { InvalidWarrantyProviderNameError } from "../../../../../domain/errors/InvalidWarrantyProviderNameError";
+import { MaintenanceNotFoundError } from "../../../../../domain/errors/MaintenanceNotFoundError"
+import { MaintenanceUpdateError } from "../../../../../domain/errors/MaintenanceUpdateError"
+import { WarrantyUpdateError } from "../../../../../domain/errors/WarrantyUpdateError"
 
 import {
   BAD_REQUEST,
@@ -90,6 +98,38 @@ export function mapDomainErrorToHttp(
 
   if (error instanceof UserUpdateProfileError) {
     return [BAD_REQUEST, error.name, "Failed to update user profile."];
+  }
+
+  if (error instanceof BreakdownNotFoundError) {
+    return [NOT_FOUND, error.name, "Breakdown not found."];
+  }
+
+  if (error instanceof InvalidBreakdownDescriptionError) {
+    return [BAD_REQUEST, error.name, "Invalid breakdown description."];
+  }
+
+  if (error instanceof WarrantyNotFoundError) {
+    return [NOT_FOUND, error.name, "Warranty not found."];
+  }
+
+  if (error instanceof InvalidWarrantyDateError) {
+    return [BAD_REQUEST, error.name, "Invalid warranty date range."];
+  }
+
+  if (error instanceof InvalidWarrantyProviderNameError) {
+    return [BAD_REQUEST, error.name, "Invalid warranty provider name."];
+  }
+ 
+  if (error instanceof MaintenanceNotFoundError) {
+    return [NOT_FOUND, error.name, "Maintenance not found"];
+  }
+
+  if (error instanceof MaintenanceUpdateError) {
+    return [NOT_FOUND, error.name, "Maintenance update failed"];
+  }
+
+  if (error instanceof WarrantyUpdateError) {
+    return [NOT_FOUND, error.name, "Warranty update failed"];
   }
 
   return [

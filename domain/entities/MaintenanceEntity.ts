@@ -12,7 +12,8 @@ export class MaintenanceEntity {
     public maintenanceCost: number,
     public maintenanceDescription: ValidString,
     public breakdownId: string | null,
-    public warrantyId: string | null
+    public warrantyId: string | null,
+    public clientId: string
   ) {}
 
   public static create(
@@ -22,6 +23,7 @@ export class MaintenanceEntity {
     maintenanceType: ValidString,
     maintenanceCost: number,
     maintenanceDescription: ValidString,
+    clientId: string,
     breakdownId: string | null,
     warrantyId: string | null
   ): MaintenanceEntity {
@@ -40,7 +42,8 @@ export class MaintenanceEntity {
       maintenanceCost,
       maintenanceDescription,
       breakdownId,
-      warrantyId
+      warrantyId,
+      clientId
     );
   }
 
@@ -56,6 +59,7 @@ export class MaintenanceEntity {
     maintenanceDescription: string;
     breakdownId: string | null;
     warrantyId: string | null;
+    clientId: string;
   }): MaintenanceEntity {
     return new MaintenanceEntity(
       data.id,
@@ -68,7 +72,8 @@ export class MaintenanceEntity {
       data.maintenanceCost,
       ValidString.reconstitute(data.maintenanceDescription),
       data.breakdownId,
-      data.warrantyId
+      data.warrantyId,
+      data.clientId
     );
   }
 }

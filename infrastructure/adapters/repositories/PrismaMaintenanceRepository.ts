@@ -17,6 +17,7 @@ export class PrismaMaintenanceRepository implements MaintenanceRepository {
         maintenanceType: maintenance.maintenanceType.value,
         maintenanceCost: maintenance.maintenanceCost,
         maintenanceDescription: maintenance.maintenanceDescription.value,
+        clientId: maintenance.clientId,
         breakdownId: maintenance.breakdownId,
         warrantyId: maintenance.warrantyId,
       },
@@ -41,6 +42,7 @@ export class PrismaMaintenanceRepository implements MaintenanceRepository {
       maintenanceType: record.maintenanceType,
       maintenanceCost: record.maintenanceCost,
       maintenanceDescription: record.maintenanceDescription,
+      clientId: record.clientId,
       breakdownId: record.breakdownId,
       warrantyId: record.warrantyId,
     });
@@ -51,7 +53,7 @@ export class PrismaMaintenanceRepository implements MaintenanceRepository {
       include: { breakdown: true, warranty: true },
     });
 
-    return records.map((record) =>
+    return records.map((record: any) =>
       MaintenanceEntity.reconstitute({
         id: record.id,
         motorbikeId: record.motorbikeId,
@@ -62,14 +64,39 @@ export class PrismaMaintenanceRepository implements MaintenanceRepository {
         maintenanceType: record.maintenanceType,
         maintenanceCost: record.maintenanceCost,
         maintenanceDescription: record.maintenanceDescription,
+        clientId: record.clientId,
         breakdownId: record.breakdownId,
         warrantyId: record.warrantyId,
       })
     );
   }
 
-  async update(maintenance: MaintenanceEntity): Promise<void> {
-    await this.prisma.maintenance.update({
+  async findAllByClientId(clientId: string): Promise<MaintenanceEntity[]> {
+    const records = await this.prisma.maintenance.findMany({
+      where: { clientId },
+      include: { breakdown: true, warranty: true },
+    });
+
+    return records.map((record: any) =>
+      MaintenanceEntity.reconstitute({
+        id: record.id,
+        motorbikeId: record.motorbikeId,
+        createdAt: record.createdAt,
+        updatedAt: record.updatedAt,
+        maintenanceDate: record.maintenanceDate,
+        mileageAtMaintenance: record.mileageAtMaintenance,
+        maintenanceType: record.maintenanceType,
+        maintenanceCost: record.maintenanceCost,
+        maintenanceDescription: record.maintenanceDescription,
+        clientId: record.clientId,
+        breakdownId: record.breakdownId,
+        warrantyId: record.warrantyId,
+      })
+    );
+  }
+
+  async update(maintenance: MaintenanceEntity): Promise<MaintenanceEntity | null> {
+    const updatedRecord = await this.prisma.maintenance.update({
       where: { id: maintenance.identifier },
       data: {
         motorbikeId: maintenance.motorbikeId,
@@ -79,9 +106,27 @@ export class PrismaMaintenanceRepository implements MaintenanceRepository {
         maintenanceType: maintenance.maintenanceType.value,
         maintenanceCost: maintenance.maintenanceCost,
         maintenanceDescription: maintenance.maintenanceDescription.value,
+        clientId: maintenance.clientId,
         breakdownId: maintenance.breakdownId,
         warrantyId: maintenance.warrantyId,
       },
+    });
+
+    if (!updatedRecord) return null;
+
+    return MaintenanceEntity.reconstitute({
+      id: updatedRecord.id,
+      motorbikeId: updatedRecord.motorbikeId,
+      createdAt: updatedRecord.createdAt,
+      updatedAt: updatedRecord.updatedAt,
+      maintenanceDate: updatedRecord.maintenanceDate,
+      mileageAtMaintenance: updatedRecord.mileageAtMaintenance,
+      maintenanceType: updatedRecord.maintenanceType,
+      maintenanceCost: updatedRecord.maintenanceCost,
+      maintenanceDescription: updatedRecord.maintenanceDescription,
+      clientId: updatedRecord.clientId,
+      breakdownId: updatedRecord.breakdownId,
+      warrantyId: updatedRecord.warrantyId,
     });
   }
 

@@ -8,15 +8,17 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(uuid())
+  id            String      @id @default(uuid())
   firstName     String
   lastName      String
-  email         String    @unique
+  email         String      @unique
   passwordHash  String
   role          String
-  isVerified    Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  isVerified    Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  breakdowns    Breakdown[]
+  maintenances  Maintenance[]
 }
 
 model VerificationCode {
@@ -39,6 +41,8 @@ model Session {
 model Maintenance {
   id                     String     @id @default(uuid())
   motorbikeId            String
+  clientId               String
+  client                 User       @relation(fields: [clientId], references: [id])
   createdAt              DateTime   @default(now())
   updatedAt              DateTime   @updatedAt
   maintenanceDate        DateTime
@@ -52,22 +56,31 @@ model Maintenance {
   warranty               Warranty?  @relation(fields: [warrantyId], references: [id])
 
   @@index([motorbikeId])
+  @@index([clientId])
 }
 
 model Breakdown {
-  id          String      @id @default(uuid())
-  description String
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  maintenance Maintenance?
+  id                String      @id @default(uuid())
+  clientId          String
+  client            User        @relation(fields: [clientId], references: [id])
+  description       String
+  actionTaken       String
+  resolved          Boolean     @default(false)
+  resolutionDate    DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  maintenance       Maintenance?
+
+  @@index([clientId])
 }
 
 model Warranty {
-  id           String      @id @default(uuid())
-  validFrom    DateTime
-  validUntil   DateTime
-  providerName String
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  maintenance  Maintenance?
+  id                String      @id @default(uuid())
+  validFrom         DateTime
+  validUntil        DateTime
+  providerName      String
+  warrantyDetails   String
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  maintenance       Maintenance?
 }
