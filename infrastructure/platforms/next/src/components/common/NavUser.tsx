@@ -25,9 +25,11 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { NavUserProps } from "@/types/SidebarData";
+import { useRouter } from "next/navigation";
 
 export function NavUser({ user, logoutFunction }: NavUserProps) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -79,17 +81,13 @@ export function NavUser({ user, logoutFunction }: NavUserProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/user/profile")}>
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />
                 Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

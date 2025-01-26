@@ -34,15 +34,19 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       router.replace("/");
     },
   });
-  const userRole = user.role.value;
+  const userRole = user.role?.value;
 
   const filteredSidebarData = sidebarData
     .map((item) => {
-      if (item.authorizedRoles && !item.authorizedRoles.includes(userRole)) {
+      if (
+        item.authorizedRoles &&
+        userRole &&
+        !item.authorizedRoles.includes(userRole)
+      ) {
         return null;
       }
 
-      if (item.items) {
+      if (item.items && userRole) {
         const filteredItems = item.items.filter((subItem) => {
           return (
             !subItem.authorizedRoles ||
@@ -102,7 +106,10 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
           ) : (
             <SidebarMenuItem key={item.title} className="list-none">
               <SidebarMenuButton asChild isActive={item.isActive}>
-                <a href={item.url}>{item.title}</a>
+                <a href={item.url}>
+                  {item.icon}
+                  {item.title}
+                </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
           );

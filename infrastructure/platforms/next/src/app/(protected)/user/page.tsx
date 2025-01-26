@@ -14,26 +14,11 @@ export default function UsersListPage() {
     queryFn: usersList,
   });
 
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
-  function handleEdit(user: User) {
-    setSelectedUser(user);
-  }
-
-  function handleDelete(user: User) {
-    setSelectedUser(user);
-  }
-
-  // Build columns with the above callbacks
-  const columns = buildUserColumns({
-    onEdit: handleEdit,
-    onDelete: handleDelete,
-  });
+  const columns = buildUserColumns();
   return (
     <>
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-start items-center mb-4">
         <h1 className="text-2xl font-semibold">Liste des utilisateurs</h1>
-        <Button>Ajouter un utilisateur</Button>
       </div>
       <div className="p-2 border rounded-md">
         <DataTable
@@ -42,7 +27,7 @@ export default function UsersListPage() {
           showColumnSelection
           initialPageSize={10}
           globalFilterColumnId="name"
-          globalFilterPlaceholder="Recherche par nom......"
+          globalFilterPlaceholder="Recherche par nom..."
         />
       </div>
     </>

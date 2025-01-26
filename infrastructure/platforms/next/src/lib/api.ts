@@ -22,6 +22,9 @@ export const resetPassword = async (data: PasswordResetSchema) =>
 export const getUser = async (): Promise<User> =>
   await API.get<User, User>("/user/profile");
 
-export const logout = () => API.post<{ message: string }>("/auth/logout");
+export const logout = () => API.get<{ message: string }>("/auth/logout");
 
 export const usersList = async () => API.get<User[], User[]>("/user/list");
+
+export const updateUser = async (data: User) =>
+  API.put<User, User>("/user/update", data);

@@ -247,9 +247,12 @@ export class AuthController {
         )
       : undefined;
 
+    const connectedUser = await this.userRepository.findById(session.userId);
+
     const accessToken = signToken({
       sessionIdentifier: session.identifier,
       userIdentifier: session.userId,
+      role: connectedUser?.role.value,
     });
 
     if (newRefreshToken) {

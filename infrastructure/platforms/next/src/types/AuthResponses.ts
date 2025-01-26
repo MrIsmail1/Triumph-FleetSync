@@ -1,9 +1,9 @@
 export interface User {
-  id: string;
-  email: { value: string };
+  identifier: string;
+  email?: { value: string };
   firstName?: { value: string };
   lastName?: { value: string };
-  role: { value: string };
+  role?: { value: string };
 }
 
 export interface LoginResponse {

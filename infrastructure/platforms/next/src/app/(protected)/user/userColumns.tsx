@@ -20,19 +20,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { Modal } from "@/components/common/Modal";
+import EditUserForm from "@/components/user/EditUserForm";
 import { moveColumnsDown, moveColumnsUp } from "@/lib/utils";
 import { User } from "@/types/AuthResponses";
-import { Dialog } from "@radix-ui/react-dialog";
+import { useState } from "react";
 
-interface BuildColumnsProps {
-  onEdit: (user: User) => void;
-  onDelete: (user: User) => void;
-}
+export function buildUserColumns() {
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
 
-/**
- * Returns an array of ColumnDef<User> configured with “Edit” & “Delete” actions.
- */
-export function buildUserColumns({ onEdit, onDelete }: BuildColumnsProps) {
+  const onDelete = (id: string) => {
+    setDeleteModalOpen(false);
+    console.log(id);
+  };
+
   const columns: ColumnDef<User>[] = [
     {
       id: "select",
@@ -105,7 +106,7 @@ export function buildUserColumns({ onEdit, onDelete }: BuildColumnsProps) {
           />
         </div>
       ),
-      cell: ({ row }) => row.original.email.value,
+      cell: ({ row }) => row.original.email?.value,
       footer: ({ column, table }) => (
         <div className="flex flex-row gap-4">
           <HiOutlineArrowLeftCircle
@@ -139,7 +140,7 @@ export function buildUserColumns({ onEdit, onDelete }: BuildColumnsProps) {
         </div>
       ),
       cell: ({ row }) => {
-        return <div>{row.original.role.value}</div>;
+        return <div>{row.original.role?.value}</div>;
       },
       footer: ({ column, table }) => (
         <div className="flex flex-row gap-4">
@@ -168,16 +169,52 @@ export function buildUserColumns({ onEdit, onDelete }: BuildColumnsProps) {
       cell: ({ row }) => {
         const user = row.original;
         return (
-          <Modal
-            title="Modifier l'utilisateur"
-            description="Modifier les informations de l'utilisateur. Assurez-vous de sauvegarder les modifications."
-            cancelText="Annuler"
-            confirmText="Sauvegarder"
-            data={user}
-            onConfirm={() => {
-              onEdit(user);
-            }}
-          ></Modal>
+          <>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="w-8 h-8 p-0">
+                  <RiMore2Fill />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => setEditModalOpen(true)}
+                  className="text-sm"
+                >
+                  Modifier
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-sm"
+                  onClick={() => setDeleteModalOpen(true)}
+                >
+                  Supprimer
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Modal
+              open={isEditModalOpen}
+              setOpen={setEditModalOpen}
+              title="Modifier l'utilisateur"
+              cancelText="Annuler"
+              description="Modifiez les informations de l'utilisateur. N'oubliez pas de cliquer sur Enregistrer pour valider les modifications."
+            >
+              <EditUserForm user={user} setOpen={setEditModalOpen} />
+            </Modal>
+            <Modal
+              open={isDeleteModalOpen}
+              setOpen={setDeleteModalOpen}
+              title="Supprimer l'utilisateur"
+              description="Êtes-vous sûr de vouloir supprimer cet utilisateur ?"
+              confirmText="Supprimer"
+              cancelText="Annuler"
+              onConfirm={() => onDelete(user.identifier)}
+            >
+              <span className="text-red-400">
+                Cette action est irréversible.
+              </span>
+            </Modal>
+          </>
         );
       },
     },

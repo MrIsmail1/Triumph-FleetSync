@@ -22,45 +22,17 @@ import React from "react";
 import { RiMore2Fill } from "react-icons/ri";
 
 export function Modal({
-  data,
-  onShow,
-  onEdit,
-  onDelete,
+  open,
+  setOpen,
   title,
   description,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText,
+  cancelText,
   onConfirm,
-  onCancel,
   children,
 }: ModalProps) {
   return (
-    <Dialog>
-      {/* DropdownMenu for actions */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="w-8 h-8 p-0">
-            <RiMore2Fill />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuSeparator />
-          {/* “Edit” triggers the same Dialog, calling onEdit(user) */}
-          <DialogTrigger asChild>
-            <DropdownMenuItem onClick={() => onEdit?.(data)}>
-              Modifier
-            </DropdownMenuItem>
-          </DialogTrigger>
-          {/* “Delete” triggers the same Dialog, calling onDelete(user.id) */}
-          <DialogTrigger asChild>
-            <DropdownMenuItem onClick={() => onDelete?.(data.id)}>
-              Supprimer
-            </DropdownMenuItem>
-          </DialogTrigger>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      {/* The Dialog’s content */}
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -68,10 +40,12 @@ export function Modal({
         </DialogHeader>
         {children}
         <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="ghost">{cancelText}</Button>
-          </DialogClose>
-          {onConfirm && <Button onClick={onConfirm}>{confirmText}</Button>}
+          {cancelText && (
+            <DialogClose asChild>
+              <Button variant="ghost">{cancelText}</Button>
+            </DialogClose>
+          )}
+          {confirmText && <Button onClick={onConfirm}>{confirmText}</Button>}
         </DialogFooter>
       </DialogContent>
     </Dialog>

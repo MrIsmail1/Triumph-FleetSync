@@ -1,4 +1,6 @@
 import { Sidebar } from "@/components/ui/sidebar";
+import { Users2 } from "lucide-react";
+import { HiOutlineHome } from "react-icons/hi2";
 import { User } from "./AuthResponses";
 
 interface SidebarData {
@@ -7,6 +9,7 @@ interface SidebarData {
   isActive?: boolean;
   items?: SidebarData[];
   authorizedRoles?: string[];
+  icon?: React.ReactNode;
 }
 export type AppSidebarProps = {
   user: User;
@@ -23,21 +26,13 @@ export const sidebarData: SidebarData[] = [
     url: "/dashboard",
     isActive: false,
     authorizedRoles: ["admin", "client", "technicien", "manager"],
+    icon: <HiOutlineHome className="w-6 h-6" />,
   },
   {
     title: "Utilisateurs",
-    items: [
-      {
-        title: "Liste des utilisateurs",
-        url: "/users/list",
-        isActive: false,
-      },
-      {
-        title: "Ajouter un utilisateur",
-        url: "/users/add",
-        isActive: false,
-      },
-    ],
+    url: "/user",
     authorizedRoles: ["admin"],
+    isActive: false,
+    icon: <Users2 className="w-6 h-6" />,
   },
 ];
