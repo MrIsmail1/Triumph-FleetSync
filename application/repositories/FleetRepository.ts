@@ -6,7 +6,7 @@ export interface FleetRepository {
     findByClientId(clientId: string): Promise<FleetEntity[] | null>;
     findById(fleetId: string): Promise<FleetEntity | null>;
 
-    create(fleetEntity: FleetEntity): Promise<FleetEntity>;
+    save(fleetEntity: FleetEntity): Promise<FleetEntity>;
     update(fleetEntity: FleetEntity): Promise<FleetEntity[]>;
     delete(fleetId: string): Promise<void>;
 }

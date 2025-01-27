@@ -11,6 +11,9 @@ import authRoutes from "./routes/auth.route";
 import sessionRoutes from "./routes/session.route";
 import userRoutes from "./routes/user.route";
 import maintenanceRoutes from "./routes/maintenance.route";
+import motorbikeRoutes from "./routes/motorbike.route";
+import fleetRoutes from "./routes/fleet.route";
+import modelMotorbikeRoute from "./routes/modelMotorbike.route.ts";
 
 const app = express();
 app.use(express.json());
@@ -28,18 +31,13 @@ app.use(passport.initialize());
 app.use("/api/auth", authRoutes);
 
 //protected routes
-app.use(
-  "/api/user",
-  passport.authenticate("jwt", { session: false }),
-  userRoutes
-);
-app.use(
-  "/api/session",
-  passport.authenticate("jwt", { session: false }),
-  sessionRoutes
-);
-
+app.use("/api/user", passport.authenticate("jwt", { session: false }), userRoutes);
+app.use("/api/session", passport.authenticate("jwt", { session: false }), sessionRoutes);
 app.use("/api/maintenance", maintenanceRoutes);
+app.use("/api/motorbike", passport.authenticate("jwt", { session: false }), motorbikeRoutes)
+app.use("/api/modelmotorbike", passport.authenticate("jwt", { session: false }), modelMotorbikeRoute);
+app.use("/api/fleet", passport.authenticate("jwt", { session: false }), fleetRoutes);
+
 
 app.use(errorHandler);
 app.listen(PORT, async () => {

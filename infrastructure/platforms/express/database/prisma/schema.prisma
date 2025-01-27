@@ -22,20 +22,20 @@ model User {
 }
 
 model VerificationCode {
-  id         String    @id @default(uuid())
-  userId     String    
-  type       String    
-  expiresAt  DateTime  
-  createdAt  DateTime  @default(now()) 
-  updatedAt  DateTime  @updatedAt   
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Session {
-  id         String    @id @default(uuid())
-  userId     String
-  expiresAt  DateTime
-  createdAt  DateTime  @default(now())
-  userAgent  String?
+  id        String   @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userAgent String?
 }
 
 model Maintenance {
@@ -43,6 +43,7 @@ model Maintenance {
   motorbikeId            String
   clientId               String
   client                 User       @relation(fields: [clientId], references: [id])
+  motorbike              Motorbike  @relation(fields: [motorbikeId], references: [id])
   createdAt              DateTime   @default(now())
   updatedAt              DateTime   @updatedAt
   maintenanceDate        DateTime
@@ -56,6 +57,24 @@ model Maintenance {
   warranty               Warranty?  @relation(fields: [warrantyId], references: [id])
 
   @@index([motorbikeId])
+  @@index([clientId])
+  }
+model Motorbike {
+  id                          String        @id @default(uuid())
+  modelMotorbikeId            String
+  modelMotorbike              ModelMotorbike @relation(fields: [modelMotorbikeId], references: [id])
+  fleetId                     String
+  clientId                    String
+  fleet                       Fleet         @relation(fields: [fleetId], references: [id])
+  licensePlate                String        @unique
+  vehicleIdentificationNumber String        @unique
+  color                       String
+  mileage                     Int
+  status                      String
+  createdAt                   DateTime      @default(now())
+  updatedAt                   DateTime      @updatedAt
+  maintenances                Maintenance[]
+
   @@index([clientId])
 }
 
@@ -84,3 +103,28 @@ model Warranty {
   updatedAt         DateTime    @updatedAt
   maintenance       Maintenance?
 }
+
+model Fleet {
+  id        String   @id @default(uuid())
+  clientId  String
+  managerId String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  motorbikes Motorbike[]
+
+  @@index([clientId])
+  @@index([managerId])
+}
+
+model ModelMotorbike {
+  id                          String   @id @default(uuid())
+  name                        String
+  brand                       String
+  maintenanceIntervalKm       Int
+  maintenanceIntervalTimeMonths Int
+  createdAt                   DateTime @default(now())
+  updatedAt                   DateTime @updatedAt
+  motorbikes                  Motorbike[]
+}
+

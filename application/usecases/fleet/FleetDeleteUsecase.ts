@@ -1,4 +1,3 @@
-import {UserRepository} from "../../repositories/UserRepository";
 import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
 import {FleetRepository} from "../../repositories/FleetRepository";
 import {Role} from "../../../domain/types/Role";

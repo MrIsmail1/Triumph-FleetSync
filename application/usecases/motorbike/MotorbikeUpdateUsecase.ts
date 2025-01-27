@@ -15,7 +15,7 @@ export class MotorbikeUpdateUsecase {
 
     public async execute(
         motorbikeId: string,
-        userRole: Role,
+        userRole: string,
         dataToUpdate: Partial<{
             modelId: string,
             fleetId: string;
@@ -26,7 +26,7 @@ export class MotorbikeUpdateUsecase {
             status: string
         }>
     ) {
-        if (userRole.value === "technician") {
+        if (userRole === "technician") {
             return new UnauthorizedActionError();
         }
 
@@ -72,7 +72,7 @@ export class MotorbikeUpdateUsecase {
         }
 
         if (dataToUpdate.fleetId) {
-            if (userRole.value !== "technician") {
+            if (userRole !== "technician") {
                 motorbike.fleetId = dataToUpdate.fleetId;
             } else {
                 return new UnauthorizedActionError();
