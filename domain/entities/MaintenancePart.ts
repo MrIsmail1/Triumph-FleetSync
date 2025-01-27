@@ -2,24 +2,24 @@ import { PositiveNumber } from "../types/PositiveNumber";
 
 export class MaintenancePart {
   private constructor(
-    public readonly identifier: string,
-    public readonly partId: string,
-    public readonly maintenanceId: string,
-    public readonly quantityUsed: PositiveNumber,
-    public readonly cost: PositiveNumber,
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public identifier: string,
+    public partId: string,
+    public maintenanceId: string,
+    public quantityUsed: PositiveNumber,
+    public cost: PositiveNumber,
+    public createdAt: Date,
+    public updatedAt: Date
   ) {}
 
   public static create(
-    identifier: string,
     partId: string,
     maintenanceId: string,
     quantityUsed: PositiveNumber,
-    cost: PositiveNumber,
-    createdAt: Date,
-    updatedAt: Date
+    cost: PositiveNumber
   ) {
+    const identifier = crypto.randomUUID();
+    const createdAt = new Date();
+    const updatedAt = new Date();
     return new MaintenancePart(
       identifier,
       partId,
