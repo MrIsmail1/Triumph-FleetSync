@@ -13,8 +13,8 @@ export class FleetUpdateUsecase {
                        private readonly userRepository: UserRepository) {
     }
 
-    public async execute(fleetId: string, userRole: Role, dataToUpdate: Partial<{ name: string; managerId: string; }>) {
-        if (userRole.value === "technician") {
+    public async execute(fleetId: string, userRole: string, dataToUpdate: Partial<{ name: string; managerId: string; }>) {
+        if (userRole === "technician") {
             return new UnauthorizedActionError();
         }
 
@@ -24,6 +24,7 @@ export class FleetUpdateUsecase {
         }
 
         if (dataToUpdate.name) {
+            console.log(name);
             const nameOrError = ValidString.from(dataToUpdate.name);
             if (nameOrError instanceof Error) {
                 return nameOrError;
@@ -31,7 +32,7 @@ export class FleetUpdateUsecase {
             fleet.name = nameOrError;
         }
 
-        if (userRole.value === "admin" || "client") {
+        if (userRole === "admin" || userRole === "client") {
             if (dataToUpdate.managerId) {
                 const manager = await this.userRepository.findById(dataToUpdate.managerId);
                 if (!manager) {

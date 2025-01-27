@@ -6,6 +6,7 @@ services:
     container_name: express_platform
     ports:
       - "4004:4004"
+      - "5555:5555"
     volumes:
       - ./application:/usr/app/application
       - ./domain:/usr/app/domain

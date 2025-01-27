@@ -14,7 +14,7 @@ export class FleetListUsecase {
             return new UserNotFoundError();
         }
 
-        const roleValue = currentUser.role.value.toString();
+        const roleValue = currentUser.role.value;
 
         if (roleValue === "admin") {
             return await this.fleetRepository.findAll();

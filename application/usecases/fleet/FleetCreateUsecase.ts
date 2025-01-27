@@ -7,9 +7,13 @@ import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
 export class FleetCreateUsecase {
     public constructor(private readonly fleetRepository: FleetRepository) {}
 
-    public async execute(clientId: string, managerId: string, name: string, userRole: Role) {
+    public async execute(clientId: string, managerId: string, name: string, userRole: string) {
 
-        if (userRole.value === "technician" || "manager") {
+        if (userRole === "technician") {
+            return new AccessDeniedError()
+        }
+
+        if (userRole === "manager") {
             return new AccessDeniedError()
         }
 
@@ -19,6 +23,6 @@ export class FleetCreateUsecase {
         }
 
         const newFleet = FleetEntity.create(clientId, managerId, nameOrError);
-        return await this.fleetRepository.create(newFleet);
+        return await this.fleetRepository.save(newFleet);
     }
 }

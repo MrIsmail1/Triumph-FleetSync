@@ -10,8 +10,12 @@ export class MotorbikeCreateUsecase {
     public constructor(private readonly motorbikeRepository: MotorbikeRepository) {
     }
 
-    public async execute(modelId: string, fleetId: string, clientId: string, color: string, licensePlate: string, vehicleIdentificationNumber: string, mileage: number, status: string, userRole: Role) {
-        if (userRole.value === "technician" || "manager") {
+    public async execute(modelId: string, fleetId: string, clientId: string, color: string, licensePlate: string, vehicleIdentificationNumber: string, mileage: number, status: string, userRole: string) {
+        if (userRole === "technician") {
+            return new UnauthorizedActionError()
+        }
+
+        if (userRole === "manager") {
             return new UnauthorizedActionError()
         }
 
@@ -43,6 +47,6 @@ export class MotorbikeCreateUsecase {
             statusOrError
         );
 
-        return await this.motorbikeRepository.create(newMotorbike);
+        return await this.motorbikeRepository.save(newMotorbike);
     }
 }

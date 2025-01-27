@@ -19,7 +19,7 @@ export class MotorbikeListUsecase {
         if (roleValue === "admin") {
             return await this.motorbikeRepository.findAll();
         } else if (roleValue === "client") {
-            return await this.motorbikeRepository.findAllByClientId(currentUser.identifier);
+            return await this.motorbikeRepository.findByClientId(currentUser.identifier);
         }
         return new AccessDeniedError();
     }

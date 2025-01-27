@@ -3,6 +3,7 @@ import { UserEntity } from "../../../domain/entities/UserEntity";
 import { Email } from "../../../domain/types/Email";
 import { is } from "../../platforms/express/node_modules/@types/whatwg-url/lib/URL.d";
 import { Prisma } from "../../platforms/express/src/config/prisma.db";
+
 export class PrismaUserRepository implements UserRepository {
   public constructor(private readonly database: Prisma) {}
 

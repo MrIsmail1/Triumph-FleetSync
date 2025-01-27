@@ -7,8 +7,8 @@ import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedAction
 export class ModelMotorbikeCreateUsecase {
     public constructor(private readonly modelMotorbikeRepository: ModelMotorbikeRepository) {}
 
-    public async execute(name: string, brand: string, userRole: Role, maintenanceIntervalKm: number, maintenanceIntervalTimeMonths: number) {
-       if (userRole.value === "technician") {
+    public async execute(name: string, brand: string, maintenanceIntervalKm: number, maintenanceIntervalTimeMonths: number, userRole: string) {
+       if (userRole === "technician") {
            return new UnauthorizedActionError()
        }
 
@@ -30,6 +30,6 @@ export class ModelMotorbikeCreateUsecase {
             maintenanceIntervalTimeMonths
         );
 
-        return await this.modelMotorbikeRepository.create(newModelMotorbike);
+        return await this.modelMotorbikeRepository.save(newModelMotorbike);
     }
 }
