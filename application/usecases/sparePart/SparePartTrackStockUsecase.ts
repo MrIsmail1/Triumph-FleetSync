@@ -9,11 +9,7 @@ export class TrackStockUsecase {
   ) {}
 
   public async execute(userRole: string) {
-    if (
-      userRole !== "admin" &&
-      userRole !== "manager" &&
-      userRole !== "technician"
-    ) {
+    if (userRole !== "admin" && userRole !== "manager") {
       return new UnauthorizedActionError();
     }
 

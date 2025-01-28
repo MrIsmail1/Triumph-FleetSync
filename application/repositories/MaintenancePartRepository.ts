@@ -5,4 +5,5 @@ export interface MaintenancePartRepository {
   save(maintenancePart: MaintenancePart): Promise<MaintenancePart>;
   update(maintenancePart: MaintenancePart): Promise<MaintenancePart>;
   delete(identifier: string): Promise<void>;
+  findByMaintenanceId(maintenanceId: string): Promise<MaintenancePart[]>;
 }
