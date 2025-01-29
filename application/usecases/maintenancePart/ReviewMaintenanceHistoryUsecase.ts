@@ -1,3 +1,4 @@
+import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity";
 import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
 import { MaintenanceHistoryItem } from "../../../domain/types/MaintenanceHistoryItem";
 import { MaintenancePartRepository } from "../../repositories/MaintenancePartRepository";
@@ -12,28 +13,34 @@ export class ReviewMaintenanceHistoryUsecase {
   public async execute(
     currentUserId: string,
     userRole: string,
-    clientId: string,
-    filters?: {
+    filters: {
+      companyOrDealershipId?: string;
       motorbikeId?: string;
       fromDate?: Date;
       toDate?: Date;
     }
   ) {
-    const allowedRoles = ["admin", "client", "technician", "manager"];
-    if (!allowedRoles.includes(userRole)) {
+    if (
+      userRole == "dealership" &&
+      currentUserId !== filters.companyOrDealershipId
+    ) {
       return new UnauthorizedActionError();
     }
 
-    if (userRole == "client" && currentUserId !== clientId) {
+    if (
+      userRole == "company" &&
+      currentUserId !== filters.companyOrDealershipId
+    ) {
       return new UnauthorizedActionError();
     }
 
-    let maintenances;
-    if (userRole === "client") {
-      maintenances = await this.maintenanceRepository.findAllByClientId(
-        clientId,
-        filters
-      );
+    let maintenances: MaintenanceEntity[];
+    if (userRole === "dealership" || userRole === "company") {
+      maintenances =
+        await this.maintenanceRepository.findByCompanyOrDealershipId(
+          currentUserId,
+          filters
+        );
     } else {
       maintenances = await this.maintenanceRepository.findAll(filters);
     }
@@ -42,7 +49,7 @@ export class ReviewMaintenanceHistoryUsecase {
     for (const maintenance of maintenances) {
       const partsUsed =
         await this.maintenancePartRepository.findByMaintenanceId(
-          maintenance.id
+          maintenance.identifier
         );
 
       const partsCost = partsUsed.reduce(
@@ -56,7 +63,7 @@ export class ReviewMaintenanceHistoryUsecase {
         maintenanceId: maintenance.identifier,
         motorbikeId: maintenance.motorbikeId,
         date: maintenance.maintenanceDate,
-        description: maintenance.maintenanceDescription,
+        description: maintenance.maintenanceDescription.value,
         laborCost: maintenance.maintenanceCost,
         partsUsed: partsUsed.map((p) => ({
           partId: p.partId,

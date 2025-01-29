@@ -6,7 +6,7 @@ export class SparePartDeleteUsecase {
   constructor(private readonly sparePartRepository: SparePartRepository) {}
 
   public async execute(userRole: string, sparePartId: string) {
-    if (userRole !== "manager" && userRole !== "admin") {
+    if (userRole !== "admin") {
       return new UnauthorizedActionError();
     }
     const sparePartOrError = await this.sparePartRepository.findById(

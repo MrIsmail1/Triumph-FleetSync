@@ -18,7 +18,7 @@ export class PartPurchaseReceiveOrCancelUsecase {
     status: string,
     receivedDate?: string
   ) {
-    if (userRole !== "manager" && userRole !== "admin") {
+    if (userRole !== "admin") {
       return new UnauthorizedActionError();
     }
     const purchase = await this.partPurchaseRepository.findById(purchaseId);

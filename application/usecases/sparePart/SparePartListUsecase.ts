@@ -14,7 +14,7 @@ export class SparePartListUsecase {
       reorderThreshold?: number;
     }
   ) {
-    if (userRole !== "manager" && userRole !== "admin") {
+    if (userRole !== "admin") {
       return new UnauthorizedActionError();
     }
 

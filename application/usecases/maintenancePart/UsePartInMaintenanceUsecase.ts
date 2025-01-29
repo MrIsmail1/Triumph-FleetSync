@@ -22,7 +22,7 @@ export class UsePartInMaintenanceUsecase {
     quantityUsed: number,
     cost: number
   ) {
-    if (userRole !== "technician" && userRole !== "manager") {
+    if (userRole !== "technician") {
       return new UnauthorizedActionError();
     }
 

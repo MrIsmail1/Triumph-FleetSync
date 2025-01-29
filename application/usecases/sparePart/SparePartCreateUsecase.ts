@@ -15,7 +15,7 @@ export class SparePartCreateUsecase {
     reorderThreshold: number,
     brand?: string
   ) {
-    if (userRole !== "manager" && userRole !== "admin") {
+    if (userRole !== "admin") {
       return new UnauthorizedActionError();
     }
 

@@ -18,7 +18,7 @@ export class SparePartUpdateUsecase {
       brand?: string;
     }>
   ) {
-    if (userRole !== "manager" && userRole !== "admin") {
+    if (userRole !== "admin") {
       return new UnauthorizedActionError();
     }
 

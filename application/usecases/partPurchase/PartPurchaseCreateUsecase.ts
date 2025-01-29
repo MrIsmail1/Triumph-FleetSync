@@ -22,7 +22,7 @@ export class PartPurchaseCreateUsecase {
       orderDate: string;
     }
   ) {
-    if (userRole !== "manager" && userRole !== "admin") {
+    if (userRole !== "admin") {
       return new UnauthorizedActionError();
     }
 
