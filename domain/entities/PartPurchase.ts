@@ -3,28 +3,30 @@ import { PartPurchaseStatus } from "./../types/PartPurchaseStatus";
 
 export class PartPurchase {
   private constructor(
-    public readonly identifier: string,
-    public readonly partId: string,
-    public readonly quantity: PositiveNumber,
-    public readonly costPerUnit: PositiveNumber,
-    public readonly totalCost: PositiveNumber,
-    public readonly status: PartPurchaseStatus,
-    public readonly orderDate: Date,
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public identifier: string,
+    public partId: string,
+    public quantity: PositiveNumber,
+    public costPerUnit: PositiveNumber,
+    public totalCost: PositiveNumber,
+    public status: PartPurchaseStatus,
+    public orderDate: Date,
+    public receivedDate: Date | null,
+    public createdAt: Date,
+    public updatedAt: Date
   ) {}
 
   public static create(
-    identifier: string,
     partId: string,
     quantity: PositiveNumber,
     costPerUnit: PositiveNumber,
     totalCost: PositiveNumber,
     status: PartPurchaseStatus,
     orderDate: Date,
-    createdAt: Date,
-    updatedAt: Date
+    receivedDate: Date | null
   ) {
+    const identifier = crypto.randomUUID();
+    const createdAt = new Date();
+    const updatedAt = new Date();
     return new PartPurchase(
       identifier,
       partId,
@@ -33,6 +35,7 @@ export class PartPurchase {
       totalCost,
       status,
       orderDate,
+      receivedDate,
       createdAt,
       updatedAt
     );
@@ -46,6 +49,7 @@ export class PartPurchase {
     totalCost: number;
     status: PartPurchaseStatus;
     orderDate: string;
+    receivedDate: string | null;
     createdAt: string;
     updatedAt: string;
   }) {
@@ -57,6 +61,7 @@ export class PartPurchase {
       PositiveNumber.reconstitute(data.totalCost),
       data.status,
       new Date(data.orderDate),
+      data.receivedDate ? new Date(data.receivedDate) : null,
       new Date(data.createdAt),
       new Date(data.updatedAt)
     );

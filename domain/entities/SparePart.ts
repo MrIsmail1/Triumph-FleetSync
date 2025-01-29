@@ -5,30 +5,30 @@ import { PartPurchase } from "./PartPurchase";
 
 export class SparePart {
   private constructor(
-    public readonly identifier: string,
-    public readonly name: ValidString,
-    public readonly partNumber: ValidString,
-    public readonly stockQuantity: PositiveNumber,
-    public readonly reorderThreshold: PositiveNumber,
-    public readonly purchases: PartPurchase[],
-    public readonly usedInMaintenance: MaintenancePart[],
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date,
-    public readonly brand?: string
+    public identifier: string,
+    public name: ValidString,
+    public partNumber: ValidString,
+    public stockQuantity: PositiveNumber,
+    public reorderThreshold: PositiveNumber,
+    public purchases: PartPurchase[],
+    public usedInMaintenance: MaintenancePart[],
+    public createdAt: Date,
+    public updatedAt: Date,
+    public brand?: string
   ) {}
 
   public static create(
-    identifier: string,
     name: ValidString,
     partNumber: ValidString,
     stockQuantity: PositiveNumber,
     reorderThreshold: PositiveNumber,
     purchases: PartPurchase[],
     usedInMaintenance: MaintenancePart[],
-    createdAt: Date,
-    updatedAt: Date,
     brand?: string
   ) {
+    const identifier = crypto.randomUUID();
+    const createdAt = new Date();
+    const updatedAt = new Date();
     return new SparePart(
       identifier,
       name,
