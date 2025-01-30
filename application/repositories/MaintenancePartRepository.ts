@@ -1,4 +1,4 @@
-import { MaintenancePart } from "../../domain/entities/MaintenancePart";
+import { MaintenancePart } from "../../domain/entities/MaintenancePart.ts";
 
 export interface MaintenancePartRepository {
   findById(identifier: string): Promise<MaintenancePart | null>;

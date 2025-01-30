@@ -1,5 +1,5 @@
-import { RoleDoesNotExistError } from "../errors/RoleDoesNotExistError";
-import { RoleSelectionError } from "../errors/RoleSelectionError";
+import { RoleDoesNotExistError } from "../errors/RoleDoesNotExistError.ts";
+import { RoleSelectionError } from "../errors/RoleSelectionError.ts";
 
 export class Role {
   private constructor(readonly value: string) {}

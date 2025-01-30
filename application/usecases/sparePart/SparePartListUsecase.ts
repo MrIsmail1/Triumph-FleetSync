@@ -1,5 +1,5 @@
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { SparePartRepository } from "../../repositories/SparePartRepository";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { SparePartRepository } from "../../repositories/SparePartRepository.ts";
 
 export class SparePartListUsecase {
   constructor(private readonly sparePartRepository: SparePartRepository) {}

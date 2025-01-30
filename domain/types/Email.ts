@@ -1,4 +1,4 @@
-import { EmailBadFormatError } from "../errors/EmailBadFormatError";
+import { EmailBadFormatError } from "../errors/EmailBadFormatError.ts";
 
 export class Email {
   private constructor(public readonly value: string) {}

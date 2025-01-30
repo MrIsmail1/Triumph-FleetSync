@@ -1,4 +1,4 @@
-import { PartPurchaseStatusError } from "./../errors/PartPurchaseStatusError";
+import { PartPurchaseStatusError } from "./../errors/PartPurchaseStatusError.ts";
 export class PartPurchaseStatus {
   private constructor(public readonly value: string) {}
   private static readonly values = ["PENDING", "RECEIVED", "CANCELLED"];

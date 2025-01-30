@@ -1,8 +1,8 @@
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { PositiveNumber } from "../../../domain/types/PositiveNumber";
-import { ValidString } from "../../../domain/types/ValidString";
-import { SparePartRepository } from "../../repositories/SparePartRepository";
-import { SparePartNotFoundError } from "./../../../domain/errors/SparePartNotFoundError";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { PositiveNumber } from "../../../domain/types/PositiveNumber.ts";
+import { ValidString } from "../../../domain/types/ValidString.ts";
+import { SparePartRepository } from "../../repositories/SparePartRepository.ts";
+import { SparePartNotFoundError } from "./../../../domain/errors/SparePartNotFoundError.ts";
 
 export class SparePartUpdateUsecase {
   constructor(private readonly sparePartRepository: SparePartRepository) {}

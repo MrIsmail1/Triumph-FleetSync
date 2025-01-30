@@ -1,7 +1,7 @@
-import { ValidString } from "../types/ValidString";
-import { PositiveNumber } from "./../types/PositiveNumber";
-import { MaintenancePart } from "./MaintenancePart";
-import { PartPurchase } from "./PartPurchase";
+import { ValidString } from "../types/ValidString.ts";
+import { PositiveNumber } from "./../types/PositiveNumber.ts";
+import { MaintenancePart } from "./MaintenancePart.ts";
+import { PartPurchase } from "./PartPurchase.ts";
 
 export class SparePart {
   private constructor(

@@ -1,4 +1,4 @@
-import { PartPurchase } from "../../domain/entities/PartPurchase";
+import { PartPurchase } from "../../domain/entities/PartPurchase.ts";
 
 export interface PartPurchaseRepository {
   findById(identifier: string): Promise<PartPurchase | null>;

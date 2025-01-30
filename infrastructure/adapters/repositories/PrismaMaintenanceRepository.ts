@@ -4,6 +4,37 @@ import { Prisma } from "../../platforms/express/src/config/prisma.db";
 
 export class PrismaMaintenanceRepository implements MaintenanceRepository {
   constructor(private readonly prisma: Prisma) {}
+  async findByCompanyOrDealershipId(
+    companyOrDealershipId: string,
+    filters?: { motorbikeId?: string; fromDate?: Date; toDate?: Date }
+  ): Promise<MaintenanceEntity[]> {
+    const maintenaces = await this.prisma.maintenance.findMany({
+      where: {
+        clientId: companyOrDealershipId,
+        motorbikeId: filters?.motorbikeId,
+        maintenanceDate: {
+          gte: filters?.fromDate,
+          lte: filters?.toDate,
+        },
+      },
+    });
+    return maintenaces.map((maintenance) =>
+      MaintenanceEntity.reconstitute({
+        id: maintenance.id,
+        motorbikeId: maintenance.motorbikeId,
+        createdAt: maintenance.createdAt,
+        updatedAt: maintenance.updatedAt,
+        maintenanceDate: maintenance.maintenanceDate,
+        mileageAtMaintenance: maintenance.mileageAtMaintenance,
+        maintenanceType: maintenance.maintenanceType,
+        maintenanceCost: maintenance.maintenanceCost,
+        maintenanceDescription: maintenance.maintenanceDescription,
+        clientId: maintenance.clientId,
+        breakdownId: maintenance.breakdownId,
+        warrantyId: maintenance.warrantyId,
+      })
+    );
+  }
 
   async save(maintenance: MaintenanceEntity): Promise<void> {
     await this.prisma.maintenance.create({
@@ -95,7 +126,9 @@ export class PrismaMaintenanceRepository implements MaintenanceRepository {
     );
   }
 
-  async update(maintenance: MaintenanceEntity): Promise<MaintenanceEntity | null> {
+  async update(
+    maintenance: MaintenanceEntity
+  ): Promise<MaintenanceEntity | null> {
     const updatedRecord = await this.prisma.maintenance.update({
       where: { id: maintenance.identifier },
       data: {

@@ -1,6 +1,6 @@
-import { SparePartNotFoundError } from "../../../domain/errors/SparePartNotFoundError";
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { SparePartRepository } from "../../repositories/SparePartRepository";
+import { SparePartNotFoundError } from "../../../domain/errors/SparePartNotFoundError.ts";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { SparePartRepository } from "../../repositories/SparePartRepository.ts";
 
 export class SparePartDeleteUsecase {
   constructor(private readonly sparePartRepository: SparePartRepository) {}

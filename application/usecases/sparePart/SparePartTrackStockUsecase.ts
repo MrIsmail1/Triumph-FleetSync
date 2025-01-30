@@ -1,6 +1,6 @@
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { SparePartRepository } from "../../repositories/SparePartRepository";
-import { NotificationService } from "../../services/NotificationService";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { SparePartRepository } from "../../repositories/SparePartRepository.ts";
+import { NotificationService } from "../../services/NotificationService.ts";
 
 export class TrackStockUsecase {
   constructor(

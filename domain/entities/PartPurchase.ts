@@ -1,5 +1,5 @@
-import { PositiveNumber } from "../types/PositiveNumber";
-import { PartPurchaseStatus } from "./../types/PartPurchaseStatus";
+import { PositiveNumber } from "../types/PositiveNumber.ts";
+import { PartPurchaseStatus } from "./../types/PartPurchaseStatus.ts";
 
 export class PartPurchase {
   private constructor(

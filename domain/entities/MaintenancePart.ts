@@ -1,4 +1,4 @@
-import { PositiveNumber } from "../types/PositiveNumber";
+import { PositiveNumber } from "../types/PositiveNumber.ts";
 
 export class MaintenancePart {
   private constructor(

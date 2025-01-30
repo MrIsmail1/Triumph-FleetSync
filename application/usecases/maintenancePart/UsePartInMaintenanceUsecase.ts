@@ -1,12 +1,12 @@
-import { MaintenancePart } from "../../../domain/entities/MaintenancePart";
-import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError";
-import { SparePartNotFoundError } from "../../../domain/errors/SparePartNotFoundError";
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { PositiveNumber } from "../../../domain/types/PositiveNumber";
-import { MaintenanceRepository } from "../../repositories/MaintenanceRepository";
-import { SparePartRepository } from "../../repositories/SparePartRepository";
-import { InsufficientSparePartStockError } from "./../../../domain/errors/InsufficientSparePartStockError";
-import { MaintenancePartRepository } from "./../../repositories/MaintenancePartRepository";
+import { MaintenancePart } from "../../../domain/entities/MaintenancePart.ts";
+import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
+import { SparePartNotFoundError } from "../../../domain/errors/SparePartNotFoundError.ts";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { PositiveNumber } from "../../../domain/types/PositiveNumber.ts";
+import { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
+import { SparePartRepository } from "../../repositories/SparePartRepository.ts";
+import { InsufficientSparePartStockError } from "./../../../domain/errors/InsufficientSparePartStockError.ts";
+import { MaintenancePartRepository } from "./../../repositories/MaintenancePartRepository.ts";
 
 export class UsePartInMaintenanceUsecase {
   constructor(
