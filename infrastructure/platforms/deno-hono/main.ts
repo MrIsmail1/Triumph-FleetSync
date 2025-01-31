@@ -1,3 +1,4 @@
+import connectToMongoDB from "@/config/mongo.db.ts";
 import { APP_ORIGIN } from "@/constants/env.ts";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR } from "@/constants/http.ts";
 import authenticate from "@/middleware/authenticate.ts";
@@ -8,8 +9,8 @@ import { cors } from "hono/cors";
 import { ContentfulStatusCode } from "hono/utils/http-status";
 import { ZodError } from "zod";
 
-const app = new Hono();
-app.use("/api/*", cors({ origin: APP_ORIGIN, credentials: true }));
+const app = new Hono().basePath("/api");
+app.use("/*", cors({ origin: APP_ORIGIN, credentials: true }));
 app.onError((err, c) => {
   if (err instanceof ZodError) {
     return c.json(
@@ -37,7 +38,8 @@ app.onError((err, c) => {
   );
 });
 
-app.use("/api/spare-parts/*", authenticate);
-app.route("/api/spare-parts", sparePart);
+app.use("/spare-parts/*", authenticate);
+app.route("/spare-parts", sparePart);
 
+await connectToMongoDB();
 Deno.serve(app.fetch);

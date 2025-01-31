@@ -28,7 +28,7 @@ services:
       - ./infrastructure/platforms/deno-hono:/usr/app/infrastructure/platforms/deno-hono
       - ./infrastructure/adapters:/usr/app/infrastructure/adapters
       - /usr/app/infrastructure/platforms/deno-hono/node_modules
-    command: deno run --allow-net --allow-read --env-file=.env --allow-env main.ts
+    command: deno run --allow-net --allow-read --allow-sys --env-file=.env --allow-env main.ts
     environment:
       - DENO_ENV=${DENO_ENV}
 

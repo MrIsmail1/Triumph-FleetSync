@@ -16,6 +16,7 @@ export class SparePartDeleteUsecase {
       return new SparePartNotFoundError();
     }
 
-    return await this.sparePartRepository.delete(sparePartId);
+    await this.sparePartRepository.delete(sparePartId);
+    return true;
   }
 }

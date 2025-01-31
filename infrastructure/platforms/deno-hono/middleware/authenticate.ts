@@ -15,8 +15,9 @@ const authenticate = async (c: Context, next: () => Promise<void>) => {
     "Invalid access token"
   );
 
-  c.set("userId", payload.userIdentifier);
-  c.set("sessionId", payload.sessionIdentifier);
+  c.set("userIdentifer", payload.userIdentifier);
+  c.set("sessionIdentifer", payload.sessionIdentifier);
+  c.set("role", payload.role);
   await next();
 };
 

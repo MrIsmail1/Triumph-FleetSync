@@ -9,20 +9,26 @@ export class SparePartCreateUsecase {
 
   public async execute(
     userRole: string,
-    name: string,
-    partNumber: string,
-    stockQuantity: number,
-    reorderThreshold: number,
-    brand?: string
+    sparePartData: {
+      name: string;
+      partNumber: string;
+      stockQuantity: number;
+      reorderThreshold: number;
+      brand?: string;
+    }
   ) {
     if (userRole !== "admin") {
       return new UnauthorizedActionError();
     }
 
-    const nameOrError = ValidString.from(name);
-    const partNumberOrError = ValidString.from(partNumber);
-    const stockQuantityOrError = PositiveNumber.from(stockQuantity);
-    const reorderThresholdOrError = PositiveNumber.from(reorderThreshold);
+    const nameOrError = ValidString.from(sparePartData.name);
+    const partNumberOrError = ValidString.from(sparePartData.partNumber);
+    const stockQuantityOrError = PositiveNumber.from(
+      sparePartData.stockQuantity
+    );
+    const reorderThresholdOrError = PositiveNumber.from(
+      sparePartData.reorderThreshold
+    );
 
     if (nameOrError instanceof Error) {
       return nameOrError;
@@ -47,7 +53,7 @@ export class SparePartCreateUsecase {
       reorderThresholdOrError,
       [],
       [],
-      brand
+      sparePartData.brand
     );
 
     return await this.sparePartRepository.save(newSparePart);

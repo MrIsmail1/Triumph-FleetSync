@@ -69,6 +69,10 @@ export class PartPurchaseCreateUsecase {
       null
     );
 
-    return await this.partPurchaseRepository.save(purchase);
+    const createdPartPurchase = await this.partPurchaseRepository.save(
+      purchase
+    );
+
+    return createdPartPurchase;
   }
 }
