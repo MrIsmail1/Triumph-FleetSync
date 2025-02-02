@@ -1,6 +1,6 @@
 import { MaintenancePart } from "../../../domain/entities/MaintenancePart.ts";
-import { MaintenancePartModel } from "../../platforms/deno-hono/database/mongo/maintenancePart.model.ts";
 import { MaintenancePartRepository } from "./../../../application/repositories/MaintenancePartRepository.ts";
+import { MaintenancePartModel } from "./../../database/mongo/maintenancePart.model.ts";
 
 export class MongoMaintenancePartRepository
   implements MaintenancePartRepository
@@ -11,15 +11,17 @@ export class MongoMaintenancePartRepository
       ? MaintenancePart.reconstitute(foundMaintenancePart)
       : null;
   }
-  async save(maintenancePart: MaintenancePart): Promise<void> {
-    await MaintenancePartModel.create({
+  async save(
+    maintenancePart: MaintenancePart
+  ): Promise<MaintenancePart | null> {
+    const createdMaintenancePart = await MaintenancePartModel.create({
       id: maintenancePart.identifier,
       partId: maintenancePart.partId,
       maintenanceId: maintenancePart.maintenanceId,
       quantityUsed: maintenancePart.quantityUsed.value,
       cost: maintenancePart.cost.value,
     });
-    return Promise.resolve();
+    return MaintenancePart.reconstitute(createdMaintenancePart);
   }
   async update(
     maintenancePart: MaintenancePart

@@ -1,0 +1,136 @@
+generator client_node {
+  provider = "prisma-client-js"
+}
+
+generator client_deno {
+  provider        = "prisma-client-js"
+  previewFeatures = ["deno"]
+  output          = "./generated/client-deno"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String        @unique
+  passwordHash String
+  role         String
+  isVerified   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  breakdowns   Breakdown[]
+  maintenances Maintenance[]
+}
+
+model VerificationCode {
+  id        String   @id @default(uuid())
+  userId    String
+  type      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userAgent String?
+}
+
+model Maintenance {
+  id                     String     @id @default(uuid())
+  motorbikeId            String
+  clientId               String
+  client                 User       @relation(fields: [clientId], references: [id])
+  motorbike              Motorbike  @relation(fields: [motorbikeId], references: [id])
+  createdAt              DateTime   @default(now())
+  updatedAt              DateTime   @updatedAt
+  maintenanceDate        DateTime
+  mileageAtMaintenance   Int
+  maintenanceType        String
+  maintenanceCost        Float
+  maintenanceDescription String
+  breakdownId            String?    @unique
+  warrantyId             String?    @unique
+  breakdown              Breakdown? @relation(fields: [breakdownId], references: [id])
+  warranty               Warranty?  @relation(fields: [warrantyId], references: [id])
+
+  @@index([motorbikeId])
+  @@index([clientId])
+}
+
+model Motorbike {
+  id                          String         @id @default(uuid())
+  modelMotorbikeId            String
+  modelMotorbike              ModelMotorbike @relation(fields: [modelMotorbikeId], references: [id])
+  fleetId                     String
+  clientId                    String
+  fleet                       Fleet          @relation(fields: [fleetId], references: [id])
+  licensePlate                String         @unique
+  vehicleIdentificationNumber String         @unique
+  color                       String
+  mileage                     Int
+  status                      String
+  createdAt                   DateTime       @default(now())
+  updatedAt                   DateTime       @updatedAt
+  maintenances                Maintenance[]
+
+  @@index([clientId])
+}
+
+model Breakdown {
+  id             String       @id @default(uuid())
+  clientId       String
+  client         User         @relation(fields: [clientId], references: [id])
+  description    String
+  actionTaken    String
+  resolved       Boolean      @default(false)
+  resolutionDate DateTime?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  maintenance    Maintenance?
+
+  @@index([clientId])
+}
+
+model Warranty {
+  id              String       @id @default(uuid())
+  validFrom       DateTime
+  validUntil      DateTime
+  providerName    String
+  warrantyDetails String
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  maintenance     Maintenance?
+}
+
+model Fleet {
+  id         String      @id @default(uuid())
+  clientId   String
+  managerId  String
+  name       String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  motorbikes Motorbike[]
+
+  @@index([clientId])
+  @@index([managerId])
+}
+
+model ModelMotorbike {
+  id                            String      @id @default(uuid())
+  name                          String
+  brand                         String
+  maintenanceIntervalKm         Int
+  maintenanceIntervalTimeMonths Int
+  createdAt                     DateTime    @default(now())
+  updatedAt                     DateTime    @updatedAt
+  motorbikes                    Motorbike[]
+}

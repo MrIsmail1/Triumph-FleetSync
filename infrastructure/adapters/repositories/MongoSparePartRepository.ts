@@ -1,6 +1,6 @@
 import { SparePartRepository } from "../../../application/repositories/SparePartRepository.ts";
 import { SparePart } from "../../../domain/entities/SparePart.ts";
-import { SparePartModel } from "../../platforms/deno-hono/database/mongo/sparePart.model.ts";
+import { SparePartModel } from "./../../database/mongo/sparePart.model.ts";
 
 export class MongoSparePartRepository implements SparePartRepository {
   async save(sparePart: SparePart): Promise<SparePart> {

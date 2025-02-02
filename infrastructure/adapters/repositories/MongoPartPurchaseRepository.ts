@@ -1,6 +1,6 @@
 import { PartPurchaseRepository } from "../../../application/repositories/PartPurchaseRepository.ts";
 import { PartPurchase } from "../../../domain/entities/PartPurchase.ts";
-import { PartPurchaseModel } from "./../../platforms/deno-hono/database/mongo/partPurchase.model.ts";
+import { PartPurchaseModel } from "./../../database/mongo/partPurchase.model.ts";
 
 export class MongoPartPurchaseRepository implements PartPurchaseRepository {
   async find(filters: {

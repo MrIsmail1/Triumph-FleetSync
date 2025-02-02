@@ -12,6 +12,7 @@ services:
       - ./domain:/usr/app/domain
       - ./infrastructure/platforms/express:/usr/app/infrastructure/platforms/express
       - ./infrastructure/adapters:/usr/app/infrastructure/adapters
+      - ./infrastructure/database:/usr/app/infrastructure/database
       - /usr/app/infrastructure/platforms/express/node_modules
     command: /bin/sh -c "npm install && npm run dev"
 
@@ -27,6 +28,7 @@ services:
       - ./domain:/usr/app/domain
       - ./infrastructure/platforms/deno-hono:/usr/app/infrastructure/platforms/deno-hono
       - ./infrastructure/adapters:/usr/app/infrastructure/adapters
+      - ./infrastructure/database:/usr/app/infrastructure/database
       - /usr/app/infrastructure/platforms/deno-hono/node_modules
     command: deno run --allow-net --allow-read --allow-sys --env-file=.env --allow-env --watch main.ts
     environment:

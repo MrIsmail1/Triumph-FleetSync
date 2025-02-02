@@ -6,6 +6,7 @@
     "mongoose": "npm:mongoose@^8.9.5",
     "zod": "npm:zod@^3.24.1"
   },
+  "nodeModulesDir": "auto",
   "tasks": {
     "start": "deno run --allow-net main.ts"
   },

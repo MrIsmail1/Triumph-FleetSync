@@ -73,10 +73,6 @@ export class UsePartInMaintenanceUsecase {
     sparePart.stockQuantity = updatedStockOrError;
 
     await this.sparePartRepository.update(sparePart);
-    const maintenancePartRecord = await this.maintenancePartRepository.save(
-      newMaintenancePart
-    );
-
-    return maintenancePartRecord;
+    return await this.maintenancePartRepository.save(newMaintenancePart);
   }
 }

@@ -7,3 +7,5 @@ export const MaintenancePartSchema = z.object({
   quantityUsed: PositiveNumber,
   cost: PositiveNumber,
 });
+
+export type MaintenancePartSchema = z.infer<typeof MaintenancePartSchema>;
