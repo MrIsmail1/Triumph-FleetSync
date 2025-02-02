@@ -17,49 +17,55 @@ export class UsePartInMaintenanceUsecase {
 
   public async execute(
     userRole: string,
-    maintenanceId: string,
-    partId: string,
-    quantityUsed: number,
-    cost: number
+    maintenancePartData: {
+      maintenanceId: string;
+      partId: string;
+      quantityUsed: number;
+      cost: number;
+    }
   ) {
     if (userRole !== "technician") {
       return new UnauthorizedActionError();
     }
 
     const maintenance = await this.maintenanceRepository.findById(
-      maintenanceId
+      maintenancePartData.maintenanceId
     );
     if (!maintenance) {
       return new MaintenanceNotFoundError();
     }
 
-    const sparePart = await this.sparePartRepository.findById(partId);
+    const sparePart = await this.sparePartRepository.findById(
+      maintenancePartData.partId
+    );
     if (!sparePart) {
       return new SparePartNotFoundError();
     }
 
-    const quantityOrError = PositiveNumber.from(quantityUsed);
+    const quantityOrError = PositiveNumber.from(
+      maintenancePartData.quantityUsed
+    );
     if (quantityOrError instanceof Error) {
       return quantityOrError;
     }
-    const costOrError = PositiveNumber.from(cost);
+    const costOrError = PositiveNumber.from(maintenancePartData.cost);
     if (costOrError instanceof Error) {
       return costOrError;
     }
 
-    if (sparePart.stockQuantity.value < quantityUsed) {
+    if (sparePart.stockQuantity.value < maintenancePartData.quantityUsed) {
       return new InsufficientSparePartStockError();
     }
 
     const newMaintenancePart = MaintenancePart.create(
-      partId,
-      maintenanceId,
+      maintenancePartData.partId,
+      maintenancePartData.maintenanceId,
       quantityOrError,
       costOrError
     );
 
     const updatedStockOrError = PositiveNumber.from(
-      sparePart.stockQuantity.value - quantityUsed
+      sparePart.stockQuantity.value - maintenancePartData.quantityUsed
     );
     if (updatedStockOrError instanceof Error) {
       return updatedStockOrError;

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export interface SparePartDocument extends mongoose.Document {
-  id: string;
+  _id: string;
   name: string;
   partNumber: string;
   stockQuantity: number;
@@ -15,7 +15,7 @@ export interface SparePartDocument extends mongoose.Document {
 
 const sparePartSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true, unique: true },
+    _id: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     partNumber: { type: String, required: true, unique: true },
     stockQuantity: { type: Number, required: true },

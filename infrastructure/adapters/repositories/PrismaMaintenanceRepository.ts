@@ -18,7 +18,7 @@ export class PrismaMaintenanceRepository implements MaintenanceRepository {
         },
       },
     });
-    return maintenaces.map((maintenance) =>
+    return maintenaces.map((maintenance: any) =>
       MaintenanceEntity.reconstitute({
         id: maintenance.id,
         motorbikeId: maintenance.motorbikeId,

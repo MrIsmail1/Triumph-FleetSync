@@ -57,7 +57,7 @@ export class PrismaSessionRepository implements SessionRepository {
         },
       },
     });
-    return sessions.map((session) => SessionEntity.reconstitute(session));
+    return sessions.map((session: any) => SessionEntity.reconstitute(session));
   }
 
   public async deleteUserSession(

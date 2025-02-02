@@ -38,8 +38,8 @@ app.onError((err, c) => {
   );
 });
 
-app.use("/spare-parts/*", authenticate);
-app.route("/spare-parts", sparePart);
+app.use("/spare-part/*", authenticate);
+app.route("/spare-part", sparePart);
 
 await connectToMongoDB();
 Deno.serve(app.fetch);

@@ -4,26 +4,19 @@ import { sparePartFilterSchema } from "@/schemas/SparePartsFilterSchema.ts";
 import appAssert from "@/utils/appAssert.ts";
 import { mapDomainErrorToHttp } from "@/utils/errorsMapper.ts";
 import { Context } from "hono";
-import { MaintenancePartRepository } from "./../../../../application/repositories/MaintenancePartRepository.ts";
-import { PartPurchaseRepository } from "./../../../../application/repositories/PartPurchaseRepository.ts";
 import { SparePartRepository } from "./../../../../application/repositories/SparePartRepository.ts";
-import { PartPurchaseCreateUsecase } from "./../../../../application/usecases/partPurchase/PartPurchaseCreateUsecase.ts";
 import { SparePartCreateUsecase } from "./../../../../application/usecases/sparePart/SparePartCreateUsecase.ts";
 import { SparePartDeleteUsecase } from "./../../../../application/usecases/sparePart/SparePartDeleteUsecase.ts";
 import { SparePartListUsecase } from "./../../../../application/usecases/sparePart/SparePartListUsecase.ts";
 import { SparePartUpdateUsecase } from "./../../../../application/usecases/sparePart/SparePartUpdateUsecase.ts";
-import { PartPurchaseSchema } from "./../schemas/PartPurchaseSchema.ts";
 
 export class SparePartController {
-  constructor(
-    private sparePartRepository: SparePartRepository,
-    private partPurchaseRepository: PartPurchaseRepository,
-    private maintenancePartRepository: MaintenancePartRepository
-  ) {}
+  constructor(private sparePartRepository: SparePartRepository) {}
 
   listSparePartsHandler = async (c: Context) => {
     const currentUserRole = c.get("role");
     const rawQuery = {
+      id: c.req.query("id"),
       name: c.req.query("name"),
       partNumber: c.req.query("partNumber"),
       brand: c.req.query("brand"),
@@ -73,7 +66,6 @@ export class SparePartController {
     const currentUserRole = c.get("role");
     const sparePartId = c.req.param("id");
     const rawBody = await c.req.json();
-
     const validateSparePart = SparePartSchema.parse(rawBody);
     const sparePartUpdateUseCase = new SparePartUpdateUsecase(
       this.sparePartRepository
@@ -109,27 +101,5 @@ export class SparePartController {
     );
 
     return c.json(sparePartOrError, OK);
-  };
-
-  createPartPurchaseHandler = async (c: Context) => {
-    const currentUserRole = c.get("role");
-    const rawBody = await c.req.json();
-
-    const validatePurchase = PartPurchaseSchema.parse(rawBody);
-    const sparePartPurchaseUseCase = new PartPurchaseCreateUsecase(
-      this.partPurchaseRepository,
-      this.sparePartRepository
-    );
-    const purchaseOrError = await sparePartPurchaseUseCase.execute(
-      currentUserRole,
-      validatePurchase
-    );
-
-    appAssert(
-      !(purchaseOrError instanceof Error),
-      ...mapDomainErrorToHttp(purchaseOrError as Error)
-    );
-
-    return c.json(purchaseOrError, OK);
   };
 }

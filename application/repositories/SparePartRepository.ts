@@ -2,7 +2,8 @@ import { SparePart } from "../../domain/entities/SparePart.ts";
 
 export interface SparePartRepository {
   save(sparePart: SparePart): Promise<SparePart>;
-  findAll(filters?: {
+  find(filters?: {
+    id?: string;
     name?: string;
     partNumber?: string;
     brand?: string;

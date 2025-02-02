@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const sparePartFilterSchema = z.object({
+  _id: z.string().optional(),
   name: z.string().optional(),
   partNumber: z.string().optional(),
   brand: z.string().optional(),

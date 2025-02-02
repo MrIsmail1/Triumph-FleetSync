@@ -17,8 +17,12 @@ import { InvalidWarrantyDateError } from "./../../../../domain/errors/InvalidWar
 import { InvalidWarrantyProviderNameError } from "./../../../../domain/errors/InvalidWarrantyProviderNameError.ts";
 import { MaintenanceNotFoundError } from "./../../../../domain/errors/MaintenanceNotFoundError.ts";
 import { MaintenanceUpdateError } from "./../../../../domain/errors/MaintenanceUpdateError.ts";
+import { NegativeNumberError } from "./../../../../domain/errors/NegativeNumberError.ts";
+import { PartPurchaseNotFoundError } from "./../../../../domain/errors/PartPurchaseNotFoundError.ts";
+import { PartPurchaseStatusError } from "./../../../../domain/errors/PartPurchaseStatusError.ts";
 import { PasswordBadFormatError } from "./../../../../domain/errors/PasswordBadFormatError.ts";
 import { RoleSelectionError } from "./../../../../domain/errors/RoleSelectionError.ts";
+import { SparePartNotFoundError } from "./../../../../domain/errors/SparePartNotFoundError.ts";
 import { StringTooLongError } from "./../../../../domain/errors/StringTooLongError.ts";
 import { StringTooShortError } from "./../../../../domain/errors/StringTooShortError.ts";
 import { TooManyPasswordResetRequestsError } from "./../../../../domain/errors/TooManyPasswordResetRequestsError.ts";
@@ -42,6 +46,10 @@ export function mapDomainErrorToHttp(
   if (error instanceof StringTooLongError) {
     return [BAD_REQUEST, error.name, "String is too long."];
   }
+  if (error instanceof NegativeNumberError) {
+    return [BAD_REQUEST, error.name, "Number cannot be negative."];
+  }
+
   if (error instanceof EmailBadFormatError) {
     return [BAD_REQUEST, error.name, "Invalid email format."];
   }
@@ -134,6 +142,18 @@ export function mapDomainErrorToHttp(
 
   if (error instanceof WarrantyUpdateError) {
     return [NOT_FOUND, error.name, "Warranty update failed"];
+  }
+
+  if (error instanceof SparePartNotFoundError) {
+    return [NOT_FOUND, error.name, "Spare part not found"];
+  }
+
+  if (error instanceof PartPurchaseNotFoundError) {
+    return [NOT_FOUND, error.name, "Part purchase not found"];
+  }
+
+  if (error instanceof PartPurchaseStatusError) {
+    return [BAD_REQUEST, error.name, "Invalid part purchase status"];
   }
 
   return [

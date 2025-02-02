@@ -3,7 +3,7 @@ import assert from "node:assert";
 import { HttpStatusCode } from "../constants/http.ts";
 
 type AppAssert = (
-  condition: any,
+  condition: unknown,
   httpStatusCode: HttpStatusCode,
   errorCode: string,
   message: string

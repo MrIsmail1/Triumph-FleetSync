@@ -1,6 +1,6 @@
-import { MaintenancePart } from "../../../domain/entities/MaintenancePart";
-import { MaintenancePartModel } from "../../platforms/deno-hono/database/mongo/maintenancePart.model";
-import { MaintenancePartRepository } from "./../../../application/repositories/MaintenancePartRepository";
+import { MaintenancePart } from "../../../domain/entities/MaintenancePart.ts";
+import { MaintenancePartModel } from "../../platforms/deno-hono/database/mongo/maintenancePart.model.ts";
+import { MaintenancePartRepository } from "./../../../application/repositories/MaintenancePartRepository.ts";
 
 export class MongoMaintenancePartRepository
   implements MaintenancePartRepository
