@@ -3,20 +3,15 @@ import {MotorbikeEntity} from "../../../domain/entities/MotorbikeEntity";
 import {ValidString} from "../../../domain/types/ValidString";
 import {VehicleIdentificationNumber} from "../../../domain/types/VehicleIdentificationNumber";
 import {FrenchMotorbikeLicensePlate} from "../../../domain/types/FrenchMotorbikeLicensePlate";
-import {Role} from "../../../domain/types/Role";
-import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
+import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
 
 export class MotorbikeCreateUsecase {
     public constructor(private readonly motorbikeRepository: MotorbikeRepository) {
     }
 
-    public async execute(modelId: string, fleetId: string, clientId: string, color: string, licensePlate: string, vehicleIdentificationNumber: string, mileage: number, status: string, userRole: string) {
-        if (userRole === "technician") {
-            return new UnauthorizedActionError()
-        }
-
-        if (userRole === "manager") {
-            return new UnauthorizedActionError()
+    public async execute(modelId: string, fleetId: string, companyOrDealershipId: string, driverId: string, color: string, licensePlate: string, vehicleIdentificationNumber: string, mileage: number, status: string, currentUserRole: string) {
+        if (currentUserRole !== "admin") {
+            return new AccessDeniedError()
         }
 
         const statusOrError = ValidString.from(status);
@@ -39,7 +34,8 @@ export class MotorbikeCreateUsecase {
         const newMotorbike = MotorbikeEntity.create(
             modelId,
             fleetId,
-            clientId,
+            companyOrDealershipId,
+            driverId,
             color,
             licensePlateOrError,
             vinOrError,

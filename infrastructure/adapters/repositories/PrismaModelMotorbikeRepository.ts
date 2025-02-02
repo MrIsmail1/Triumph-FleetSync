@@ -20,22 +20,6 @@ export class PrismaModelMotorbikeRepository implements ModelMotorbikeRepository 
         );
     }
 
-    async findByClientId(clientId: string): Promise<ModelMotorbikeEntity[]> {
-        const models = await this.prisma.modelMotorbike.findMany({
-            where: { motorbikes: { some: { fleet: { clientId } } } },
-        });
-        return models.map((model) =>
-            ModelMotorbikeEntity.reconstitute({
-                id: model.id,
-                name: model.name,
-                brand: model.brand,
-                maintenanceIntervalKm: model.maintenanceIntervalKm,
-                maintenanceIntervalTimeMonths: model.maintenanceIntervalTimeMonths,
-                createdAt: model.createdAt,
-                updatedAt: model.updatedAt,
-            })
-        );
-    }
 
     async findById(modelMotorbikeId: string): Promise<ModelMotorbikeEntity | null> {
         const model = await this.prisma.modelMotorbike.findUnique({

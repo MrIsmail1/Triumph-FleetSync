@@ -1,17 +1,30 @@
-import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
 import {FleetRepository} from "../../repositories/FleetRepository";
-import {Role} from "../../../domain/types/Role";
+import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
+import {FleetNotFoundError} from "../../../domain/errors/FleetNotFoundError";
 
 export class FleetDeleteUsecase {
-    constructor(private fleetRepository: FleetRepository) {}
+    constructor(private fleetRepository: FleetRepository) {
+    }
 
-    async execute(userRole: Role, fleetToDeleteId: string) {
-        if (userRole.value !== "admin" && userRole.value !== "client") {
-            return new UnauthorizedActionError();
+    async execute(fleetToDeleteId: string, currentUserIdentifier: string, currentUserRole: string) {
+
+        if (currentUserRole === "technician") {
+            return new AccessDeniedError();
         }
 
-        await this.fleetRepository.delete(fleetToDeleteId);
+        const fleet = await this.fleetRepository.findById(fleetToDeleteId);
+        if (!fleet) {
+            return new FleetNotFoundError();
+        }
 
-        return true;
+        if (currentUserRole === "company" || currentUserRole === "dealership") {
+           return await this.fleetRepository.deleteByIdAndCompanyOrDealershipId(fleetToDeleteId, currentUserIdentifier);
+        }
+
+        if (currentUserRole === "admin") {
+            return await this.fleetRepository.delete(fleetToDeleteId);
+        }
+
+        return new AccessDeniedError();
     }
 }

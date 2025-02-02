@@ -47,11 +47,11 @@ export class PrismaBreakdownRepository implements BreakdownRepository {
     return Promise.resolve();
   }
 
-  public async findAllByClientId(clientId: string): Promise<BreakdownEntity[]> {
-  const breakdowns = await this.database.breakdown.findMany({
-    where: { clientId },
-  });
-  return breakdowns.map(BreakdownEntity.reconstitute);
-}
+//   public async findAllByClientId(clientId: string): Promise<BreakdownEntity[]> {
+//   const breakdowns = await this.database.breakdown.findMany({
+//     where: { clientId },
+//   });
+//   return breakdowns.map(BreakdownEntity.reconstitute);
+// }
 
 }

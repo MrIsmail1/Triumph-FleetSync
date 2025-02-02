@@ -1,21 +1,23 @@
-import {UserRepository} from "../../repositories/UserRepository";
 import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
-import {UserNotFoundError} from "../../../domain/errors/UserNotFoundError";
-
 import {ValidString} from "../../../domain/types/ValidString";
 import {FleetRepository} from "../../repositories/FleetRepository";
 import {FleetNotFoundError} from "../../../domain/errors/FleetNotFoundError";
 import {FleetUpdateError} from "../../../domain/errors/FleetUpdateError";
-import {Role} from "../../../domain/types/Role";
+import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError.ts";
 
 export class FleetUpdateUsecase {
-    public constructor(private readonly fleetRepository: FleetRepository,
-                       private readonly userRepository: UserRepository) {
-    }
+    public constructor(
+        private readonly fleetRepository: FleetRepository) {}
 
-    public async execute(fleetId: string, userRole: string, dataToUpdate: Partial<{ name: string; managerId: string; }>) {
-        if (userRole === "technician") {
-            return new UnauthorizedActionError();
+    public async execute(
+        fleetId: string,
+        currentUserIdentifier: string,
+        currentUserRole: string,
+        dataToUpdate: Partial<{ name: string }>
+    ) {
+
+        if (currentUserRole === "technician") {
+            return new AccessDeniedError();
         }
 
         const fleet = await this.fleetRepository.findById(fleetId);
@@ -23,8 +25,16 @@ export class FleetUpdateUsecase {
             return new FleetNotFoundError();
         }
 
+        if (currentUserRole === "company" || currentUserRole === "dealership") {
+            const userFleet = await this.fleetRepository.findByIdAndCompanyOrDealershipId(fleetId, currentUserIdentifier);
+
+            if (userFleet === null) {
+                return new UnauthorizedActionError();
+            }
+        }
+
+        // Vérification et mise à jour du nom
         if (dataToUpdate.name) {
-            console.log(name);
             const nameOrError = ValidString.from(dataToUpdate.name);
             if (nameOrError instanceof Error) {
                 return nameOrError;
@@ -32,21 +42,13 @@ export class FleetUpdateUsecase {
             fleet.name = nameOrError;
         }
 
-        if (userRole === "admin" || userRole === "client") {
-            if (dataToUpdate.managerId) {
-                const manager = await this.userRepository.findById(dataToUpdate.managerId);
-                if (!manager) {
-                    return new UserNotFoundError();
-                }
-                fleet.managerId = manager.identifier;
-            }
-        }
-
+        // Mise à jour de la flotte
         const updatedFleet = await this.fleetRepository.update(fleet);
 
         if (!updatedFleet) {
             return new FleetUpdateError();
         }
 
+        return updatedFleet;
     }
 }

@@ -25,6 +25,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { registerSchema, RegisterSchema } from "./registerSchema";
+import React from "react";
 
 export default function RegisterForm() {
   const router = useRouter();

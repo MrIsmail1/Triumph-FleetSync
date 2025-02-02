@@ -1,26 +1,25 @@
 import {MotorbikeRepository} from "../../repositories/MotorbikeRepository";
-import {UserNotFoundError} from "../../../domain/errors/UserNotFoundError";
-import {UserRepository} from "../../repositories/UserRepository";
 import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
 
 export class MotorbikeListUsecase {
-    public constructor(private readonly motorbikeRepository: MotorbikeRepository,
-                       private readonly userRepository: UserRepository) {
+    public constructor(
+        private readonly motorbikeRepository: MotorbikeRepository) {
     }
 
-    public async execute(currentUserIdentifier: string) {
-        const currentUser = await this.userRepository.findById(currentUserIdentifier);
-        if (!currentUser) {
-            return new UserNotFoundError();
+    public async execute(currentUserIdentifier: string, currentUserRole: string) {
+
+        if (currentUserRole === "technician") {
+            return new AccessDeniedError();
         }
 
-        const roleValue = currentUser.role.value.toString();
-
-        if (roleValue === "admin") {
-            return await this.motorbikeRepository.findAll();
-        } else if (roleValue === "client") {
-            return await this.motorbikeRepository.findByClientId(currentUser.identifier);
+        if (currentUserRole === "admin") {
+            return (await this.motorbikeRepository.findAll()) ?? [];
         }
+
+        if (currentUserRole === "company" || currentUserRole === "dealership") {
+            return await this.motorbikeRepository.findAllByCompanyOrDealershipId(currentUserIdentifier);
+        }
+
         return new AccessDeniedError();
     }
 }

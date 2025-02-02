@@ -8,22 +8,27 @@ export class ModelMotorbikeUpdateUsecase {
     public constructor(private readonly modelMotorbikeRepository: ModelMotorbikeRepository) {
     }
 
-    public async execute(
-        userId: string,
-        userRole: string,
-        dataToUpdate: Partial<{
+    public async execute(modelMotorbikeId: string, currentUserRole: string, dataToUpdate: Partial<{
             name: string;
             brand: string;
             maintenanceIntervalKm: number;
             maintenanceIntervalTimeMonths: number;
         }>
     ) {
-        if (userRole === "technician") {
+        console.log("Données reçues dans Usecase :", dataToUpdate);
+
+        if (!dataToUpdate) {
+            console.error("Erreur : dataToUpdate est undefined dans le Usecase !");
+            return new Error("Les données de mise à jour sont manquantes.");
+        }
+
+        if (currentUserRole !== "admin") {
             return new UnauthorizedActionError();
         }
 
-        const modelMotorbike = await this.modelMotorbikeRepository.findById(userId);
+        const modelMotorbike = await this.modelMotorbikeRepository.findById(modelMotorbikeId);
         if (!modelMotorbike) {
+            console.log('tes un caca')
             return new ModelMotorbikeNotFoundError();
         }
 

@@ -9,13 +9,14 @@ import { UsersListUsecase } from "../../../../../application/usecases/user/Users
 import { UserUpdateProfileUsecase } from "../../../../../application/usecases/user/UserUpdateProfileUsecase";
 import { VerificationCodeType } from "../../../../../domain/types/VerificationCodeType";
 import { APP_ORIGIN } from "../constants/env";
-import { OK } from "../constants/http";
+import {NOT_FOUND, OK} from "../constants/http";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 import { oneYearFromNow } from "../utils/date";
 import { getVerifyEmailTemplate } from "../utils/emailTemplates";
 import { mapDomainErrorToHttp } from "../utils/errorsMapper";
 import { AccessTokenPayload } from "../utils/jwt";
+import {FleetGetOneUsecase} from "../../../../../application/usecases/fleet/FleetGetOneUsecase.ts";
 
 export class UserController {
   public constructor(
@@ -40,6 +41,7 @@ export class UserController {
 
     response.status(OK).json(userOrError);
   });
+
 
   listUsersHandler = catchErrors(async (request, response) => {
     const currentUser = request.user as AccessTokenPayload;
