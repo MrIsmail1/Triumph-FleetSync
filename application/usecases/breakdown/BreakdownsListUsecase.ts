@@ -31,7 +31,7 @@ export class BreakdownsListUsecase {
       if (roleValue === "admin") {
         return breakdown;
       } else if (roleValue === "client") {
-        if (breakdown.clientId !== currentUser.identifier) {
+        if (breakdown.companyOrDealerShipId !== currentUser.identifier) {
           return new AccessDeniedError();
         }
         return breakdown;

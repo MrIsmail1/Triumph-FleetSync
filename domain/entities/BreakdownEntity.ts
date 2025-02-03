@@ -6,7 +6,7 @@ export class BreakdownEntity {
     public description: ValidString,
     public createdAt: Date,
     public updatedAt: Date,
-    public clientId: string
+    public companyOrDealerShipId: string
   ) {}
 
   public static create(description: ValidString, clientId: string): BreakdownEntity {
@@ -22,14 +22,14 @@ export class BreakdownEntity {
     description: string;
     createdAt: Date;
     updatedAt: Date;
-    clientId: string;
+    companyOrDealerShipId: string;
   }): BreakdownEntity {
     return new BreakdownEntity(
       data.id,
       ValidString.reconstitute(data.description),
       data.createdAt,
       data.updatedAt,
-      data.clientId
+      data.companyOrDealerShipId
     );
   }
 }

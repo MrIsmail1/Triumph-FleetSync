@@ -1,8 +1,7 @@
-import { FleetRepository } from "../../../../../application/repositories/FleetRepository.ts";
+import {FleetRepository} from "../../../../../application/repositories/FleetRepository.ts";
 import appAssert from "../utils/appAssert.ts";
 import catchErrors from "../utils/catchErrors.ts";
-import { mapDomainErrorToHttp } from "../utils/errorsMapper.ts";
-import { UserRepository } from "../../../../../application/repositories/UserRepository.ts";
+import {mapDomainErrorToHttp} from "../utils/errorsMapper.ts";
 import {FleetCreateUsecase} from "../../../../../application/usecases/fleet/FleetCreateUsecase.ts";
 import {CREATED, FORBIDDEN, NOT_FOUND, OK} from "../constants/http.ts";
 import {FleetListUsecase} from "../../../../../application/usecases/fleet/FleetListUsecase.ts";
@@ -13,21 +12,18 @@ import {AccessTokenPayload} from "../utils/jwt.ts";
 
 export class FleetController {
     public constructor(
-        private readonly fleetRepository: FleetRepository,
-        private readonly userRepository: UserRepository
-    ) {}
+        private readonly fleetRepository: FleetRepository) {
+    }
 
     createFleetHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
-
-        const { clientId, managerId, name } = request.body;
+        const {name} = request.body;
 
         const fleetCreateUsecase = new FleetCreateUsecase(this.fleetRepository);
 
         const fleetOrError = await fleetCreateUsecase.execute(
-            clientId,
-            managerId,
             name,
+            currentUser.userIdentifier,
             currentUser.role
         );
 
@@ -43,14 +39,9 @@ export class FleetController {
 
     listFleetsHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
-        console.log(currentUser);
-        const fleetListUsecase = new FleetListUsecase(
-            this.fleetRepository,
-            this.userRepository
-        );
+        const fleetListUsecase = new FleetListUsecase(this.fleetRepository);
 
-        const fleets = await fleetListUsecase.execute(currentUser.userIdentifier);
-        console.log(fleets);
+        const fleets = await fleetListUsecase.execute(currentUser.userIdentifier, currentUser.role);
 
         appAssert(
             !(fleets instanceof Error),
@@ -61,11 +52,12 @@ export class FleetController {
     });
 
     getFleetHandler = catchErrors(async (request, response) => {
-        const { fleetId } = request.params;
+        const currentUser = request.user as AccessTokenPayload;
+        const {fleetId} = request.params;
 
         const fleetGetOneUsecase = new FleetGetOneUsecase(this.fleetRepository);
 
-        const fleetOrError = await fleetGetOneUsecase.execute(fleetId);
+        const fleetOrError = await fleetGetOneUsecase.execute(fleetId, currentUser.userIdentifier, currentUser.role);
 
         appAssert(
             !(fleetOrError instanceof Error),
@@ -78,12 +70,12 @@ export class FleetController {
     });
 
     deleteFleetHandler = catchErrors(async (request, response) => {
-        const { fleetId } = request.params;
-        const { userRole } = request.body;
+        const currentUser = request.user as AccessTokenPayload;
+        const {fleetId} = request.params;
 
         const fleetDeleteUsecase = new FleetDeleteUsecase(this.fleetRepository);
 
-        const resultOrError = await fleetDeleteUsecase.execute(userRole, fleetId);
+        const resultOrError = await fleetDeleteUsecase.execute(fleetId, currentUser.userIdentifier, currentUser.role);
 
         appAssert(
             !(resultOrError instanceof Error),
@@ -99,17 +91,14 @@ export class FleetController {
 
     updateFleetHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
-        const { fleetId} = request.params;
+        const {fleetId} = request.params;
+        console.log(fleetId);
         const dataToUpdate = request.body;
         console.log(dataToUpdate);
 
-        const fleetUpdateUsecase = new FleetUpdateUsecase(this.fleetRepository, this.userRepository);
+        const fleetUpdateUsecase = new FleetUpdateUsecase(this.fleetRepository);
 
-        const updatedFleetOrError = await fleetUpdateUsecase.execute(
-            fleetId,
-            currentUser.role,
-            dataToUpdate
-        );
+        const updatedFleetOrError = await fleetUpdateUsecase.execute(fleetId, currentUser.userIdentifier, currentUser.role, dataToUpdate);
 
         appAssert(
             !(updatedFleetOrError instanceof Error),

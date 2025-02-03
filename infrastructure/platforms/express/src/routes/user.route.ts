@@ -18,23 +18,14 @@ const userController = new UserController(
   resendEmailService
 );
 
-userRoutes.get(
-  "/profile",
-  authorize(["admin", "technician", "client", "manager"]),
-  userController.showProfileHandler
-);
+userRoutes.get("/profile", authorize(["admin", "technician", "company", "dealership"]), userController.showProfileHandler);
 userRoutes.get("/list", authorize(["admin"]), userController.listUsersHandler);
-
-userRoutes.put(
-  "/update",
-  authorize(["admin", "technician", "client", "manager"]),
-  userController.updateUserProfileHandler
-);
-
-userRoutes.delete(
-  "/delete",
-  authorize(["admin"]),
-  userController.deleteUserHandler
-);
+userRoutes.put("/update", authorize(["admin", "technician", "company", "dealership"]), userController.updateUserProfileHandler);
+userRoutes.delete("/delete", authorize(["admin"]), userController.deleteUserHandler);
 
 export default userRoutes;
+
+
+
+
+

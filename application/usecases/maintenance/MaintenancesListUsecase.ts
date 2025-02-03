@@ -27,7 +27,7 @@ export class MaintenancesListUsecase {
         return new MaintenanceNotFoundError();
       }
 
-      if (roleValue === "client" && maintenance.clientId !== currentUser.identifier) {
+      if (roleValue === "client" && maintenance.companyOrDealerShipId !== currentUser.identifier) {
         return new AccessDeniedError();
       }
 

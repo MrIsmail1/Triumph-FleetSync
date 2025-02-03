@@ -17,7 +17,7 @@ export class BreakdownDeleteUsecase {
       return true;
     }
 
-    if (userRole === "client" && breakdown.clientId === userId) {
+    if (userRole === "client" && breakdown.companyOrDealerShipId === userId) {
       await this.breakdownRepository.delete(breakdownId);
       return true;
     }

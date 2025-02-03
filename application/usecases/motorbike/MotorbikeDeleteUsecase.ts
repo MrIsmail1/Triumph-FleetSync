@@ -1,18 +1,24 @@
-import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
 import {MotorbikeRepository} from "../../repositories/MotorbikeRepository";
-import {Role} from "../../../domain/types/Role";
+import {MotorbikeNotFoundError} from "../../../domain/errors/MotorbikeNotFoundError";
+import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
 
 export class MotorbikeDeleteUsecase {
-    constructor(private motorbikeRepository: MotorbikeRepository) {
+    constructor(
+        private motorbikeRepository: MotorbikeRepository) {
     }
 
-    async execute(userRole: Role, motorbikeToDeleteId: string) {
-        if (userRole.value === "technician") {
-            return new UnauthorizedActionError();
+    async execute(currentUserIdentifier: string, motorbikeToDeleteId: string, currentUserRole: string) {
+
+        if (currentUserRole !== "admin") {
+            return new AccessDeniedError();
         }
 
-        await this.motorbikeRepository.delete(motorbikeToDeleteId);
+        const motorbike = await this.motorbikeRepository.findById(motorbikeToDeleteId);
+        if (!motorbike) {
+            return new MotorbikeNotFoundError();
+        }
 
-        return true;
+        return await this.motorbikeRepository.delete(motorbikeToDeleteId);
+
     }
 }

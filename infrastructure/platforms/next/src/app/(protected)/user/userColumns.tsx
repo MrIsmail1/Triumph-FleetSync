@@ -1,4 +1,3 @@
-// columns.ts
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -24,6 +23,7 @@ import EditUserForm from "@/components/user/EditUserForm";
 import { moveColumnsDown, moveColumnsUp } from "@/lib/utils";
 import { User } from "@/types/AuthResponses";
 import { useState } from "react";
+import React from "react";
 
 export function buildUserColumns() {
   const [isEditModalOpen, setEditModalOpen] = useState(false);

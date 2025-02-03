@@ -12,7 +12,7 @@ export class UserEntity {
     public role: Role,
     public isVerified: boolean,
     public createdAt: Date,
-    public updatedAt: Date
+    public updatedAt: Date,
   ) {}
 
   public static create(

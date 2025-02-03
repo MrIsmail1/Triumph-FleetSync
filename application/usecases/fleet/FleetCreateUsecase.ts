@@ -1,20 +1,23 @@
 import {FleetRepository} from "../../repositories/FleetRepository";
 import {FleetEntity} from "../../../domain/entities/FleetEntity";
 import {ValidString} from "../../../domain/types/ValidString";
-import {Role} from "../../../domain/types/Role";
 import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
+import {DealerShipCanHaveOneFleetError} from "../../../domain/errors/DealerShipCanHaveOneFleetError";
 
 export class FleetCreateUsecase {
-    public constructor(private readonly fleetRepository: FleetRepository) {}
+    public constructor(private readonly fleetRepository: FleetRepository) {
+    }
 
-    public async execute(clientId: string, managerId: string, name: string, userRole: string) {
+    public async execute(name: string, currentUserIdentifier: string, currentUserRole: string) {
 
-        if (userRole === "technician") {
-            return new AccessDeniedError()
+        const isDealershipAlreadyHaveFleet = this.fleetRepository.findByCompanyOrDealershipId(currentUserIdentifier);
+
+        if (currentUserRole === "technician") {
+            return new AccessDeniedError();
         }
 
-        if (userRole === "manager") {
-            return new AccessDeniedError()
+        if (currentUserRole === "dealership" && !!isDealershipAlreadyHaveFleet) {
+            return new DealerShipCanHaveOneFleetError();
         }
 
         const nameOrError = ValidString.from(name);
@@ -22,7 +25,7 @@ export class FleetCreateUsecase {
             return nameOrError;
         }
 
-        const newFleet = FleetEntity.create(clientId, managerId, nameOrError);
+        const newFleet = FleetEntity.create(currentUserIdentifier, nameOrError);
         return await this.fleetRepository.save(newFleet);
     }
 }

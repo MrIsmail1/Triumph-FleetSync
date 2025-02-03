@@ -1,26 +1,26 @@
-import { MotorbikeRepository } from "../../../../../application/repositories/MotorbikeRepository.ts";
-import { MotorbikeCreateUsecase } from "../../../../../application/usecases/motorbike/MotorbikeCreateUsecase.ts";
-import { MotorbikeListUsecase } from "../../../../../application/usecases/motorbike/MotorbikeListUsecase.ts";
-import { MotorbikeGetOneUsecase } from "../../../../../application/usecases/motorbike/MotorbikeGetOneUsecase.ts";
-import { MotorbikeDeleteUsecase } from "../../../../../application/usecases/motorbike/MotorbikeDeleteUsecase.ts";
-import { MotorbikeUpdateUsecase } from "../../../../../application/usecases/motorbike/MotorbikeUpdateUsecase.ts";
-import { OK, CREATED, NOT_FOUND, FORBIDDEN } from "../constants/http.ts";
+import {MotorbikeRepository} from "../../../../../application/repositories/MotorbikeRepository.ts";
+import {MotorbikeCreateUsecase} from "../../../../../application/usecases/motorbike/MotorbikeCreateUsecase.ts";
+import {MotorbikeListUsecase} from "../../../../../application/usecases/motorbike/MotorbikeListUsecase.ts";
+import {MotorbikeGetOneUsecase} from "../../../../../application/usecases/motorbike/MotorbikeGetOneUsecase.ts";
+import {MotorbikeDeleteUsecase} from "../../../../../application/usecases/motorbike/MotorbikeDeleteUsecase.ts";
+import {MotorbikeUpdateUsecase} from "../../../../../application/usecases/motorbike/MotorbikeUpdateUsecase.ts";
+import {CREATED, FORBIDDEN, NOT_FOUND, OK} from "../constants/http.ts";
 import appAssert from "../utils/appAssert.ts";
 import catchErrors from "../utils/catchErrors.ts";
-import { mapDomainErrorToHttp } from "../utils/errorsMapper.ts";
-import {UserRepository} from "../../../../../application/repositories/UserRepository.ts";
+import {mapDomainErrorToHttp} from "../utils/errorsMapper.ts";
 import {AccessTokenPayload} from "../utils/jwt.ts";
 
 export class MotorbikeController {
-    public constructor(private readonly motorbikeRepository: MotorbikeRepository,
-                       private readonly userRepository: UserRepository) {}
+    public constructor(private readonly motorbikeRepository: MotorbikeRepository) {
+    }
 
     createMotorbikeHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
         const {
             modelId,
             fleetId,
-            clientId,
+            companyOrDealershipId,
+            clientOrDriverId,
             color,
             licensePlate,
             vehicleIdentificationNumber,
@@ -33,7 +33,8 @@ export class MotorbikeController {
         const motorbikeOrError = await motorbikeCreateUsecase.execute(
             modelId,
             fleetId,
-            clientId,
+            companyOrDealershipId,
+            clientOrDriverId,
             color,
             licensePlate,
             vehicleIdentificationNumber,
@@ -53,11 +54,11 @@ export class MotorbikeController {
     });
 
     listMotorbikesHandler = catchErrors(async (request, response) => {
-        const { currentUserIdentifier } = request.body;
+        const currentUser = request.user as AccessTokenPayload;
 
-        const motorbikeListUsecase = new MotorbikeListUsecase(this.motorbikeRepository, this.userRepository);
+        const motorbikeListUsecase = new MotorbikeListUsecase(this.motorbikeRepository);
 
-        const motorbikes = await motorbikeListUsecase.execute(currentUserIdentifier);
+        const motorbikes = await motorbikeListUsecase.execute(currentUser.userIdentifier, currentUser.role);
 
         appAssert(
             !(motorbikes instanceof Error),
@@ -68,11 +69,12 @@ export class MotorbikeController {
     });
 
     getMotorbikeHandler = catchErrors(async (request, response) => {
-        const { id } = request.params;
+        const currentUser = request.user as AccessTokenPayload;
+        const {motorbikeId} = request.params;
 
         const motorbikeGetOneUsecase = new MotorbikeGetOneUsecase(this.motorbikeRepository);
 
-        const motorbikeOrError = await motorbikeGetOneUsecase.execute(id);
+        const motorbikeOrError = await motorbikeGetOneUsecase.execute(motorbikeId, currentUser.userIdentifier, currentUser.role);
 
         appAssert(
             !(motorbikeOrError instanceof Error),
@@ -85,12 +87,12 @@ export class MotorbikeController {
     });
 
     deleteMotorbikeHandler = catchErrors(async (request, response) => {
-        const { id} = request.params;
-        const { userRole } = request.body;
+        const currentUser = request.user as AccessTokenPayload;
+        const {motorbikeId} = request.params;
 
         const motorbikeDeleteUsecase = new MotorbikeDeleteUsecase(this.motorbikeRepository);
 
-        const resultOrError = await motorbikeDeleteUsecase.execute(userRole, id);
+        const resultOrError = await motorbikeDeleteUsecase.execute(currentUser.userIdentifier, motorbikeId, currentUser.role);
 
         appAssert(
             !(resultOrError instanceof Error),
@@ -106,14 +108,14 @@ export class MotorbikeController {
 
     updateMotorbikeHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
-
-        const { id} = request.params;
-        console.log(id);
+        const {motorbikeId} = request.params;
+        console.log(motorbikeId);
         const dataToUpdate = request.body;
         console.log(dataToUpdate);
+
         const motorbikeUpdateUsecase = new MotorbikeUpdateUsecase(this.motorbikeRepository);
 
-        const updatedMotorbikeOrError = await motorbikeUpdateUsecase.execute(id, currentUser.role, dataToUpdate);
+        const updatedMotorbikeOrError = await motorbikeUpdateUsecase.execute(motorbikeId, currentUser.userIdentifier, currentUser.role, dataToUpdate);
 
         appAssert(
             !(updatedMotorbikeOrError instanceof Error),

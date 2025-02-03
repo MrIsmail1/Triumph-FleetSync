@@ -6,8 +6,8 @@ export class Role {
   private static readonly validRoles = [
     "admin",
     "technician",
-    "client",
-    "manager",
+    "company",
+    "dealership",
   ];
 
   public static from(value: string) {

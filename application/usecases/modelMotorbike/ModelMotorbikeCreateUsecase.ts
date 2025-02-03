@@ -1,16 +1,16 @@
 import {ModelMotorbikeRepository} from "../../repositories/ModelMotorbikeRepository";
 import {ModelMotorbikeEntity} from "../../../domain/entities/ModelMotorbikeEntity";
 import {ValidString} from "../../../domain/types/ValidString";
-import {Role} from "../../../domain/types/Role";
-import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
+import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError.ts";
 
 export class ModelMotorbikeCreateUsecase {
-    public constructor(private readonly modelMotorbikeRepository: ModelMotorbikeRepository) {}
+    public constructor(private readonly modelMotorbikeRepository: ModelMotorbikeRepository) {
+    }
 
-    public async execute(name: string, brand: string, maintenanceIntervalKm: number, maintenanceIntervalTimeMonths: number, userRole: string) {
-       if (userRole === "technician") {
-           return new UnauthorizedActionError()
-       }
+    public async execute(name: string, brand: string, maintenanceIntervalKm: number, maintenanceIntervalTimeMonths: number, currentUserRole: string) {
+        if (currentUserRole !== "admin") {
+            return new AccessDeniedError()
+        }
 
         const nameOrError = ValidString.from(name);
         const brandOrError = ValidString.from(brand);

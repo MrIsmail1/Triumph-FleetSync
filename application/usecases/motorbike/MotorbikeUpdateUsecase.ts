@@ -1,33 +1,36 @@
-import {UserRepository} from "../../repositories/UserRepository";
-import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
-import {UserNotFoundError} from "../../../domain/errors/UserNotFoundError";
-
-import {ValidString} from "../../../domain/types/ValidString";
 import {MotorbikeRepository} from "../../repositories/MotorbikeRepository";
+import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
 import {MotorbikeNotFoundError} from "../../../domain/errors/MotorbikeNotFoundError";
 import {FrenchMotorbikeLicensePlate} from "../../../domain/types/FrenchMotorbikeLicensePlate";
 import {VehicleIdentificationNumber} from "../../../domain/types/VehicleIdentificationNumber";
 import {MotorbikeUpdateError} from "../../../domain/errors/MotorbikeUpdateError";
-import {Role} from "../../../domain/types/Role";
+import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
+import {ValidString} from "../../../domain/types/ValidString";
 
 export class MotorbikeUpdateUsecase {
-    public constructor(private readonly motorbikeRepository: MotorbikeRepository) {}
+    public constructor(
+        private readonly motorbikeRepository: MotorbikeRepository) {
+    }
 
     public async execute(
         motorbikeId: string,
-        userRole: string,
+        currentUserIdentifier: string,
+        currentUserRole: string,
         dataToUpdate: Partial<{
-            modelId: string,
+            modelId: string;
             fleetId: string;
+            companyOrDealerShipId: string;
+            driverId: string;
             color: string;
             licensePlate: string;
             vehicleIdentificationNumber: string;
             mileage: number;
-            status: string
+            status: string;
         }>
     ) {
-        if (userRole === "technician") {
-            return new UnauthorizedActionError();
+
+        if (currentUserRole === "technician") {
+            return new AccessDeniedError();
         }
 
         const motorbike = await this.motorbikeRepository.findById(motorbikeId);
@@ -35,56 +38,77 @@ export class MotorbikeUpdateUsecase {
             return new MotorbikeNotFoundError();
         }
 
-        if (dataToUpdate.licensePlate) {
-            const licencesOrError = FrenchMotorbikeLicensePlate.from(dataToUpdate.licensePlate);
-            if (licencesOrError instanceof Error) {
-                return licencesOrError;
+
+        if (currentUserRole === "admin") {
+            if (dataToUpdate.licensePlate) {
+                const licenseOrError = FrenchMotorbikeLicensePlate.from(dataToUpdate.licensePlate);
+                if (licenseOrError instanceof Error) {
+                    return licenseOrError;
+                }
+                motorbike.licensePlate = licenseOrError;
             }
-            motorbike.licensePlate = licencesOrError;
-        }
 
-        if (dataToUpdate.vehicleIdentificationNumber) {
-            const vinOrError = VehicleIdentificationNumber.from(dataToUpdate.vehicleIdentificationNumber);
-            if (vinOrError instanceof Error) {
-                return vinOrError;
+            if (dataToUpdate.vehicleIdentificationNumber) {
+                const vinOrError = VehicleIdentificationNumber.from(dataToUpdate.vehicleIdentificationNumber);
+                if (vinOrError instanceof Error) {
+                    return vinOrError;
+                }
+                motorbike.vehicleIdentificationNumber = vinOrError;
             }
-            motorbike.vehicleIdentificationNumber = vinOrError;
-        }
 
-        if (dataToUpdate.status) {
-            const statusOrError = ValidString.from(dataToUpdate.status);
-            if (statusOrError instanceof Error) {
-                return statusOrError;
+            if (dataToUpdate.status) {
+                const statusOrError = ValidString.from(dataToUpdate.status);
+                if (statusOrError instanceof Error) {
+                    return statusOrError;
+                }
+                motorbike.status = statusOrError;
             }
-            motorbike.status = statusOrError;
-        }
 
-        if (dataToUpdate.color !== undefined) {
-            motorbike.color = dataToUpdate.color;
-        }
+            if (dataToUpdate.color !== undefined) {
+                motorbike.color = dataToUpdate.color;
+            }
 
-        if (dataToUpdate.mileage !== undefined) {
-            motorbike.mileage = dataToUpdate.mileage;
-        }
+            if (dataToUpdate.mileage !== undefined) {
+                motorbike.mileage = dataToUpdate.mileage;
+            }
 
-        if (dataToUpdate.modelId !== undefined) {
-            motorbike.modelId = dataToUpdate.modelId;
-        }
+            if (dataToUpdate.modelId !== undefined) {
+                motorbike.modelId = dataToUpdate.modelId;
+            }
 
-        if (dataToUpdate.fleetId) {
-            if (userRole !== "technician") {
+            if (dataToUpdate.companyOrDealerShipId !== undefined) {
+                motorbike.companyOrDealerShipId = dataToUpdate.companyOrDealerShipId;
+            }
+
+        }
+        if (currentUserRole === "company" || currentUserRole === "dealership") {
+            // Toujours mettre à jour fleetId et driverId, même si c'est null
+            if (dataToUpdate.fleetId !== undefined) {
                 motorbike.fleetId = dataToUpdate.fleetId;
-            } else {
+            }
+
+            if (dataToUpdate.driverId !== undefined) {
+                motorbike.driverId = dataToUpdate.driverId;
+            }
+        }
+
+
+        if (currentUserRole === "company" || currentUserRole === "dealership") {
+            const userMotorbike = await this.motorbikeRepository.findByIdAndCompanyOrDealershipId(motorbikeId, currentUserIdentifier);
+
+            if (userMotorbike === null) {
                 return new UnauthorizedActionError();
             }
         }
 
+
         const updatedMotorbike = await this.motorbikeRepository.update(motorbike);
 
         if (!updatedMotorbike) {
-            return new MotorbikeUpdateError()
+            return new MotorbikeUpdateError();
         }
 
         return updatedMotorbike;
     }
 }
+

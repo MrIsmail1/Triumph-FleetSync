@@ -1,17 +1,15 @@
-import {UserRepository} from "../../repositories/UserRepository";
-import {UserNotFoundError} from "../../../domain/errors/UserNotFoundError";
-import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError";
 import {ModelMotorbikeRepository} from "../../repositories/ModelMotorbikeRepository";
 import {Role} from "../../../domain/types/Role";
+import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError.ts";
 
 export class ModelMotorbikeDeleteUsecase {
     constructor(private modelMotorbikeRepository: ModelMotorbikeRepository) {
     }
 
-    async execute(userRole: Role, modelMotorbikeToDeleteId: string) {
+    async execute(currentUserRole: string, modelMotorbikeToDeleteId: string) {
 
-        if (userRole.value !== "admin") {
-            return new UnauthorizedActionError();
+        if (currentUserRole !== "admin") {
+            return new AccessDeniedError();
         }
 
         await this.modelMotorbikeRepository.delete(modelMotorbikeToDeleteId);

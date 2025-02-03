@@ -1,15 +1,16 @@
 import {ModelMotorbikeRepository} from "../../repositories/ModelMotorbikeRepository";
-import {UnauthorizedActionError} from "../../../domain/errors/UnauthorizedActionError.ts";
-import {Role} from "../../../domain/types/Role.ts";
+import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError.ts";
 
 export class ModelMotorbikeGetOneUsecase {
-    public constructor(private readonly modelMotorbikeRepository: ModelMotorbikeRepository){
+    public constructor(private readonly modelMotorbikeRepository: ModelMotorbikeRepository) {
     }
 
-    public async execute(modelMotorbikeId: string, userRole: Role) {
-        if (userRole.value === "technician") {
-            return new UnauthorizedActionError();
+    public async execute(modelMotorbikeId: string, currentUserRole: string) {
+
+        if (currentUserRole === "technician") {
+            return new AccessDeniedError();
         }
+
         return await this.modelMotorbikeRepository.findById(modelMotorbikeId);
     }
 }

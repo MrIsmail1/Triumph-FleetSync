@@ -1,12 +1,8 @@
 "use client";
-import { DataTable } from "@/components/common/DataTable";
-import { Modal } from "@/components/common/Modal";
-import { Button } from "@/components/ui/button";
-import { usersList } from "@/lib/api";
-import { User } from "@/types/AuthResponses";
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { buildUserColumns } from "./userColumns";
+import {DataTable} from "@/components/common/DataTable";
+import {usersList} from "@/lib/api";
+import {useQuery} from "@tanstack/react-query";
+import {buildUserColumns} from "./userColumns";
 
 export default function UsersListPage() {
   const { data: users } = useQuery({
