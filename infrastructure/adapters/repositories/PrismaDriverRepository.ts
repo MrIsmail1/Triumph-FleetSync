@@ -1,11 +1,9 @@
-import {Prisma} from "../../platforms/express/src/config/prisma.db";
-import {DriverRepository} from "../../../application/repositories/DriverRepository";
-import {DriverEntity} from "../../../domain/entities/DriverEntity";
-import {MotorbikeEntity} from "../../../domain/entities/MotorbikeEntity.ts";
+import { Prisma } from "../../platforms/express/src/config/prisma.db";
+import { DriverRepository } from "../../../application/repositories/DriverRepository";
+import { DriverEntity } from "../../../domain/entities/DriverEntity";
 
 export class PrismaDriverRepository implements DriverRepository {
-    constructor(private readonly prisma: Prisma) {
-    }
+    constructor(private readonly prisma: Prisma) {}
 
     public async findAll(): Promise<DriverEntity[]> {
         const drivers = await this.prisma.driver.findMany({
@@ -17,8 +15,10 @@ export class PrismaDriverRepository implements DriverRepository {
                         lastName: true,
                     },
                 },
+
             },
         });
+
         return drivers.map(record => DriverEntity.reconstitute({
             id: record.id,
             firstName: record.firstName,
@@ -26,45 +26,56 @@ export class PrismaDriverRepository implements DriverRepository {
             email: record.email,
             companyOrDealerShipId: record.companyOrDealerShipId,
             motorbikeId: record.motorbikeId,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            userFirstName: record.companyOrDealerShip.firstName,
+            frenchLicenseNumber: record.frenchLicenseNumber,
+            dateDeliveryLicence: record.dateDeliveryLicence,
+            dateExpirationLicense: record.dateExpirationLicense,
+            frenchTypeMotorbikeLicense: record.frenchTypeMotorbikeLicense,
+            restrictionConditions: record.restrictionConditions,
+            experience: record.experience,
+            createdAt: record.createdAt,
+            updatedAt: record.updatedAt,
+            userFirstName: record.companyOrDealerShip?.firstName,
             userLastName: record.companyOrDealerShip?.lastName,
         }));
     }
 
     public async findAllByCompanyOrDealershipId(companyOrDealerShipId: string): Promise<DriverEntity[] | null> {
         const drivers = await this.prisma.driver.findMany({
-            where: {companyOrDealerShipId},
+            where: { companyOrDealerShipId },
         });
+
         return drivers.length ? drivers.map(DriverEntity.reconstitute) : null;
     }
 
     public async findByCompanyOrDealershipId(companyOrDealerShipId: string): Promise<DriverEntity | null> {
         const driver = await this.prisma.driver.findFirst({
-            where: {companyOrDealerShipId},
+            where: { companyOrDealerShipId },
         });
+
         return driver ? DriverEntity.reconstitute(driver) : null;
     }
 
     public async findById(driverId: string): Promise<DriverEntity | null> {
         const driver = await this.prisma.driver.findUnique({
-            where: {id: driverId},
+            where: { id: driverId },
         });
+
         return driver ? DriverEntity.reconstitute(driver) : null;
     }
 
     public async findByIdAndCompanyOrDealershipId(driverId: string, companyOrDealerShipId: string): Promise<DriverEntity | null> {
         const driver = await this.prisma.driver.findFirst({
-            where: {id: driverId, companyOrDealerShipId},
+            where: { id: driverId, companyOrDealerShipId },
         });
+
         return driver ? DriverEntity.reconstitute(driver) : null;
     }
 
     public async deleteByIdAndCompanyOrDealershipId(driverId: string, companyOrDealershipId: string): Promise<DriverEntity | null> {
         const driver = await this.findByIdAndCompanyOrDealershipId(driverId, companyOrDealershipId);
         if (!driver) return null;
-        await this.prisma.driver.delete({where: {id: driverId}});
+
+        await this.prisma.driver.delete({ where: { id: driverId } });
         return driver;
     }
 
@@ -77,29 +88,43 @@ export class PrismaDriverRepository implements DriverRepository {
                 email: driverEntity.email.value,
                 companyOrDealerShipId: driverEntity.companyOrDealerShipId,
                 motorbikeId: driverEntity.motorbikeId ?? null,
+                frenchLicenseNumber: driverEntity.frenchLicenseNumber.value,
+                dateDeliveryLicence: driverEntity.dateDeliveryLicence,
+                dateExpirationLicense: driverEntity.dateExpirationLicense,
+                frenchTypeMotorbikeLicense: driverEntity.frenchTypeMotorbikeLicense.value,
+                restrictionConditions: driverEntity.restrictionConditions.value,
+                experience: driverEntity.experience.value,
                 createdAt: driverEntity.createdAt,
                 updatedAt: driverEntity.updatedAt,
             },
         });
+
         return DriverEntity.reconstitute(driver);
     }
 
     public async update(driverEntity: DriverEntity): Promise<DriverEntity[]> {
         await this.prisma.driver.update({
-            where: {id: driverEntity.identifier},
+            where: { id: driverEntity.identifier },
             data: {
                 firstName: driverEntity.firstName.value,
                 lastName: driverEntity.lastName.value,
                 email: driverEntity.email.value,
                 companyOrDealerShipId: driverEntity.companyOrDealerShipId,
                 motorbikeId: driverEntity.motorbikeId ?? null,
+                frenchLicenseNumber: driverEntity.frenchLicenseNumber.value,
+                dateDeliveryLicence: driverEntity.dateDeliveryLicence,
+                dateExpirationLicense: driverEntity.dateExpirationLicense,
+                frenchTypeMotorbikeLicense: driverEntity.frenchTypeMotorbikeLicense.value,
+                restrictionConditions: driverEntity.restrictionConditions.value,
+                experience: driverEntity.experience.value,
                 updatedAt: driverEntity.updatedAt,
             },
         });
+
         return this.findAll();
     }
 
     public async delete(driverId: string): Promise<void> {
-        await this.prisma.driver.delete({where: {id: driverId}});
+        await this.prisma.driver.delete({ where: { id: driverId } });
     }
 }

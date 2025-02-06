@@ -10,13 +10,13 @@ export class FleetCreateUsecase {
 
     public async execute(name: string, currentUserIdentifier: string, currentUserRole: string) {
 
-        const isDealershipAlreadyHaveFleet = this.fleetRepository.findByCompanyOrDealershipId(currentUserIdentifier);
+        const isDealershipAlreadyHaveFleet = await this.fleetRepository.findByCompanyOrDealershipId(currentUserIdentifier);
 
         if (currentUserRole === "technician") {
             return new AccessDeniedError();
         }
 
-        if (currentUserRole === "dealership" && !!isDealershipAlreadyHaveFleet) {
+        if (currentUserRole === "dealership" && isDealershipAlreadyHaveFleet !== null) {
             return new DealerShipCanHaveOneFleetError();
         }
 

@@ -3,7 +3,8 @@ import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
 import {DriverNotFoundError} from "../../../domain/errors/DriverNotFoundError";
 
 export class DriverDeleteUsecase {
-    constructor(private driverRepository: DriverRepository) {}
+    constructor(private driverRepository: DriverRepository) {
+    }
 
     async execute(driverId: string, currentUserIdentifier: string, currentUserRole: string) {
         if (currentUserRole === "technician") {

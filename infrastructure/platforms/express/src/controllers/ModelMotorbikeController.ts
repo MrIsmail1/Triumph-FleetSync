@@ -108,10 +108,6 @@ export class ModelMotorbikeController {
         const dataToUpdate = request.body;
         const currentUser = request.user as AccessTokenPayload;
 
-
-        console.log("Requête reçue avec modelMotorbikeId :", modelMotorbikeId);
-        console.log("Body reçu :", request.body);
-
         if (!dataToUpdate) {
             console.error("Erreur : dataToUpdate est undefined !");
             return response.status(400).json({ message: "Erreur : Aucune donnée envoyée." });

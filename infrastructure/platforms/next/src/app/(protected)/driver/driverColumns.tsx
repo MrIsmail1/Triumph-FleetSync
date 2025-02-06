@@ -28,7 +28,6 @@ export function buildDriverColumns() {
 
     const queryClient = useQueryClient();
 
-    // Mutation pour supprimer un conducteur
     const { mutate: deleteDriver, isLoading } = useMutation({
         mutationFn: driverDelete,
         onSuccess: () => {
@@ -93,6 +92,38 @@ export function buildDriverColumns() {
             cell: ({ row }) => row.original.email?.value ?? "Non renseigné",
         },
         {
+            id: "frenchLicenseNumber",
+            header: "Numéro de permis",
+            cell: ({ row }) => row.original.frenchLicenseNumber?.value ?? "Non renseigné",
+        },
+        {
+            id: "dateDeliveryLicence",
+            header: "Date de délivrance",
+            cell: ({ row }) =>
+                new Date(row.original.dateDeliveryLicence).toLocaleDateString("fr-FR"),
+        },
+        {
+            id: "dateExpirationLicense",
+            header: "Date d'expiration",
+            cell: ({ row }) =>
+                new Date(row.original.dateExpirationLicense).toLocaleDateString("fr-FR"),
+        },
+        {
+            id: "frenchTypeMotorbikeLicense",
+            header: "Type de permis",
+            cell: ({ row }) => row.original.frenchTypeMotorbikeLicense?.value ?? "Non renseigné",
+        },
+        {
+            id: "restrictionConditions",
+            header: "Restrictions",
+            cell: ({ row }) => row.original.restrictionConditions?.value ?? "Aucune",
+        },
+        {
+            id: "experience",
+            header: "Expérience",
+            cell: ({ row }) => row.original.experience?.value ?? "Non renseigné",
+        },
+        {
             id: "createdAt",
             header: "Date de création",
             cell: ({ row }) =>
@@ -131,7 +162,6 @@ export function buildDriverColumns() {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        {/* Modal d'édition */}
                         <Modal
                             open={isEditModalOpen}
                             setOpen={setEditModalOpen}
@@ -144,7 +174,6 @@ export function buildDriverColumns() {
                             )}
                         </Modal>
 
-                        {/* Modal de confirmation pour suppression */}
                         <Modal
                             open={isDeleteModalOpen}
                             setOpen={setDeleteModalOpen}

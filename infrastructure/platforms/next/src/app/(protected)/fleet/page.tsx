@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/common/Modal";
 import React from "react";
-import FleetForm from "@/components/fleet/fleetForm.tsx";
+import FleetForm from "@/components/fleet/fleetForm";
 
 export default function FleetListPage() {
     const { data: fleets } = useQuery({

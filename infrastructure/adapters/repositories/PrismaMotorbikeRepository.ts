@@ -87,12 +87,37 @@ export class PrismaMotorbikeRepository implements MotorbikeRepository {
         return record ? MotorbikeEntity.reconstitute(record) : null;
     }
 
-    async findByFleetId(fleetId: string): Promise<MotorbikeEntity[] | null> {
+    async findAllByFleetId(fleetId: string): Promise<MotorbikeEntity[] | null> {
         const records = await this.database.motorbike.findMany({
-            where: { fleetId },
+            where: { fleetId: fleetId },  // Assurez-vous que fleetId est bien pris en compte
+            include: {
+                modelMotorbike: { select: { name: true } },
+                Driver: { select: { firstName: true, lastName: true } },
+                Fleet: { select: { name: true } }
+            }
         });
-        return records.length ? records.map(MotorbikeEntity.reconstitute) : null;
+
+        // Vérifie si le résultat est vide avant de le transformer
+        return records.length ? records.map(record => MotorbikeEntity.reconstitute({
+            id: record.id,
+            modelId: record.modelId,
+            fleetId: record.fleetId,
+            companyOrDealerShipId: record.companyOrDealerShipId,
+            driverId: record.driverId,
+            color: record.color,
+            licensePlate: record.licensePlate,
+            vehicleIdentificationNumber: record.vehicleIdentificationNumber,
+            mileage: record.mileage,
+            status: record.status,
+            createdAt: record.createdAt,
+            updatedAt: record.updatedAt,
+            modelMotorbikeName: record.modelMotorbike?.name,
+            driverFirstName: record.Driver?.firstName,
+            driverLastName: record.Driver?.lastName,
+            fleetName: record.Fleet?.name
+        })) : null;
     }
+
 
     async findByIdAndCompanyOrDealershipId(motorbikeId: string, companyOrDealershipId: string): Promise<MotorbikeEntity | null> {
         const record = await this.database.motorbike.findFirst({

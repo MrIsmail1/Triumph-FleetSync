@@ -1,27 +1,26 @@
 "use client";
 
-import {DataTable} from "@/components/common/DataTable";
-import {getUser, motorbikesList} from "@/lib/api";
-import {useQuery} from "@tanstack/react-query";
-import {buildMotorbikeColumns} from "./motorbikeColumns";
-import {useState} from "react";
-import {Button} from "@/components/ui/button";
-import {Modal} from "@/components/common/Modal";
-import MotorbikeForm from "@/components/motorbike/MotorbikeForm";
+import { useQuery } from "@tanstack/react-query";
+import { getUser, motorbikesList } from "@/lib/api";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/common/Modal";
 import React from "react";
+import {MotorbikeTable} from "./motorbikeColumns";
+import MotorbikeForm from "@/components/motorbike/motorbikeForm";
 
 export default function MotorbikeListPage() {
-    const {data: motorbikes} = useQuery({
+    const { data: motorbikes } = useQuery({
         queryKey: ["motorbikes"],
         queryFn: motorbikesList,
     });
 
-    const {data: currentUser} = useQuery({
+    const { data: currentUser } = useQuery({
         queryKey: ["currentUser"],
         queryFn: getUser,
     });
+
     const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-    const columns = buildMotorbikeColumns();
 
     return (
         <>
@@ -33,14 +32,7 @@ export default function MotorbikeListPage() {
             </div>
 
             <div className="p-2 border rounded-md">
-                <DataTable
-                    columns={columns}
-                    data={motorbikes ?? []}
-                    showColumnSelection
-                    initialPageSize={10}
-                    globalFilterColumnId="licensePlate"
-                    globalFilterPlaceholder="Recherche par plaque..."
-                />
+                <MotorbikeTable motorbikes={motorbikes ?? []} />
             </div>
 
             <Modal
@@ -50,7 +42,7 @@ export default function MotorbikeListPage() {
                 cancelText="Annuler"
                 description="Remplissez le formulaire ci-dessous pour ajouter une nouvelle moto."
             >
-                <MotorbikeForm setOpen={setCreateModalOpen}/>
+                <MotorbikeForm setOpen={setCreateModalOpen} />
             </Modal>
         </>
     );

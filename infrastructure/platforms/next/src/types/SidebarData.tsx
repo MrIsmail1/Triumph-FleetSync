@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/ui/sidebar";
-import {Bike, Book, HousePlus, Users2} from "lucide-react";
+import {Bike, Book, Calendar1, HousePlus, OctagonAlert, Users2} from "lucide-react";
 import { HiOutlineHome } from "react-icons/hi2";
 import { User } from "./AuthResponses.ts";
 import React from "react";
@@ -63,5 +63,19 @@ export const sidebarData: SidebarData[] = [
     authorizedRoles: ["admin", "company", "dealership"],
     isActive: false,
     icon: <Users2 className="w-6 h-6" />,
+  },
+  {
+    title: "Essaie",
+    url: "/try",
+    authorizedRoles: ["admin", "dealership"],
+    isActive: false,
+    icon: <Calendar1 className="w-6 h-6" />,
+  },
+  {
+    title: "Incident",
+    url: "/motorbikeincident",
+    authorizedRoles: ["admin", "company", "dealership"],
+    isActive: false,
+    icon: <OctagonAlert className="w-6 h-6" />,
   },
 ];

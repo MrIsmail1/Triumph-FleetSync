@@ -8,7 +8,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/common/Modal";
 import React from "react";
-import ModelMotorbikeForm from "@/components/modelMotorbike/modelMotorbikeForm.tsx";
+import ModelMotorbikeForm from "@/components/modelMotorbike/modelMotorbikeForm";
 
 export default function ModelMotorbikeListPage() {
     const { data: modelMotorbikes } = useQuery({

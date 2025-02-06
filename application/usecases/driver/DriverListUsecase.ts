@@ -3,7 +3,8 @@ import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
 
 
 export class DriverListUsecase {
-    public constructor(private readonly driverRepository: DriverRepository) {}
+    public constructor(private readonly driverRepository: DriverRepository) {
+    }
 
     public async execute(currentUserIdentifier: string, currentUserRole: string) {
         if (currentUserRole === "technician") {

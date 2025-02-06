@@ -6,10 +6,12 @@ import {VehicleIdentificationNumber} from "../../../domain/types/VehicleIdentifi
 import {MotorbikeUpdateError} from "../../../domain/errors/MotorbikeUpdateError";
 import {AccessDeniedError} from "../../../domain/errors/AccessDeniedError";
 import {ValidString} from "../../../domain/types/ValidString";
+import {DriverHistoricalCreateUsecase} from "../driverHistorical/DriverHistoricalCreateUsecase";
 
 export class MotorbikeUpdateUsecase {
     public constructor(
-        private readonly motorbikeRepository: MotorbikeRepository) {
+        private readonly motorbikeRepository: MotorbikeRepository,
+        private readonly driverHistoricalCreateUsecase: DriverHistoricalCreateUsecase) {
     }
 
     public async execute(
@@ -37,7 +39,6 @@ export class MotorbikeUpdateUsecase {
         if (!motorbike) {
             return new MotorbikeNotFoundError();
         }
-
 
         if (currentUserRole === "admin") {
             if (dataToUpdate.licensePlate) {
@@ -79,7 +80,6 @@ export class MotorbikeUpdateUsecase {
             if (dataToUpdate.companyOrDealerShipId !== undefined) {
                 motorbike.companyOrDealerShipId = dataToUpdate.companyOrDealerShipId;
             }
-
         }
         if (currentUserRole === "company" || currentUserRole === "dealership") {
             // Toujours mettre à jour fleetId et driverId, même si c'est null
@@ -88,10 +88,16 @@ export class MotorbikeUpdateUsecase {
             }
 
             if (dataToUpdate.driverId !== undefined) {
+                // Vérifier que driverId n'est pas null avant d'ajouter un historique
+                if (dataToUpdate.driverId !== null && motorbike.driverId !== dataToUpdate.driverId) {
+                    await this.driverHistoricalCreateUsecase.execute(
+                        dataToUpdate.driverId,
+                        motorbikeId,
+                    );
+                }
                 motorbike.driverId = dataToUpdate.driverId;
             }
         }
-
 
         if (currentUserRole === "company" || currentUserRole === "dealership") {
             const userMotorbike = await this.motorbikeRepository.findByIdAndCompanyOrDealershipId(motorbikeId, currentUserIdentifier);
@@ -100,7 +106,6 @@ export class MotorbikeUpdateUsecase {
                 return new UnauthorizedActionError();
             }
         }
-
 
         const updatedMotorbike = await this.motorbikeRepository.update(motorbike);
 
@@ -111,4 +116,3 @@ export class MotorbikeUpdateUsecase {
         return updatedMotorbike;
     }
 }
-

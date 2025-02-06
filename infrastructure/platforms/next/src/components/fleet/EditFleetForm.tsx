@@ -71,7 +71,6 @@ export default function EditFleetForm({
                         </Alert>
                     )}
 
-                    {/* Nom de la flotte */}
                     <FormField
                         control={form.control}
                         name="name"

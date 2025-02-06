@@ -74,7 +74,6 @@ export default function EditModelMotorbikeForm({
                         </Alert>
                     )}
 
-                    {/* Nom du modèle */}
                     <FormField
                         control={form.control}
                         name="name"
@@ -89,7 +88,6 @@ export default function EditModelMotorbikeForm({
                         )}
                     />
 
-                    {/* Marque */}
                     <FormField
                         control={form.control}
                         name="brand"
@@ -104,7 +102,6 @@ export default function EditModelMotorbikeForm({
                         )}
                     />
 
-                    {/* Intervalle de maintenance en kilomètres */}
                     <FormField
                         control={form.control}
                         name="maintenanceIntervalKm"
@@ -119,7 +116,6 @@ export default function EditModelMotorbikeForm({
                         )}
                     />
 
-                    {/* Intervalle de maintenance en mois */}
                     <FormField
                         control={form.control}
                         name="maintenanceIntervalTimeMonths"

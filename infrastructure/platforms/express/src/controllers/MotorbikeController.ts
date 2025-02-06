@@ -9,9 +9,16 @@ import appAssert from "../utils/appAssert.ts";
 import catchErrors from "../utils/catchErrors.ts";
 import {mapDomainErrorToHttp} from "../utils/errorsMapper.ts";
 import {AccessTokenPayload} from "../utils/jwt.ts";
+import {
+    DriverHistoricalCreateUsecase
+} from "../../../../../application/usecases/driverHistorical/DriverHistoricalCreateUsecase.ts";
+import {
+    MotorbikeListByFleetIdUsecase
+} from "../../../../../application/usecases/motorbike/MotorbikeListByFleetIdUsecase.ts";
 
 export class MotorbikeController {
-    public constructor(private readonly motorbikeRepository: MotorbikeRepository) {
+    public constructor(private readonly motorbikeRepository: MotorbikeRepository,
+                       private readonly driverHistoricalCreateUsecase: DriverHistoricalCreateUsecase) {
     }
 
     createMotorbikeHandler = catchErrors(async (request, response) => {
@@ -68,6 +75,21 @@ export class MotorbikeController {
         response.status(OK).json(motorbikes);
     });
 
+    listMotorbikesByFleetIdHandler = catchErrors(async (request, response) => {
+        const currentUser = request.user as AccessTokenPayload;
+        const {fleetId} = request.params;
+        const motorbikeListByFleetIdUsecase = new MotorbikeListByFleetIdUsecase(this.motorbikeRepository);
+
+        const motorbikes = await motorbikeListByFleetIdUsecase.execute(fleetId, currentUser.role);
+
+        appAssert(
+            !(motorbikes instanceof Error),
+            ...mapDomainErrorToHttp(motorbikes as Error)
+        );
+
+        response.status(OK).json(motorbikes);
+    })
+
     getMotorbikeHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
         const {motorbikeId} = request.params;
@@ -109,11 +131,9 @@ export class MotorbikeController {
     updateMotorbikeHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
         const {motorbikeId} = request.params;
-        console.log(motorbikeId);
         const dataToUpdate = request.body;
-        console.log(dataToUpdate);
 
-        const motorbikeUpdateUsecase = new MotorbikeUpdateUsecase(this.motorbikeRepository);
+        const motorbikeUpdateUsecase = new MotorbikeUpdateUsecase(this.motorbikeRepository, this.driverHistoricalCreateUsecase);
 
         const updatedMotorbikeOrError = await motorbikeUpdateUsecase.execute(motorbikeId, currentUser.userIdentifier, currentUser.role, dataToUpdate);
 

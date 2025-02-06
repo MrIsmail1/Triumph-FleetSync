@@ -33,7 +33,6 @@ export class FleetUpdateUsecase {
             }
         }
 
-        // Vérification et mise à jour du nom
         if (dataToUpdate.name) {
             const nameOrError = ValidString.from(dataToUpdate.name);
             if (nameOrError instanceof Error) {
@@ -42,7 +41,6 @@ export class FleetUpdateUsecase {
             fleet.name = nameOrError;
         }
 
-        // Mise à jour de la flotte
         const updatedFleet = await this.fleetRepository.update(fleet);
 
         if (!updatedFleet) {

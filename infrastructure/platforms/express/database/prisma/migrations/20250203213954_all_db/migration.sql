@@ -1,23 +1,58 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "firstName" TEXT NOT NULL,
+    "lastName" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "passwordHash" TEXT NOT NULL,
+    "role" TEXT NOT NULL,
+    "isVerified" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
-  - Added the required column `actionTaken` to the `Breakdown` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `companyOrDealerShipId` to the `Breakdown` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `companyOrDealerShipId` to the `Maintenance` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `warrantyDetails` to the `Warranty` table without a default value. This is not possible if the table is not empty.
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
-*/
--- AlterTable
-ALTER TABLE "Breakdown" ADD COLUMN     "actionTaken" TEXT NOT NULL,
-ADD COLUMN     "companyOrDealerShipId" TEXT NOT NULL,
-ADD COLUMN     "resolutionDate" TIMESTAMP(3),
-ADD COLUMN     "resolved" BOOLEAN NOT NULL DEFAULT false;
+-- CreateTable
+CREATE TABLE "VerificationCode" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
--- AlterTable
-ALTER TABLE "Maintenance" ADD COLUMN     "companyOrDealerShipId" TEXT NOT NULL;
+    CONSTRAINT "VerificationCode_pkey" PRIMARY KEY ("id")
+);
 
--- AlterTable
-ALTER TABLE "Warranty" ADD COLUMN     "warrantyDetails" TEXT NOT NULL;
+-- CreateTable
+CREATE TABLE "Session" (
+    "id" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userAgent" TEXT,
+
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Maintenance" (
+    "id" TEXT NOT NULL,
+    "motorbikeId" TEXT NOT NULL,
+    "companyOrDealerShipId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "maintenanceDate" TIMESTAMP(3) NOT NULL,
+    "mileageAtMaintenance" INTEGER NOT NULL,
+    "maintenanceType" TEXT NOT NULL,
+    "maintenanceCost" DOUBLE PRECISION NOT NULL,
+    "maintenanceDescription" TEXT NOT NULL,
+    "breakdownId" TEXT,
+    "warrantyId" TEXT,
+
+    CONSTRAINT "Maintenance_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "Driver" (
@@ -26,6 +61,12 @@ CREATE TABLE "Driver" (
     "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "companyOrDealerShipId" TEXT NOT NULL,
+    "frenchLicenseNumber" TEXT NOT NULL,
+    "dateDeliveryLicence" TIMESTAMP(3) NOT NULL,
+    "dateExpirationLicense" TIMESTAMP(3) NOT NULL,
+    "frenchTypeMotorbikeLicense" TEXT NOT NULL,
+    "restrictionConditions" TEXT NOT NULL,
+    "experience" TEXT NOT NULL,
     "motorbikeId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -49,6 +90,33 @@ CREATE TABLE "Motorbike" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Motorbike_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Breakdown" (
+    "id" TEXT NOT NULL,
+    "companyOrDealerShipId" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "actionTaken" TEXT NOT NULL,
+    "resolved" BOOLEAN NOT NULL DEFAULT false,
+    "resolutionDate" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Breakdown_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Warranty" (
+    "id" TEXT NOT NULL,
+    "validFrom" TIMESTAMP(3) NOT NULL,
+    "validUntil" TIMESTAMP(3) NOT NULL,
+    "providerName" TEXT NOT NULL,
+    "warrantyDetails" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Warranty_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -76,6 +144,21 @@ CREATE TABLE "ModelMotorbike" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Maintenance_breakdownId_key" ON "Maintenance"("breakdownId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Maintenance_warrantyId_key" ON "Maintenance"("warrantyId");
+
+-- CreateIndex
+CREATE INDEX "Maintenance_motorbikeId_idx" ON "Maintenance"("motorbikeId");
+
+-- CreateIndex
+CREATE INDEX "Maintenance_companyOrDealerShipId_idx" ON "Maintenance"("companyOrDealerShipId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Driver_email_key" ON "Driver"("email");
 
 -- CreateIndex
@@ -97,19 +180,22 @@ CREATE INDEX "Motorbike_driverId_idx" ON "Motorbike"("driverId");
 CREATE INDEX "Motorbike_fleetId_idx" ON "Motorbike"("fleetId");
 
 -- CreateIndex
-CREATE INDEX "Fleet_companyOrDealerShipId_idx" ON "Fleet"("companyOrDealerShipId");
-
--- CreateIndex
 CREATE INDEX "Breakdown_companyOrDealerShipId_idx" ON "Breakdown"("companyOrDealerShipId");
 
 -- CreateIndex
-CREATE INDEX "Maintenance_companyOrDealerShipId_idx" ON "Maintenance"("companyOrDealerShipId");
+CREATE INDEX "Fleet_companyOrDealerShipId_idx" ON "Fleet"("companyOrDealerShipId");
 
 -- AddForeignKey
 ALTER TABLE "Maintenance" ADD CONSTRAINT "Maintenance_companyOrDealerShipId_fkey" FOREIGN KEY ("companyOrDealerShipId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Maintenance" ADD CONSTRAINT "Maintenance_motorbikeId_fkey" FOREIGN KEY ("motorbikeId") REFERENCES "Motorbike"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Maintenance" ADD CONSTRAINT "Maintenance_breakdownId_fkey" FOREIGN KEY ("breakdownId") REFERENCES "Breakdown"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Maintenance" ADD CONSTRAINT "Maintenance_warrantyId_fkey" FOREIGN KEY ("warrantyId") REFERENCES "Warranty"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Driver" ADD CONSTRAINT "Driver_companyOrDealerShipId_fkey" FOREIGN KEY ("companyOrDealerShipId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
