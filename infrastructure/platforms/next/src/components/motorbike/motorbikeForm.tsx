@@ -29,7 +29,6 @@ import { modelMotorbikesList, motorbikeCreate } from "@/lib/api.ts";
 export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) => void }) {
     const queryClient = useQueryClient();
 
-    // Récupération des modèles de moto pour la dropdown
     const { data: models, isLoading: isLoadingModels, error } = useQuery({
         queryKey: ["motorbikeModels"],
         queryFn: modelMotorbikesList,
@@ -38,7 +37,6 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
     console.log("Modèles de moto :", models);
     console.log("Erreur API modèles :", error);
 
-    // Initialisation du formulaire avec React Hook Form
     const form = useForm<MotorbikeSchema>({
         resolver: zodResolver(motorbikeSchema),
         defaultValues: {
@@ -51,14 +49,12 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
         },
     });
 
-    // Assurer qu'un modèle est sélectionné par défaut
     useEffect(() => {
         if (models && models.length > 0) {
             form.setValue("modelId", models[0].identifier);
         }
     }, [models, form]);
 
-    // Mutation pour créer une moto
     const {
         mutate: createMotorbikeMutation,
         isError,
@@ -69,13 +65,12 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
         onSuccess: () => {
             form.reset();
             if (setOpen) {
-                setOpen(false); // Fermer la modal après création réussie
+                setOpen(false);
             }
-            queryClient.invalidateQueries(["motorbikes"]); // Recharger la liste des motos
+            queryClient.invalidateQueries(["motorbikes"]);
         },
     });
 
-    // Gestion de la soumission du formulaire
     const onSubmit: SubmitHandler<MotorbikeSchema> = (data) => {
         createMotorbikeMutation(data);
     };
@@ -96,7 +91,6 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
                             </Alert>
                         )}
 
-                        {/* Sélection du modèle de moto */}
                         <FormField
                             control={form.control}
                             name="modelId"
@@ -126,7 +120,6 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
                             )}
                         />
 
-                        {/* Couleur */}
                         <FormField
                             control={form.control}
                             name="color"
@@ -141,7 +134,6 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
                             )}
                         />
 
-                        {/* Plaque d'immatriculation */}
                         <FormField
                             control={form.control}
                             name="licensePlate"
@@ -156,7 +148,6 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
                             )}
                         />
 
-                        {/* Numéro de châssis */}
                         <FormField
                             control={form.control}
                             name="vehicleIdentificationNumber"
@@ -171,7 +162,6 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
                             )}
                         />
 
-                        {/* Kilométrage */}
                         <FormField
                             control={form.control}
                             name="mileage"
@@ -186,7 +176,6 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
                             )}
                         />
 
-                        {/* Statut */}
                         <FormField
                             control={form.control}
                             name="status"

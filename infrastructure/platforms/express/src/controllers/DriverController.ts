@@ -16,7 +16,18 @@ export class DriverController {
 
     createDriverHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
-        const { firstName, lastName, email, motorbikeId } = request.body;
+        const {
+            firstName,
+            lastName,
+            email,
+            motorbikeId,
+            frenchLicenseNumber,
+            dateDeliveryLicence,
+            dateExpirationLicense,
+            frenchTypeMotorbikeLicense,
+            restrictionConditions,
+            experience
+        } = request.body;
 
         const driverCreateUsecase = new DriverCreateUsecase(this.driverRepository);
 
@@ -26,6 +37,12 @@ export class DriverController {
             email,
             currentUser.userIdentifier,
             motorbikeId,
+            frenchLicenseNumber,
+            new Date(dateDeliveryLicence),
+            new Date(dateExpirationLicense),
+            frenchTypeMotorbikeLicense,
+            restrictionConditions,
+            experience,
             currentUser.role
         );
 
@@ -36,8 +53,10 @@ export class DriverController {
 
         response.status(CREATED).json({
             message: "Driver created successfully.",
+            driver: driverOrError
         });
     });
+
 
     listDriversHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;

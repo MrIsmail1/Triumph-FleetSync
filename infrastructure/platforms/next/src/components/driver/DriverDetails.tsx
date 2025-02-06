@@ -13,6 +13,12 @@ export default function DriverDetails({ driver }: { driver: Driver }) {
                 <p><strong>Prénom :</strong> {driver.firstName?.value || "Non renseigné"}</p>
                 <p><strong>Nom :</strong> {driver.lastName?.value || "Non renseigné"}</p>
                 <p><strong>Email :</strong> {driver.email?.value || "Non renseigné"}</p>
+                <p><strong>Numéro de permis :</strong> {driver.frenchLicenseNumber?.value || "Non renseigné"}</p>
+                <p><strong>Type de permis :</strong> {driver.frenchTypeMotorbikeLicense?.value || "Non renseigné"}</p>
+                <p><strong>Date de délivrance :</strong> {driver.dateDeliveryLicence ? new Date(driver.dateDeliveryLicence).toLocaleDateString("fr-FR") : "Non renseigné"}</p>
+                <p><strong>Date d'expiration :</strong> {driver.dateExpirationLicense ? new Date(driver.dateExpirationLicense).toLocaleDateString("fr-FR") : "Non renseigné"}</p>
+                <p><strong>Restrictions :</strong> {driver.restrictionConditions?.value || "Aucune"}</p>
+                <p><strong>Expérience :</strong> {driver.experience?.value || "Non renseigné"}</p>
                 <p><strong>Date de création :</strong> {new Date(driver.createdAt).toLocaleDateString("fr-FR")}</p>
                 <p><strong>Dernière modification :</strong> {new Date(driver.updatedAt).toLocaleDateString("fr-FR")}</p>
 

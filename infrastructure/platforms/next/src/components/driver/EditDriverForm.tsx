@@ -31,6 +31,16 @@ export default function EditDriverForm({
         firstName: driver.firstName.value || "",
         lastName: driver.lastName.value || "",
         email: driver.email.value || "",
+        frenchLicenseNumber: driver.frenchLicenseNumber.value || "",
+        dateDeliveryLicence: driver.dateDeliveryLicence
+            ? new Date(driver.dateDeliveryLicence).toISOString().split("T")[0]
+            : "",
+        dateExpirationLicense: driver.dateExpirationLicense
+            ? new Date(driver.dateExpirationLicense).toISOString().split("T")[0]
+            : "",
+        frenchTypeMotorbikeLicense: driver.frenchTypeMotorbikeLicense.value || "",
+        restrictionConditions: driver.restrictionConditions.value || "",
+        experience: driver.experience.value || "",
     };
 
     const form = useForm<DriverSchema>({
@@ -73,7 +83,6 @@ export default function EditDriverForm({
                         </Alert>
                     )}
 
-                    {/* Prénom */}
                     <FormField
                         control={form.control}
                         name="firstName"
@@ -88,7 +97,6 @@ export default function EditDriverForm({
                         )}
                     />
 
-                    {/* Nom */}
                     <FormField
                         control={form.control}
                         name="lastName"
@@ -103,7 +111,6 @@ export default function EditDriverForm({
                         )}
                     />
 
-                    {/* Email */}
                     <FormField
                         control={form.control}
                         name="email"
@@ -112,6 +119,90 @@ export default function EditDriverForm({
                                 <FormLabel>Email</FormLabel>
                                 <FormControl>
                                     <Input type="email" placeholder="Email" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="frenchLicenseNumber"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Numéro de permis</FormLabel>
+                                <FormControl>
+                                    <Input type="text" placeholder="Numéro de permis" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="dateDeliveryLicence"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Date de délivrance</FormLabel>
+                                <FormControl>
+                                    <Input type="date" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="dateExpirationLicense"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Date d'expiration</FormLabel>
+                                <FormControl>
+                                    <Input type="date" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="frenchTypeMotorbikeLicense"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Type de permis</FormLabel>
+                                <FormControl>
+                                    <Input type="text" placeholder="Type de permis" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="restrictionConditions"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Restrictions</FormLabel>
+                                <FormControl>
+                                    <Input type="text" placeholder="Restrictions" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="experience"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Expérience</FormLabel>
+                                <FormControl>
+                                    <Input type="text" placeholder="Expérience" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

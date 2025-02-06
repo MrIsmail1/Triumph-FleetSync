@@ -28,7 +28,6 @@ import React from "react";
 export default function ModelMotorbikeForm({ setOpen }: { setOpen?: (open: boolean) => void }) {
     const queryClient = useQueryClient();
 
-    // Initialisation du formulaire avec RHF
     const form = useForm<ModelMotorbikeSchema>({
         resolver: zodResolver(modelMotorbikeSchema),
         defaultValues: {
@@ -39,7 +38,6 @@ export default function ModelMotorbikeForm({ setOpen }: { setOpen?: (open: boole
         },
     });
 
-    // Mutation pour créer un modèle de moto
     const {
         mutate: createModelMotorbike,
         isError,
@@ -56,7 +54,6 @@ export default function ModelMotorbikeForm({ setOpen }: { setOpen?: (open: boole
         },
     });
 
-    // Gestion de la soumission
     const onSubmit: SubmitHandler<ModelMotorbikeSchema> = (data) => {
         createModelMotorbike(data);
     };

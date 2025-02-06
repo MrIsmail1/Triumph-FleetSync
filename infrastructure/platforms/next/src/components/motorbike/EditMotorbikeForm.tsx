@@ -35,17 +35,19 @@ export default function EditMotorbikeForm({
     const queryClient = useQueryClient();
     const userRole = currentUserRole?.value;
 
-    if (userRole == "admin") {
-        const {data: models, isLoading: isLoadingModels} = useQuery({
-            queryKey: ["motorbikeModels"],
-            queryFn: modelMotorbikesList,
-        });
+    const isAdmin = userRole === "admin";
 
-        const {data: users, isLoading: isLoadingUsers} = useQuery({
-            queryKey: ["users"],
-            queryFn: usersList,
-        });
-    }
+    const {data: models, isLoading: isLoadingModels} = useQuery({
+        queryKey: ["motorbikeModels"],
+        queryFn: modelMotorbikesList,
+        enabled: isAdmin,
+    });
+
+    const {data: users, isLoading: isLoadingUsers} = useQuery({
+        queryKey: ["users"],
+        queryFn: usersList,
+        enabled: isAdmin,
+    });
 
     const {data: drivers, isLoading: isLoadingDrivers} = useQuery({
         queryKey: ["drivers"],
@@ -112,7 +114,6 @@ export default function EditMotorbikeForm({
     };
 
 
-
     return (
         <div>
             <Form {...form}>
@@ -125,97 +126,238 @@ export default function EditMotorbikeForm({
                         </Alert>
                     )}
 
-                    {/* Affectation du conducteur */}
+                    {["company"].includes(userRole) && (
+                        <FormField
+                            control={form.control}
+                            name="driverId"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Affecter à un conducteur</FormLabel>
+                                    <FormControl>
+                                        <Select
+                                            onValueChange={(value) => {
+                                                const newValue = value === "none" ? null : value;
+                                                field.onChange(newValue);
+                                                form.setValue("driverId", newValue, {shouldDirty: true});
+                                            }}
+                                            value={field.value || ""}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue>
+                                                    {field.value
+                                                        ? drivers?.find(driver => driver.identifier === field.value)?.firstName.value +
+                                                        " " +
+                                                        drivers?.find(driver => driver.identifier === field.value)?.lastName.value
+                                                        : "Sélectionnez un conducteur"}
+                                                </SelectValue>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="none">Aucun conducteur</SelectItem>
+                                                {isLoadingDrivers ? (
+                                                    <SelectItem disabled>Chargement...</SelectItem>
+                                                ) : (
+                                                    drivers?.map((driver) => (
+                                                        <SelectItem key={driver.identifier}
+                                                                    value={driver.identifier}>
+                                                            {driver.firstName.value} {driver.lastName.value}
+                                                        </SelectItem>
+                                                    ))
+                                                )}
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                    )}
+
                     {["dealership", "company"].includes(userRole) && (
+                        <FormField
+                            control={form.control}
+                            name="fleetId"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Affecter à une flotte</FormLabel>
+                                    <FormControl>
+                                        <Select
+                                            onValueChange={(value) => {
+                                                const newValue = value === "none" ? null : value;
+                                                field.onChange(newValue);
+                                                form.setValue("fleetId", newValue, {shouldDirty: true});
+                                            }}
+                                            value={field.value || ""}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue>
+                                                    {field.value
+                                                        ? fleets?.find(fleet => fleet.identifier === field.value)?.name.value
+                                                        : "Sélectionnez une flotte"}
+                                                </SelectValue>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="none">Aucune flotte</SelectItem>
+                                                {isLoadingFleets ? (
+                                                    <SelectItem disabled>Chargement...</SelectItem>
+                                                ) : (
+                                                    fleets?.map((fleet) => (
+                                                        <SelectItem key={fleet.identifier} value={fleet.identifier}>
+                                                            {fleet.name?.value || "Nom inconnu"}
+                                                        </SelectItem>
+                                                    ))
+                                                )}
+                                            </SelectContent>
+                                        </Select>
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+                    )}
+
+
+                    {["admin"].includes(userRole) && (
                         <>
                             <FormField
                                 control={form.control}
-                                name="driverId"
-                                render={({ field }) => (
+                                name="companyOrDealerShipId"
+                                render={({field}) => (
                                     <FormItem>
-                                        <FormLabel>Affecter à un conducteur</FormLabel>
+                                        <FormLabel>Attribuer à une entreprise ou concessionaire</FormLabel>
                                         <FormControl>
                                             <Select
                                                 onValueChange={(value) => {
-                                                    const newValue = value === "none" ? null : value;
-                                                    field.onChange(newValue);
-                                                    form.setValue("driverId", newValue, { shouldDirty: true });
+                                                    field.onChange(value);
+                                                    console.log("Entreprise ou concessionaire sélectionné :", value);
                                                 }}
                                                 value={field.value || ""}
                                             >
                                                 <SelectTrigger>
                                                     <SelectValue>
                                                         {field.value
-                                                            ? drivers?.find(driver => driver.identifier === field.value)?.firstName.value +
+                                                            ? users?.find(user => user.identifier === field.value)?.firstName.value +
                                                             " " +
-                                                            drivers?.find(driver => driver.identifier === field.value)?.lastName.value
-                                                            : "Sélectionnez un conducteur"}
+                                                            users?.find(user => user.identifier === field.value)?.lastName.value
+                                                            : "Sélectionnez une entreprise ou un concessionaire"}
                                                     </SelectValue>
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="none">Aucun conducteur</SelectItem>
-                                                    {isLoadingDrivers ? (
-                                                        <SelectItem disabled>Chargement...</SelectItem>
+                                                    {isLoadingUsers ? (
+                                                        <SelectItem key="loading" disabled>Chargement...</SelectItem>
                                                     ) : (
-                                                        drivers?.map((driver) => (
-                                                            <SelectItem key={driver.identifier} value={driver.identifier}>
-                                                                {driver.firstName.value} {driver.lastName.value}
+                                                        users?.map((user) => (
+                                                            <SelectItem key={user.identifier} value={user.identifier}>
+                                                                {user.firstName.value} {user.lastName.value}
                                                             </SelectItem>
                                                         ))
                                                     )}
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
 
-
-
-                            {/* Affectation de la flotte */}
                             <FormField
                                 control={form.control}
-                                name="fleetId"
-                                render={({ field }) => (
+                                name="modelId"
+                                render={({field}) => (
                                     <FormItem>
-                                        <FormLabel>Affecter à une flotte</FormLabel>
+                                        <FormLabel>Modèle de moto</FormLabel>
                                         <FormControl>
-                                            <Select
-                                                onValueChange={(value) => {
-                                                    const newValue = value === "none" ? null : value;
-                                                    field.onChange(newValue);
-                                                    form.setValue("fleetId", newValue, { shouldDirty: true });
-                                                }}
-                                                value={field.value || ""}
-                                            >
+                                            <Select onValueChange={field.onChange} value={field.value}>
                                                 <SelectTrigger>
-                                                    <SelectValue>
-                                                        {field.value
-                                                            ? fleets?.find(fleet => fleet.identifier === field.value)?.name.value
-                                                            : "Sélectionnez une flotte"}
-                                                    </SelectValue>
+                                                    <SelectValue placeholder="Sélectionnez un modèle"/>
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="none">Aucune flotte</SelectItem>
-                                                    {isLoadingFleets ? (
+                                                    {isLoadingModels ? (
                                                         <SelectItem disabled>Chargement...</SelectItem>
                                                     ) : (
-                                                        fleets?.map((fleet) => (
-                                                            <SelectItem key={fleet.identifier} value={fleet.identifier}>
-                                                                {fleet.name?.value || "Nom inconnu"}
+                                                        models?.map((model) => (
+                                                            <SelectItem key={model.identifier} value={model.identifier}>
+                                                                {model.name?.value || "Nom inconnu"}
                                                             </SelectItem>
                                                         ))
                                                     )}
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                             />
 
+                            <FormField
+                                control={form.control}
+                                name="licensePlate"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Immatriculation</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="AB-123-CD" {...field} />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
 
+                            <FormField
+                                control={form.control}
+                                name="vehicleIdentificationNumber"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Numéro de série</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="VIN" {...field} />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="color"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Couleur</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="Rouge" {...field} />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="mileage"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>Kilométrage</FormLabel>
+                                        <FormControl>
+                                            <Input type="number" placeholder="5000" {...field}
+                                                   value={field.value || ""}/>
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
+
+                            <FormField
+                                control={form.control}
+                                name="status"
+                                render={({field}) => (
+                                    <FormItem>
+                                        <FormLabel>État</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="Bon" {...field} />
+                                        </FormControl>
+                                        <FormMessage/>
+                                    </FormItem>
+                                )}
+                            />
                         </>
                     )}
 

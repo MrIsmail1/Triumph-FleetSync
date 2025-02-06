@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { RiMore2Fill } from "react-icons/ri";
-
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -19,21 +18,21 @@ import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUser, motorbikeDelete } from "@/lib/api";
 import EditMotorbikeForm from "@/components/motorbike/EditMotorbikeForm";
+import { DataTable } from "@/components/common/DataTable";
+import Link from "next/link";
 
-export function buildMotorbikeColumns() {
+export function MotorbikeTable({ motorbikes }: { motorbikes: Motorbike[] }) {
     const [isEditModalOpen, setEditModalOpen] = useState(false);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedMotorbike, setSelectedMotorbike] = useState<Motorbike | null>(null);
 
     const queryClient = useQueryClient();
 
-    // Récupérer l'utilisateur et son rôle
     const { data: currentUser } = useQuery({
         queryKey: ["currentUser"],
         queryFn: getUser,
     });
 
-    // Mutation pour supprimer une moto
     const { mutate: deleteMotorbike, isLoading } = useMutation({
         mutationFn: motorbikeDelete,
         onSuccess: () => {
@@ -58,7 +57,6 @@ export function buildMotorbikeColumns() {
         deleteMotorbike(selectedMotorbike.identifier);
     };
 
-    // Définition des colonnes
     let columns: ColumnDef<Motorbike>[] = [
         {
             id: "select",
@@ -149,6 +147,9 @@ export function buildMotorbikeColumns() {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
+                                <DropdownMenuItem className="text-sm">
+                                    <Link href={`/motorbike/${motorbike.identifier}`}>Voir</Link>
+                                </DropdownMenuItem>
                                 <DropdownMenuItem className="text-sm" onClick={() => handleEditClick(motorbike)}>
                                     Modifier
                                 </DropdownMenuItem>
@@ -159,7 +160,6 @@ export function buildMotorbikeColumns() {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        {/* Modal d'édition */}
                         <Modal
                             open={isEditModalOpen}
                             setOpen={setEditModalOpen}
@@ -172,7 +172,6 @@ export function buildMotorbikeColumns() {
                             )}
                         </Modal>
 
-                        {/* Modal de confirmation pour suppression */}
                         <Modal
                             open={isDeleteModalOpen}
                             setOpen={setDeleteModalOpen}
@@ -190,11 +189,10 @@ export function buildMotorbikeColumns() {
         },
     ];
 
-    // Cacher la colonne "Propriétaire" si l'utilisateur est "dealership" ou "company"
     if (currentUser && !["dealership", "company"].includes(currentUser.role.value)) {
-        columns.splice(6, 0, {
-            id: "owner",
-            header: "Propriétaire",
+        columns.splice(1, 0, {
+            id: "companyOrDealerShip",
+            header: "Entreprise / Concessionnaire",
             cell: ({ row }) => {
                 const firstName = row.original.companyOrDealerShipFirstName;
                 const lastName = row.original.companyOrDealerShipLastName;
@@ -203,5 +201,16 @@ export function buildMotorbikeColumns() {
         });
     }
 
-    return columns;
+    return (
+        <div className="p-2 border rounded-md mt-4">
+            <DataTable
+                columns={columns}
+                data={motorbikes ?? []}
+                showColumnSelection
+                initialPageSize={10}
+                globalFilterColumnId="licensePlate"
+                globalFilterPlaceholder="Recherche par plaque..."
+            />
+        </div>
+    );
 }

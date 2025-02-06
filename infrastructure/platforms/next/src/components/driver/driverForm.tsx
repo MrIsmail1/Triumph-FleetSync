@@ -28,24 +28,27 @@ import React from "react";
 export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => void }) {
     const queryClient = useQueryClient();
 
-    // Récupération de l'utilisateur connecté
     const { data: user } = useQuery({
         queryKey: ["currentUser"],
         queryFn: getUser,
     });
 
-    // Initialisation du formulaire avec RHF
     const form = useForm<DriverSchema>({
         resolver: zodResolver(driverSchema),
         defaultValues: {
             firstName: "",
             lastName: "",
             email: "",
-            companyOrDealerShipId: user?.identifier || "",
+            frenchLicenseNumber: "",
+            dateDeliveryLicence: "",
+            dateExpirationLicense: "",
+            frenchTypeMotorbikeLicense: "",
+            restrictionConditions: "",
+            experience: "",
+            motorbikeId: "",
         },
     });
 
-    // Mutation pour créer le conducteur
     const {
         mutate: createDriver,
         isError,
@@ -56,13 +59,12 @@ export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => v
         onSuccess: () => {
             form.reset();
             if (setOpen) {
-                setOpen(false); // Fermer la modal après création réussie
+                setOpen(false);
             }
-            queryClient.invalidateQueries(["drivers"]); // Recharger la liste des conducteurs
+            queryClient.invalidateQueries(["drivers"]);
         },
     });
 
-    // Gestion de la soumission
     const onSubmit: SubmitHandler<DriverSchema> = (data) => {
         createDriver({ ...data, companyOrDealerShipId: user?.id });
     };
@@ -85,7 +87,6 @@ export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => v
                             </Alert>
                         )}
 
-                        {/* Prénom */}
                         <FormField
                             control={form.control}
                             name="firstName"
@@ -100,7 +101,6 @@ export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => v
                             )}
                         />
 
-                        {/* Nom */}
                         <FormField
                             control={form.control}
                             name="lastName"
@@ -115,7 +115,6 @@ export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => v
                             )}
                         />
 
-                        {/* Email */}
                         <FormField
                             control={form.control}
                             name="email"
@@ -124,6 +123,90 @@ export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => v
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
                                         <Input type="email" placeholder="Email" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="frenchLicenseNumber"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Numéro de permis</FormLabel>
+                                    <FormControl>
+                                        <Input type="text" placeholder="Numéro de permis" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="dateDeliveryLicence"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Date de délivrance</FormLabel>
+                                    <FormControl>
+                                        <Input type="date" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="dateExpirationLicense"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Date d'expiration</FormLabel>
+                                    <FormControl>
+                                        <Input type="date" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="frenchTypeMotorbikeLicense"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Type de permis</FormLabel>
+                                    <FormControl>
+                                        <Input type="text" placeholder="Type de permis" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="restrictionConditions"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Restrictions / Conditions</FormLabel>
+                                    <FormControl>
+                                        <Input type="text" placeholder="Ex: Port de lunettes obligatoire" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="experience"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Expérience</FormLabel>
+                                    <FormControl>
+                                        <Input type="text" placeholder="Ex: 5 ans de conduite" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>

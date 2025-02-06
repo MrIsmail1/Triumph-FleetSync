@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { fleetSchema, FleetSchema } from "./fleetSchema";
-import { fleetCreate } from "@/lib/api"; // votre fonction d'appel API
+import { fleetCreate } from "@/lib/api";
 import {
     Card,
     CardContent,
@@ -27,7 +27,6 @@ import React from "react";
 export default function FleetForm({ setOpen }: { setOpen?: (open: boolean) => void }) {
     const queryClient = useQueryClient();
 
-    // Initialisation du formulaire avec RHF
     const form = useForm<FleetSchema>({
         resolver: zodResolver(fleetSchema),
         defaultValues: {
@@ -46,13 +45,12 @@ export default function FleetForm({ setOpen }: { setOpen?: (open: boolean) => vo
         onSuccess: () => {
             form.reset();
             if (setOpen) {
-                setOpen(false); // Fermer la modal après création réussie
+                setOpen(false);
             }
-            queryClient.invalidateQueries(["fleets"]); // Recharger la liste des flottes
+            queryClient.invalidateQueries(["fleets"]);
         },
     });
 
-    // Gestion de la soumission
     const onSubmit: SubmitHandler<FleetSchema> = (data) => {
         createFleet(data);
     };

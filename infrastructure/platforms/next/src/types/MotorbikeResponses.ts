@@ -1,7 +1,7 @@
-import {User} from "./AuthResponses.ts";
-import {Driver} from "./DriverResponses.ts";
-import {Fleet} from "./FleetResponses.ts";
-import {ModelMotorbike} from "./ModelMotorbikeResponses.ts";
+import {ModelMotorbike} from "@/types/ModelMotorbikeResponses";
+import {User} from "@/types/AuthResponses";
+import {Driver} from "@/types/DriverResponses";
+import {Fleet} from "@/types/FleetResponses";
 
 
 export interface Motorbike {

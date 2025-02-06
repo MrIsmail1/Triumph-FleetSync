@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { RiMore2Fill } from "react-icons/ri";
-
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -17,10 +17,9 @@ import { Modal } from "@/components/common/Modal";
 import { Fleet } from "@/types/FleetResponses";
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { fleetDelete } from "@/lib/api";
+import { fleetDelete, getUser } from "@/lib/api";
 import EditFleetForm from "@/components/fleet/EditFleetForm";
 import { useQuery } from "@tanstack/react-query";
-import { getUser } from "@/lib/api"; // Assurez-vous que cette fonction récupère l'utilisateur
 
 export function buildFleetColumns() {
     const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -29,13 +28,11 @@ export function buildFleetColumns() {
 
     const queryClient = useQueryClient();
 
-    // Récupérer l'utilisateur et son rôle
     const { data: currentUser } = useQuery({
         queryKey: ["currentUser"],
         queryFn: getUser,
     });
 
-    // Mutation pour supprimer une flotte
     const { mutate: deleteFleet, isLoading } = useMutation({
         mutationFn: fleetDelete,
         onSuccess: () => {
@@ -56,13 +53,10 @@ export function buildFleetColumns() {
     };
 
     const confirmDelete = () => {
-        if (!selectedFleet) {
-            return;
-        }
+        if (!selectedFleet) return;
         deleteFleet(selectedFleet.identifier);
     };
 
-    // Définition des colonnes de base
     let columns: ColumnDef<Fleet>[] = [
         {
             id: "select",
@@ -116,6 +110,9 @@ export function buildFleetColumns() {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
+                                <DropdownMenuItem className="text-sm">
+                                    <Link href={`/fleet/${fleet.identifier}`}>Voir</Link>
+                                </DropdownMenuItem>
                                 <DropdownMenuItem className="text-sm" onClick={() => handleEditClick(fleet)}>
                                     Modifier
                                 </DropdownMenuItem>
@@ -126,7 +123,6 @@ export function buildFleetColumns() {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        {/* Modal d'édition */}
                         <Modal
                             open={isEditModalOpen}
                             setOpen={setEditModalOpen}
@@ -139,7 +135,6 @@ export function buildFleetColumns() {
                             )}
                         </Modal>
 
-                        {/* Modal de confirmation pour suppression */}
                         <Modal
                             open={isDeleteModalOpen}
                             setOpen={setDeleteModalOpen}
@@ -157,7 +152,6 @@ export function buildFleetColumns() {
         },
     ];
 
-    // Ajouter la colonne "Entreprise / Concessionnaire" seulement si l'utilisateur n'est pas "dealership" ou "company"
     if (currentUser && !["dealership", "company"].includes(currentUser.role.value)) {
         columns.splice(1, 0, {
             id: "companyOrDealerShip",

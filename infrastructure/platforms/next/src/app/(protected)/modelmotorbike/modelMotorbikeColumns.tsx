@@ -28,11 +28,10 @@ export function buildModelMotorbikeColumns() {
 
     const queryClient = useQueryClient();
 
-    // Mutation pour supprimer un modèle de moto
     const { mutate: deleteModelMotorbike, isLoading } = useMutation({
         mutationFn: modelMotorbikeDelete,
         onSuccess: () => {
-            queryClient.invalidateQueries(["modelMotorbikes"]); // Rafraîchir la liste après suppression
+            queryClient.invalidateQueries(["modelMotorbikes"]);
             setDeleteModalOpen(false);
             setSelectedModelMotorbike(null);
         },
@@ -138,7 +137,6 @@ export function buildModelMotorbikeColumns() {
                             </DropdownMenuContent>
                         </DropdownMenu>
 
-                        {/* Modal d'édition */}
                         <Modal
                             open={isEditModalOpen}
                             setOpen={setEditModalOpen}
@@ -151,7 +149,6 @@ export function buildModelMotorbikeColumns() {
                             )}
                         </Modal>
 
-                        {/* Modal de confirmation pour suppression */}
                         <Modal
                             open={isDeleteModalOpen}
                             setOpen={setDeleteModalOpen}

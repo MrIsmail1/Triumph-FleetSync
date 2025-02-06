@@ -4,7 +4,8 @@ import {DriverNotFoundError} from "../../../domain/errors/DriverNotFoundError";
 
 
 export class DriverGetOneUsecase {
-    public constructor(private readonly driverRepository: DriverRepository) {}
+    public constructor(private readonly driverRepository: DriverRepository) {
+    }
 
     public async execute(driverId: string, currentUserIdentifier: string, currentUserRole: string) {
         if (currentUserRole === "technician") {

@@ -15,6 +15,9 @@ import motorbikeRoutes from "./routes/motorbike.route";
 import fleetRoutes from "./routes/fleet.route";
 import modelMotorbikeRoute from "./routes/modelMotorbike.route.ts";
 import driverRoutes from "./routes/driver.route.ts";
+import driverHistoricalRoute from "./routes/driverHistorical.route.ts";
+import tryRoutes from "./routes/try.routes.ts";
+import motorbikeIncidentRoutes from "./routes/motorbikeIncident.route.ts";
 
 const app = express();
 app.use(express.json());
@@ -39,6 +42,9 @@ app.use("/api/motorbike", passport.authenticate("jwt", { session: false }), moto
 app.use("/api/modelmotorbike", passport.authenticate("jwt", { session: false }), modelMotorbikeRoute);
 app.use("/api/fleet", passport.authenticate("jwt", { session: false }), fleetRoutes);
 app.use("/api/driver", passport.authenticate("jwt", { session: false }), driverRoutes);
+app.use("/api/driverhistorical", passport.authenticate("jwt", { session: false }), driverHistoricalRoute);
+app.use("/api/try", passport.authenticate("jwt", { session: false }), tryRoutes);
+app.use("/api/motorbikeincident", passport.authenticate("jwt", { session: false }), motorbikeIncidentRoutes);
 
 
 app.use(errorHandler);
