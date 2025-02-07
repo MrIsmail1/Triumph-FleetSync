@@ -9,4 +9,4 @@ export const sparePartFilterSchema = z.object({
   reorderThreshold: z.coerce.number().optional(),
 });
 
-export type SparePartFilter = z.infer<typeof sparePartFilterSchema>;
+export type SparePartFilterSchema = z.infer<typeof sparePartFilterSchema>;

@@ -3,7 +3,7 @@ import { z } from "zod";
 
 const PartPurchaseStatus = z.enum(["PENDING", "RECEIVED", "CANCELLED"]);
 
-export const PartPurchaseSchema = z.object({
+export const partPurchaseSchema = z.object({
   partId: ValidString,
   quantity: PositiveNumber,
   costPerUnit: PositiveNumber,
@@ -13,4 +13,4 @@ export const PartPurchaseSchema = z.object({
   receivedDate: z.string().datetime().nullable(),
 });
 
-export type PartPurchase = z.infer<typeof PartPurchaseSchema>;
+export type PartPurchaseSchema = z.infer<typeof partPurchaseSchema>;

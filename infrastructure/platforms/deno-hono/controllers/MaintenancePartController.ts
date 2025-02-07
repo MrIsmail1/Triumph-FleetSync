@@ -1,6 +1,6 @@
 import { OK } from "@/constants/http.ts";
-import { maintenanceHitoryFilterSchema } from "@/schemas/maintenanceHistoryFilterSchema.ts";
-import { MaintenancePartSchema } from "@/schemas/MaintenancePartSchema.ts";
+import { maintenanceHitoryFilterSchema } from "@/schemas/MaintenanceHistoryFilterSchema.ts";
+import { maintenancePartSchema } from "@/schemas/MaintenancePartSchema.ts";
 import appAssert from "@/utils/appAssert.ts";
 import { mapDomainErrorToHttp } from "@/utils/errorsMapper.ts";
 import { Context } from "hono";
@@ -22,7 +22,7 @@ export class MaintenancePartController {
     const partId = c.req.param("partId");
     const rawBody = await c.req.json();
 
-    const validateUsePart = MaintenancePartSchema.parse(rawBody);
+    const validateUsePart = maintenancePartSchema.parse(rawBody);
     const usePartInMaintenanceUseCase = new UsePartInMaintenanceUsecase(
       this.sparePartRepository,
       this.maintenanceRepository,

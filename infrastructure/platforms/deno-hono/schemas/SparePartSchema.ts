@@ -1,16 +1,16 @@
 import { PositiveNumber, ValidString } from "@/schemas/CommonTypes.ts";
-import { MaintenancePartSchema } from "@/schemas/MaintenancePartSchema.ts";
-import { PartPurchaseSchema } from "@/schemas/PartPurchaseSchema.ts";
+import { maintenancePartSchema } from "@/schemas/MaintenancePartSchema.ts";
+import { partPurchaseSchema } from "@/schemas/PartPurchaseSchema.ts";
 import { z } from "zod";
 
-export const SparePartSchema = z.object({
+export const sparePartSchema = z.object({
   name: ValidString,
   partNumber: ValidString,
   stockQuantity: PositiveNumber,
   reorderThreshold: PositiveNumber,
-  purchases: z.array(PartPurchaseSchema),
-  usedInMaintenance: z.array(MaintenancePartSchema),
+  purchases: z.array(partPurchaseSchema),
+  usedInMaintenance: z.array(maintenancePartSchema),
   brand: ValidString.optional(),
 });
 
-export type SparePart = z.infer<typeof SparePartSchema>;
+export type SparePartSchema = z.infer<typeof sparePartSchema>;
