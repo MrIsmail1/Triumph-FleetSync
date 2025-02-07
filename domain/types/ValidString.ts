@@ -1,5 +1,5 @@
-import { StringTooLongError } from "../errors/StringTooLongError";
-import { StringTooShortError } from "../errors/StringTooShortError";
+import { StringTooLongError } from "../errors/StringTooLongError.ts";
+import { StringTooShortError } from "../errors/StringTooShortError.ts";
 export class ValidString {
   private constructor(readonly value: string) {}
 

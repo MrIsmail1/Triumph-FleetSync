@@ -1,4 +1,4 @@
-import {LicensePlateBadFormatError} from "../errors/LicensePlateBadFormatError";
+import {LicensePlateBadFormatError} from "../errors/LicensePlateBadFormatError.ts";
 
 export class FrenchMotorbikeLicensePlate {
     private constructor(readonly value: string) {}

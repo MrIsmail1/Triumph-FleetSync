@@ -1,10 +1,10 @@
-import { PartPurchaseNotFoundError } from "../../../domain/errors/PartPurchaseNotFoundError";
-import { SparePartNotFoundError } from "../../../domain/errors/SparePartNotFoundError";
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { PartPurchaseStatus } from "../../../domain/types/PartPurchaseStatus";
-import { PositiveNumber } from "../../../domain/types/PositiveNumber";
-import { PartPurchaseRepository } from "../../repositories/PartPurchaseRepository";
-import { SparePartRepository } from "../../repositories/SparePartRepository";
+import { PartPurchaseNotFoundError } from "../../../domain/errors/PartPurchaseNotFoundError.ts";
+import { SparePartNotFoundError } from "../../../domain/errors/SparePartNotFoundError.ts";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { PartPurchaseStatus } from "../../../domain/types/PartPurchaseStatus.ts";
+import { PositiveNumber } from "../../../domain/types/PositiveNumber.ts";
+import { PartPurchaseRepository } from "../../repositories/PartPurchaseRepository.ts";
+import { SparePartRepository } from "../../repositories/SparePartRepository.ts";
 
 export class PartPurchaseReceiveOrCancelUsecase {
   constructor(

@@ -1,5 +1,5 @@
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { SparePartRepository } from "../../repositories/SparePartRepository";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { SparePartRepository } from "../../repositories/SparePartRepository.ts";
 
 export class SparePartListUsecase {
   constructor(private readonly sparePartRepository: SparePartRepository) {}
@@ -7,6 +7,7 @@ export class SparePartListUsecase {
   public async execute(
     userRole: string,
     filters?: {
+      _id?: string;
       name?: string;
       partNumber?: string;
       brand?: string;
@@ -17,7 +18,6 @@ export class SparePartListUsecase {
     if (userRole !== "admin") {
       return new UnauthorizedActionError();
     }
-
-    return await this.sparePartRepository.findAll(filters);
+    return await this.sparePartRepository.find(filters);
   }
 }

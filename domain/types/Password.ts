@@ -1,4 +1,4 @@
-import { PasswordBadFormatError } from "../errors/PasswordBadFormatError";
+import { PasswordBadFormatError } from "../errors/PasswordBadFormatError.ts";
 
 export class Password {
   private constructor(readonly value: string) {}

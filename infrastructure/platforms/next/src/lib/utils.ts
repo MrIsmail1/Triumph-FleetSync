@@ -31,7 +31,6 @@ export function moveColumnsDown(columnObj: { id: string }[], columnId: string) {
   const temp = array[index];
   array[index] = array[index + 1];
   array[index + 1] = temp;
-  console.log(array);
   return array;
 }
 

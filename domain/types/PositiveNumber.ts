@@ -1,4 +1,4 @@
-import { NegativeNumberError } from "../errors/NegativeNumberError";
+import { NegativeNumberError } from "../errors/NegativeNumberError.ts";
 export class PositiveNumber {
   private constructor(public readonly value: number) {}
 

@@ -1,10 +1,10 @@
-import { PartPurchase } from "../../../domain/entities/PartPurchase";
-import { SparePartNotFoundError } from "../../../domain/errors/SparePartNotFoundError";
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { PartPurchaseStatus } from "../../../domain/types/PartPurchaseStatus";
-import { PositiveNumber } from "../../../domain/types/PositiveNumber";
-import { PartPurchaseRepository } from "../../repositories/PartPurchaseRepository";
-import { SparePartRepository } from "../../repositories/SparePartRepository";
+import { PartPurchase } from "../../../domain/entities/PartPurchase.ts";
+import { SparePartNotFoundError } from "../../../domain/errors/SparePartNotFoundError.ts";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { PartPurchaseStatus } from "../../../domain/types/PartPurchaseStatus.ts";
+import { PositiveNumber } from "../../../domain/types/PositiveNumber.ts";
+import { PartPurchaseRepository } from "../../repositories/PartPurchaseRepository.ts";
+import { SparePartRepository } from "../../repositories/SparePartRepository.ts";
 
 export class PartPurchaseCreateUsecase {
   constructor(
@@ -69,6 +69,10 @@ export class PartPurchaseCreateUsecase {
       null
     );
 
-    return await this.partPurchaseRepository.save(purchase);
+    const createdPartPurchase = await this.partPurchaseRepository.save(
+      purchase
+    );
+
+    return createdPartPurchase;
   }
 }

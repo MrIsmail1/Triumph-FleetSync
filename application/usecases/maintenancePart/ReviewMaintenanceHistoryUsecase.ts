@@ -1,8 +1,8 @@
-import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity";
-import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { MaintenanceHistoryItem } from "../../../domain/types/MaintenanceHistoryItem";
-import { MaintenancePartRepository } from "../../repositories/MaintenancePartRepository";
-import { MaintenanceRepository } from "../../repositories/MaintenanceRepository";
+import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
+import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
+import { MaintenanceHistoryItem } from "../../../domain/types/MaintenanceHistoryItem.ts";
+import { MaintenancePartRepository } from "../../repositories/MaintenancePartRepository.ts";
+import { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
 
 export class ReviewMaintenanceHistoryUsecase {
   constructor(
