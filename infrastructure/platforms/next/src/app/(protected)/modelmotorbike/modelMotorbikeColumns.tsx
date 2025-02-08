@@ -28,10 +28,10 @@ export function buildModelMotorbikeColumns() {
 
     const queryClient = useQueryClient();
 
-    const { mutate: deleteModelMotorbike, isLoading } = useMutation({
+    const { mutate: deleteModelMotorbike, isPending } = useMutation({
         mutationFn: modelMotorbikeDelete,
         onSuccess: () => {
-            queryClient.invalidateQueries(["modelMotorbikes"]);
+            queryClient.invalidateQueries({ queryKey: ["modelMotorbikes"] });
             setDeleteModalOpen(false);
             setSelectedModelMotorbike(null);
         },

@@ -28,7 +28,7 @@ export default function EditFleetForm({
     const queryClient = useQueryClient();
 
     const defaultValues = {
-        name: fleet.name?.value || "",
+        name: fleet.name || "",
     };
 
     const form = useForm<FleetSchema>({
@@ -45,7 +45,7 @@ export default function EditFleetForm({
             return fleetUpdate(fleet.identifier, data);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(["fleets"]);
+            queryClient.invalidateQueries({ queryKey: ["fleets"] });
             setOpen(false);
         },
     });

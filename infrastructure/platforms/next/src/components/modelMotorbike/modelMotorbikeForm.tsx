@@ -42,15 +42,15 @@ export default function ModelMotorbikeForm({ setOpen }: { setOpen?: (open: boole
         mutate: createModelMotorbike,
         isError,
         error,
-        isLoading,
+        isPending,
     } = useMutation({
         mutationFn: modelMotorbikeCreate,
         onSuccess: () => {
             form.reset();
             if (setOpen) {
-                setOpen(false); // Fermer la modal après création réussie
+                setOpen(false);
             }
-            queryClient.invalidateQueries(["modelMotorbikes"]); // Recharger la liste des modèles
+            queryClient.invalidateQueries({ queryKey: ["modelMotorbikes"] });
         },
     });
 
@@ -132,8 +132,8 @@ export default function ModelMotorbikeForm({ setOpen }: { setOpen?: (open: boole
                             )}
                         />
 
-                        <Button type="submit" disabled={form.formState.isSubmitting || isLoading}>
-                            {form.formState.isSubmitting || isLoading
+                        <Button type="submit" disabled={form.formState.isSubmitting || isPending}>
+                            {form.formState.isSubmitting || isPending
                                 ? "Création..."
                                 : "Créer le modèle"}
                         </Button>

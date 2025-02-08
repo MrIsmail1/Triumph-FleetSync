@@ -14,28 +14,9 @@ const maintenanceController = new MaintenanceController(
   prismaUserRepository
 );
 
-maintenanceRoutes.post(
-  "/",
-  authorize(["admin", "manager"]),
-  maintenanceController.addMaintenanceHandler
-);
-
-maintenanceRoutes.get(
-  "/",
-  authorize(["admin", "technician", "manager", "client"]),
-  maintenanceController.listMaintenancesHandler
-);
-
-maintenanceRoutes.put(
-  "/:id",
-  authorize(["admin", "manager"]),
-  maintenanceController.updateMaintenanceHandler
-);
-
-maintenanceRoutes.delete(
-  "/:id",
-  authorize(["admin"]),
-  maintenanceController.deleteMaintenanceHandler
-);
+maintenanceRoutes.post("/", authorize(["admin", "manager"]), );
+maintenanceRoutes.get("/", authorize(["admin", "technician", "manager", "client"]), maintenanceController.listMaintenancesHandler);
+maintenanceRoutes.put("/:id", authorize(["admin", "manager"]), maintenanceController.updateMaintenanceHandler);
+maintenanceRoutes.delete("/:id", authorize(["admin"]), maintenanceController.deleteMaintenanceHandler);
 
 export default maintenanceRoutes;

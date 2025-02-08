@@ -26,7 +26,7 @@ export default function MotorbikeListPage() {
         <>
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-semibold">Liste des motos</h1>
-                {["admin"].includes(currentUser?.role.value) && (
+                {["admin"].includes(currentUser?.role?.value ?? "") && (
                     <Button onClick={() => setCreateModalOpen(true)}>Créer une moto</Button>
                 )}
             </div>

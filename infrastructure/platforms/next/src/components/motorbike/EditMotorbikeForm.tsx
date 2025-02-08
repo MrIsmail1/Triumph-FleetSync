@@ -85,7 +85,7 @@ export default function EditMotorbikeForm({
             return motorbikeUpdate(motorbike.identifier, data);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(["motorbikes"]);
+            queryClient.invalidateQueries({ queryKey: ["motorbikes"] });
             setOpen(false);
 
             if (setSelectedMotorbike) {
@@ -187,11 +187,11 @@ export default function EditMotorbikeForm({
                                                 form.setValue("fleetId", newValue, {shouldDirty: true});
                                             }}
                                             value={field.value || ""}
-                                        >
+                                        >'
                                             <SelectTrigger>
                                                 <SelectValue>
                                                     {field.value
-                                                        ? fleets?.find(fleet => fleet.identifier === field.value)?.name.value
+                                                        ? fleets?.find(fleet => fleet.identifier === field.value)?.name?.value
                                                         : "Sélectionnez une flotte"}
                                                 </SelectValue>
                                             </SelectTrigger>
@@ -235,9 +235,9 @@ export default function EditMotorbikeForm({
                                                 <SelectTrigger>
                                                     <SelectValue>
                                                         {field.value
-                                                            ? users?.find(user => user.identifier === field.value)?.firstName.value +
+                                                            ? users?.find(user => user.identifier === field.value)?.firstName?.value +
                                                             " " +
-                                                            users?.find(user => user.identifier === field.value)?.lastName.value
+                                                            users?.find(user => user.identifier === field.value)?.lastName?.value
                                                             : "Sélectionnez une entreprise ou un concessionaire"}
                                                     </SelectValue>
                                                 </SelectTrigger>
@@ -247,7 +247,7 @@ export default function EditMotorbikeForm({
                                                     ) : (
                                                         users?.map((user) => (
                                                             <SelectItem key={user.identifier} value={user.identifier}>
-                                                                {user.firstName.value} {user.lastName.value}
+                                                                {user.firstName?.value} {user.lastName?.value}
                                                             </SelectItem>
                                                         ))
                                                     )}

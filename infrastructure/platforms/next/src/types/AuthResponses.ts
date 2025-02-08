@@ -1,14 +1,15 @@
-import {Driver} from "./DriverResponses.ts";
-import {Fleet} from "./FleetResponses.ts";
-import {Motorbike} from "./MotorbikeResponses.ts";
+import {Motorbike} from "@/types/MotorbikeResponses";
+import {Driver} from "@/types/DriverResponses";
+import {Fleet} from "@/types/FleetResponses";
+
 
 export interface User {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
+    identifier: string;
+    firstName?: { value: string };
+    lastName?: { value: string };
+    email?: { value: string };
     passwordHash: string;
-    role: string;
+    role?: { value: string };
     isVerified: boolean;
     createdAt: string;
     updatedAt: string;

@@ -26,7 +26,7 @@ export default function MotorbikeIncidentListPage() {
         <>
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-semibold">Liste des incidents</h1>
-                {["admin", "dealership", "company"].includes(currentUser?.role.value) && (
+                {["admin", "dealership", "company"].includes(currentUser?.role?.value ?? "") && (
                     <Button onClick={() => setCreateModalOpen(true)}>Créer un incident</Button>
                 )}
             </div>

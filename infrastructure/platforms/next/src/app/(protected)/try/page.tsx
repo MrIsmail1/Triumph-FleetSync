@@ -26,7 +26,7 @@ export default function TryListPage() {
         <>
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl font-semibold">Liste des essais</h1>
-                {["admin", "dealership"].includes(currentUser?.role.value) && (
+                {["admin", "dealership"].includes(currentUser?.role?.value ?? "") && (
                     <Button onClick={() => setCreateModalOpen(true)}>Créer un essai</Button>
                 )}
             </div>

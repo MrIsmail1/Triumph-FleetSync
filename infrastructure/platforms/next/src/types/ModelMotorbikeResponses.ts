@@ -1,9 +1,9 @@
-import {Motorbike} from "./MotorbikeResponses.ts";
+import {Motorbike} from "./MotorbikeResponses";
 
 export interface ModelMotorbike {
-    id: string;
-    name: string;
-    brand: string;
+    identifier: string;
+    name?: { value: string };
+    brand?: { value: string };
     maintenanceIntervalKm: number;
     maintenanceIntervalTimeMonths: number;
     createdAt: string;

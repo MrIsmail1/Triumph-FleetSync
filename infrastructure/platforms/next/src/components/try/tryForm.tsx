@@ -66,7 +66,7 @@ export default function TryForm({ setOpen }: { setOpen?: (open: boolean) => void
         mutate: createTryMutation,
         isError,
         error: mutationError,
-        isLoading,
+        isPending,
     } = useMutation({
         mutationFn: tryCreate,
         onSuccess: () => {
@@ -74,7 +74,7 @@ export default function TryForm({ setOpen }: { setOpen?: (open: boolean) => void
             if (setOpen) {
                 setOpen(false);
             }
-            queryClient.invalidateQueries(["tries"]);
+            queryClient.invalidateQueries({ queryKey: ["tries"] });
         },
     });
 
@@ -144,7 +144,7 @@ export default function TryForm({ setOpen }: { setOpen?: (open: boolean) => void
                                                 ) : (
                                                     motorbikes?.map((bike) => (
                                                         <SelectItem key={bike.identifier} value={bike.identifier}>
-                                                            {bike.licensePlate.value}
+                                                            {bike.licensePlate?.value}
                                                         </SelectItem>
                                                     ))
                                                 )}
@@ -170,8 +170,8 @@ export default function TryForm({ setOpen }: { setOpen?: (open: boolean) => void
                             )}
                         />
 
-                        <Button type="submit" disabled={form.formState.isSubmitting || isLoading || isLoadingUser}>
-                            {form.formState.isSubmitting || isLoading ? "Création..." : "Créer l'essai"}
+                        <Button type="submit" disabled={form.formState.isSubmitting || isPending || isLoadingUser}>
+                            {form.formState.isSubmitting || isPending ? "Création..." : "Créer l'essai"}
                         </Button>
                     </form>
                 </Form>

@@ -52,7 +52,7 @@ export default function DriverPage() {
             <h2 className="text-xl font-bold mt-6">Historique du conducteur</h2>
             {isLoadingHistory ? (
                 <p>Chargement de l'historique...</p>
-            ) : isErrorHistory || !driverHistory?.length ? (
+            ) : isErrorHistory || !driverHistory ? (
                 <Alert variant="destructive">
                     <AlertDescription>Aucun historique trouvé.</AlertDescription>
                 </Alert>
@@ -67,7 +67,7 @@ export default function DriverPage() {
                     </TableHeader>
                     <TableBody>
                         {driverHistory.map((history) => (
-                            <TableRow key={history.id}>
+                            <TableRow key={history.identifier}>
                                 <TableCell>{new Date(history.createdAt).toLocaleDateString("fr-FR")}</TableCell>
                                 <TableCell>{history.licencePlateMotorbike || "Non renseigné"}</TableCell>
                                 <TableCell>{history.colorMotorbike || "Non renseigné"}</TableCell>
@@ -98,7 +98,7 @@ export default function DriverPage() {
                     </TableHeader>
                     <TableBody>
                         {driverIncidents.map((incident) => (
-                            <TableRow key={incident.id}>
+                            <TableRow key={incident.identifier}>
                                 <TableCell>{new Date(incident.createdAt).toLocaleDateString("fr-FR")}</TableCell>
                                 <TableCell>{incident.incidentType}</TableCell>
                                 <TableCell>{incident.comment || "Aucun commentaire"}</TableCell>

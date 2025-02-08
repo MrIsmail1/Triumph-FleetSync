@@ -10,15 +10,14 @@ export default function FleetDetails({ fleet }: { fleet: Fleet }) {
                 <CardTitle>Informations de la flotte</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-                <p><strong>Nom :</strong> {fleet.name.value || "Non renseigné"}</p>
+                <p><strong>Nom :</strong> {fleet.name?.value || "Non renseigné"}</p>
                 <p><strong>Date de création :</strong> {new Date(fleet.createdAt).toLocaleDateString("fr-FR")}</p>
                 <p><strong>Dernière modification :</strong> {new Date(fleet.updatedAt).toLocaleDateString("fr-FR")}</p>
 
-                {fleet.companyOrDealerShip && (
+                {fleet.companyOrDealerShipId && (
                     <>
-                        <h3 className="font-semibold">Attribuée à :</h3>
-                        <p><strong>Nom :</strong> {fleet.companyOrDealerShip.firstName} {fleet.companyOrDealerShip.lastName}</p>
-                        <p><strong>Email :</strong> {fleet.companyOrDealerShip.email}</p>
+                        <h3 className="font-semibold">Propriétaire :</h3>
+                        <p><strong>Nom :</strong> {fleet.userFirstName} {fleet.userLastName}</p>
                     </>
                 )}
             </CardContent>

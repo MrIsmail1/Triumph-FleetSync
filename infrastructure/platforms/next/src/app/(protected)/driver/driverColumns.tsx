@@ -28,10 +28,10 @@ export function buildDriverColumns() {
 
     const queryClient = useQueryClient();
 
-    const { mutate: deleteDriver, isLoading } = useMutation({
+    const { mutate: deleteDriver} = useMutation({
         mutationFn: driverDelete,
         onSuccess: () => {
-            queryClient.invalidateQueries(["drivers"]);
+            queryClient.invalidateQueries({ queryKey: ["drivers"] });
             setDeleteModalOpen(false);
             setSelectedDriver(null);
         },

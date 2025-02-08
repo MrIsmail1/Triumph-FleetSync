@@ -19,7 +19,7 @@ const motorbikeController = new MotorbikeController(prismaMotorbikeRepository, d
 motorbikeRoutes.post("/create", authorize(["admin"]), motorbikeController.createMotorbikeHandler);
 motorbikeRoutes.get("/motorbike/:motorbikeId", authorize(["admin", "company", "dealership"]), motorbikeController.getMotorbikeHandler);
 motorbikeRoutes.get("/list", authorize(["admin", "company", "dealership"]), motorbikeController.listMotorbikesHandler);
-motorbikeRoutes.get("/listfleetId/:fleetId", authorize(["admin", "company", "dealership"]), motorbikeController.listMotorbikesByFleetIdHandler);
+motorbikeRoutes.get("/list/fleet/:fleetId", authorize(["admin", "company", "dealership"]), motorbikeController.listMotorbikesByFleetIdHandler);
 motorbikeRoutes.put("/update/:motorbikeId", authorize(["admin", "company", "dealership"]), motorbikeController.updateMotorbikeHandler);
 motorbikeRoutes.delete("/delete/:motorbikeId", authorize(["admin"]), motorbikeController.deleteMotorbikeHandler);
 

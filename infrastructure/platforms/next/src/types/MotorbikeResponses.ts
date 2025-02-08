@@ -5,18 +5,24 @@ import {Fleet} from "@/types/FleetResponses";
 
 
 export interface Motorbike {
-    id: string;
+    identifier: string;
     modelId: string;
     fleetId?: string;
     companyOrDealerShipId?: string;
     driverId?: string;
-    licensePlate: string;
-    vehicleIdentificationNumber: string;
+    licensePlate?: { value: string };
+    vehicleIdentificationNumber?: { value: string };
     color: string;
     mileage: number;
-    status: string;
+    status?: { value: string };
     createdAt: string;
     updatedAt: string;
+    modelMotorbikeName?: string,
+    companyOrDealerShipFirstName?: string,
+    companyOrDealerShipLastName?: string,
+    driverFirstName?: string,
+    driverLastName?: string,
+    fleetName?: string,
     modelMotorbike: ModelMotorbike;
     companyOrDealerShip?: User;
     driver?: Driver;

@@ -1,12 +1,14 @@
-import {User} from "./AuthResponses.ts";
-import {Motorbike} from "./MotorbikeResponses.ts";
+import {User} from "./AuthResponses";
+import {Motorbike} from "./MotorbikeResponses";
 
 export interface Fleet {
-    id: string;
+    identifier: string;
     companyOrDealerShipId: string;
-    name: string;
+    name?: { value: string };
     createdAt: string;
     updatedAt: string;
+    userFirstName?: string,
+    userLastName?: string,
     motorbikes: Motorbike[];
     companyOrDealerShip: User;
 }

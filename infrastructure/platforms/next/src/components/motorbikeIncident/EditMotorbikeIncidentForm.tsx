@@ -45,10 +45,10 @@ export default function EditMotorbikeIncidentForm({
     });
 
     // Mutation pour mettre à jour l'incident
-    const { mutate: updateIncidentMutation, isLoading } = useMutation({
+    const { mutate: updateIncidentMutation, isPending } = useMutation({
         mutationFn: (data: MotorbikeIncidentSchema) => motorbikeIncidentUpdate(incident.identifier, data),
         onSuccess: () => {
-            queryClient.invalidateQueries(["motorbikeIncidents"]);
+            queryClient.invalidateQueries({ queryKey: ["motorbikeIncidents"] });
             setOpen(false);
         },
     });
@@ -105,7 +105,7 @@ export default function EditMotorbikeIncidentForm({
                                         ) : (
                                             motorbikes?.map((bike) => (
                                                 <SelectItem key={bike.identifier} value={bike.identifier}>
-                                                    {bike.licensePlate.value}
+                                                    {bike.licensePlate?.value}
                                                 </SelectItem>
                                             ))
                                         )}
@@ -145,8 +145,8 @@ export default function EditMotorbikeIncidentForm({
                     )}
                 />
 
-                <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Modification en cours..." : "Modifier l'incident"}
+                <Button type="submit" disabled={isPending}>
+                    {isPending ? "Modification en cours..." : "Modifier l'incident"}
                 </Button>
             </form>
         </Form>

@@ -33,10 +33,10 @@ export function buildFleetColumns() {
         queryFn: getUser,
     });
 
-    const { mutate: deleteFleet, isLoading } = useMutation({
+    const { mutate: deleteFleet, isPending } = useMutation({
         mutationFn: fleetDelete,
         onSuccess: () => {
-            queryClient.invalidateQueries(["fleets"]);
+            queryClient.invalidateQueries({ queryKey: ["fleets"] });
             setDeleteModalOpen(false);
             setSelectedFleet(null);
         },
@@ -152,7 +152,7 @@ export function buildFleetColumns() {
         },
     ];
 
-    if (currentUser && !["dealership", "company"].includes(currentUser.role.value)) {
+    if (currentUser && !["dealership", "company"].includes(currentUser?.role?.value ?? "")) {
         columns.splice(1, 0, {
             id: "companyOrDealerShip",
             header: "Entreprise / Concessionnaire",

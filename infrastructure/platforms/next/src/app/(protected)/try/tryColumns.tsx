@@ -34,10 +34,10 @@ export function TryTable({ tries }: { tries: Try[] }) {
     });
 
     // Mutation pour supprimer un essai
-    const { mutate: deleteTry, isLoading } = useMutation({
+    const { mutate: deleteTry, isPending } = useMutation({
         mutationFn: tryDelete,
         onSuccess: () => {
-            queryClient.invalidateQueries(["tries"]);
+            queryClient.invalidateQueries({ queryKey: ["tries"] });
             setDeleteModalOpen(false);
             setSelectedTry(null);
         },
