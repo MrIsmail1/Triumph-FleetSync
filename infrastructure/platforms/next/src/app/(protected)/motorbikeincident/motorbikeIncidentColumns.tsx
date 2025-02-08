@@ -33,10 +33,10 @@ export function MotorbikeIncidentTable({ incidents }: { incidents: MotorbikeInci
         queryFn: getUser,
     });
 
-    const { mutate: deleteIncident, isLoading } = useMutation({
+    const { mutate: deleteIncident, isPending } = useMutation({
         mutationFn: motorbikeIncidentDelete,
         onSuccess: () => {
-            queryClient.invalidateQueries(["motorbikeIncidents"]);
+            queryClient.invalidateQueries({ queryKey: ["motorbikeIncidents"] });
             setDeleteModalOpen(false);
             setSelectedIncident(null);
         },
@@ -119,7 +119,7 @@ export function MotorbikeIncidentTable({ incidents }: { incidents: MotorbikeInci
         },
     ];
 
-    if (currentUser && !["dealership", "company"].includes(currentUser.role.value)) {
+    if (currentUser && !["dealership", "company"].includes(currentUser?.role?.value ?? "")) {
         columns.splice(1, 0, {
             id: "companyOrDealerShip",
             header: "Entreprise / Concessionnaire",
@@ -131,7 +131,7 @@ export function MotorbikeIncidentTable({ incidents }: { incidents: MotorbikeInci
         });
     }
 
-    if (currentUser && ["admin"].includes(currentUser.role.value)) {
+    if (currentUser && ["admin"].includes(currentUser?.role?.value ?? "")) {
         columns.push({
             id: "actions",
             header: "Actions",

@@ -28,8 +28,8 @@ export default function EditModelMotorbikeForm({
     const queryClient = useQueryClient();
 
     const defaultValues = {
-        name: modelMotorbike.name.value || "",
-        brand: modelMotorbike.brand.value || "",
+        name: modelMotorbike.name || "",
+        brand: modelMotorbike.brand || "",
         maintenanceIntervalKm: modelMotorbike.maintenanceIntervalKm?.toString() || "",
         maintenanceIntervalTimeMonths: modelMotorbike.maintenanceIntervalTimeMonths?.toString() || "",
     };
@@ -48,7 +48,7 @@ export default function EditModelMotorbikeForm({
             return modelMotorbikeUpdate(modelMotorbike.identifier, data);
         },
         onSuccess: () => {
-            queryClient.invalidateQueries(["modelMotorbikes"]);
+            queryClient.invalidateQueries({ queryKey: ["modelMotorbikes"] });
             setOpen(false);
         },
     });

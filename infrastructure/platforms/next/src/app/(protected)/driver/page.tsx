@@ -7,8 +7,8 @@ import { buildDriverColumns } from "./driverColumns";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/common/Modal";
-import DriverForm from "@/components/driver/DriverForm";
 import React from "react";
+import DriverForm from "@/components/driver/driverForm";
 
 export default function DriverListPage() {
     const { data: drivers } = useQuery({

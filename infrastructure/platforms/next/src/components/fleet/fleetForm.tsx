@@ -39,7 +39,7 @@ export default function FleetForm({ setOpen }: { setOpen?: (open: boolean) => vo
         mutate: createFleet,
         isError,
         error,
-        isLoading,
+        isPending,
     } = useMutation({
         mutationFn: fleetCreate,
         onSuccess: () => {
@@ -47,7 +47,7 @@ export default function FleetForm({ setOpen }: { setOpen?: (open: boolean) => vo
             if (setOpen) {
                 setOpen(false);
             }
-            queryClient.invalidateQueries(["fleets"]);
+            queryClient.invalidateQueries({ queryKey:["fleets"] });
         },
     });
 
@@ -92,8 +92,8 @@ export default function FleetForm({ setOpen }: { setOpen?: (open: boolean) => vo
                             )}
                         />
 
-                        <Button type="submit" disabled={form.formState.isSubmitting || isLoading}>
-                            {form.formState.isSubmitting || isLoading
+                        <Button type="submit" disabled={form.formState.isSubmitting || isPending}>
+                            {form.formState.isSubmitting || isPending
                                 ? "Création..."
                                 : "Créer la flotte"}
                         </Button>

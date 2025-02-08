@@ -62,7 +62,15 @@ export class PrismaFleetRepository implements FleetRepository {
                 },
             },
         });
-        return fleet ? FleetEntity.reconstitute(fleet) : null;
+        return fleet ? FleetEntity.reconstitute({
+            id: fleet.id,
+            companyOrDealerShipId: fleet.companyOrDealerShipId,
+            name: fleet.name,
+            userFirstName: fleet.companyOrDealerShip?.firstName,
+            userLastName: fleet.companyOrDealerShip?.lastName,
+            createdAt: fleet.createdAt,
+            updatedAt: fleet.updatedAt,
+        }) : null;
     }
 
     public async findByIdAndCompanyOrDealershipId(fleetId: string, currentUserIdentifier: string): Promise<FleetEntity | null> {

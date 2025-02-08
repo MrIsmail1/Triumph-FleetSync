@@ -58,7 +58,7 @@ export const motorbikeCreate = async (data: Motorbike) => API.post<{ message: st
 export const motorbikeGetOne = async (motorbikeId: string) => API.get<Motorbike>(`/motorbike/motorbike/${motorbikeId}`);
 export const motorbikeUpdate = async (motorbikeId: string, data: Motorbike) => API.put<Motorbike>(`/motorbike/update/${motorbikeId}`, data);
 export const motorbikeDelete = async (motorbikeId: string) => API.delete<{ message: string }>(`/motorbike/delete/${motorbikeId}`);
-export const motorbikesListByFleetId = async (fleetId: string) => API.get<Motorbike[], Motorbike[]>(`/motorbike/listfleetId/${fleetId}`);
+export const motorbikesListByFleetId = async (fleetId: string) => API.get<Motorbike[], Motorbike[]>(`/motorbike/list/fleet/${fleetId}`);
 
 // Driver
 export const driversList = async () => API.get<Driver[]>(`/driver/list`);

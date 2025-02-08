@@ -33,10 +33,10 @@ export function MotorbikeTable({ motorbikes }: { motorbikes: Motorbike[] }) {
         queryFn: getUser,
     });
 
-    const { mutate: deleteMotorbike, isLoading } = useMutation({
+    const { mutate: deleteMotorbike} = useMutation({
         mutationFn: motorbikeDelete,
         onSuccess: () => {
-            queryClient.invalidateQueries(["motorbikes"]);
+            queryClient.invalidateQueries({ queryKey: ["motorbikes"] });
             setDeleteModalOpen(false);
             setSelectedMotorbike(null);
         },
@@ -168,7 +168,7 @@ export function MotorbikeTable({ motorbikes }: { motorbikes: Motorbike[] }) {
                             description="Modifiez les informations de la moto."
                         >
                             {selectedMotorbike && currentUser && (
-                                <EditMotorbikeForm motorbike={selectedMotorbike} setOpen={setEditModalOpen} currentUserRole={currentUser?.role} />
+                                <EditMotorbikeForm motorbike={selectedMotorbike} setOpen={setEditModalOpen} currentUserRole={currentUser?.role?.value ?? ""} />
                             )}
                         </Modal>
 
@@ -189,7 +189,7 @@ export function MotorbikeTable({ motorbikes }: { motorbikes: Motorbike[] }) {
         },
     ];
 
-    if (currentUser && !["dealership", "company"].includes(currentUser.role.value)) {
+    if (currentUser && !["dealership", "company"].includes(currentUser?.role?.value ?? "")) {
         columns.splice(1, 0, {
             id: "companyOrDealerShip",
             header: "Entreprise / Concessionnaire",

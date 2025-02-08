@@ -1,9 +1,9 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { motorbikeIncidentSchema, MotorbikeIncidentSchema } from "./motorbikeIncidentSchema";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {useForm, SubmitHandler} from "react-hook-form";
+import {motorbikeIncidentSchema, MotorbikeIncidentSchema} from "./motorbikeIncidentSchema";
 import {
     Card,
     CardContent,
@@ -19,29 +19,29 @@ import {
     FormControl,
     FormMessage,
 } from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Alert, AlertDescription } from "../ui/alert";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import React, { useEffect } from "react";
-import { driversList, motorbikesList, motorbikeIncidentCreate, getUser } from "@/lib/api";
+import {Input} from "../ui/input";
+import {Button} from "../ui/button";
+import {Alert, AlertDescription} from "../ui/alert";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "../ui/select";
+import React, {useEffect} from "react";
+import {driversList, motorbikesList, motorbikeIncidentCreate, getUser} from "@/lib/api";
 
-export default function MotorbikeIncidentForm({ setOpen }: { setOpen?: (open: boolean) => void }) {
+export default function MotorbikeIncidentForm({setOpen}: { setOpen?: (open: boolean) => void }) {
     const queryClient = useQueryClient();
 
     // Récupérer les conducteurs et les motos
-    const { data: drivers, isLoading: isLoadingDrivers } = useQuery({
+    const {data: drivers, isLoading: isLoadingDrivers} = useQuery({
         queryKey: ["drivers"],
         queryFn: driversList,
     });
 
-    const { data: motorbikes, isLoading: isLoadingMotorbikes } = useQuery({
+    const {data: motorbikes, isLoading: isLoadingMotorbikes} = useQuery({
         queryKey: ["motorbikes"],
         queryFn: motorbikesList,
     });
 
     // Récupérer l'utilisateur actuellement connecté
-    const { data: currentUser } = useQuery({
+    const {data: currentUser} = useQuery({
         queryKey: ["currentUser"],
         queryFn: getUser,
     });
@@ -63,14 +63,14 @@ export default function MotorbikeIncidentForm({ setOpen }: { setOpen?: (open: bo
         }
     }, [currentUser, form]);
 
-    const { mutate: createIncidentMutation, isError, error: mutationError, isLoading } = useMutation({
+    const {mutate: createIncidentMutation, isError, error: mutationError, isPending} = useMutation({
         mutationFn: motorbikeIncidentCreate,
         onSuccess: () => {
             form.reset();
             if (setOpen) {
                 setOpen(false);
             }
-            queryClient.invalidateQueries(["motorbikeIncidents"]);
+            queryClient.invalidateQueries({queryKey: ["motorbikeIncidents"]});
         },
     });
 
@@ -97,13 +97,13 @@ export default function MotorbikeIncidentForm({ setOpen }: { setOpen?: (open: bo
                         <FormField
                             control={form.control}
                             name="driverId"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Conducteur</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} value={field.value}>
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Sélectionnez un conducteur" />
+                                                <SelectValue placeholder="Sélectionnez un conducteur"/>
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {isLoadingDrivers ? (
@@ -118,7 +118,7 @@ export default function MotorbikeIncidentForm({ setOpen }: { setOpen?: (open: bo
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
@@ -126,13 +126,13 @@ export default function MotorbikeIncidentForm({ setOpen }: { setOpen?: (open: bo
                         <FormField
                             control={form.control}
                             name="motorbikeId"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Moto</FormLabel>
                                     <FormControl>
                                         <Select onValueChange={field.onChange} value={field.value}>
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Sélectionnez une moto" />
+                                                <SelectValue placeholder="Sélectionnez une moto"/>
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {isLoadingMotorbikes ? (
@@ -140,14 +140,14 @@ export default function MotorbikeIncidentForm({ setOpen }: { setOpen?: (open: bo
                                                 ) : (
                                                     motorbikes?.map((bike) => (
                                                         <SelectItem key={bike.identifier} value={bike.identifier}>
-                                                            {bike.licensePlate.value}
+                                                            {bike.licensePlate?.value}
                                                         </SelectItem>
                                                     ))
                                                 )}
                                             </SelectContent>
                                         </Select>
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
@@ -155,13 +155,13 @@ export default function MotorbikeIncidentForm({ setOpen }: { setOpen?: (open: bo
                         <FormField
                             control={form.control}
                             name="incidentType"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Type d'incident</FormLabel>
                                     <FormControl>
                                         <Input type="text" placeholder="Ex: Panne moteur" {...field} />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
@@ -169,19 +169,19 @@ export default function MotorbikeIncidentForm({ setOpen }: { setOpen?: (open: bo
                         <FormField
                             control={form.control}
                             name="comment"
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Commentaire</FormLabel>
                                     <FormControl>
                                         <Input type="text" placeholder="Détails supplémentaires" {...field} />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                         />
 
-                        <Button type="submit" disabled={isLoading}>
-                            {isLoading ? "Création..." : "Créer l'incident"}
+                        <Button type="submit" disabled={isPending}>
+                            {isPending ? "Création..." : "Créer l'incident"}
                         </Button>
                     </form>
                 </Form>

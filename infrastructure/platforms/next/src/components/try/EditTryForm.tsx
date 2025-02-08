@@ -43,7 +43,7 @@ export default function EditTryForm({
         defaultValues: tryItem,
     });
 
-    const {mutate: updateTryMutation, isLoading} = useMutation({
+    const {mutate: updateTryMutation, isPending} = useMutation({
         mutationFn: (data: TrySchema) => tryUpdate(tryItem.identifier, data),
         onSuccess: () => {
             queryClient.invalidateQueries(["tries"]);
@@ -110,7 +110,7 @@ export default function EditTryForm({
                                         ) : (
                                             motorbikes?.map((bike) => (
                                                 <SelectItem key={bike.identifier} value={bike.identifier}>
-                                                    {bike.licensePlate.value}
+                                                    {bike.licensePlate?.value}
                                                 </SelectItem>
                                             ))
                                         )}
@@ -140,8 +140,8 @@ export default function EditTryForm({
                     )}
                 />
 
-                <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Modification en cours..." : "Modifier l'essai"}
+                <Button type="submit" disabled={isPending}>
+                    {isPending ? "Modification en cours..." : "Modifier l'essai"}
                 </Button>
             </form>
         </Form>

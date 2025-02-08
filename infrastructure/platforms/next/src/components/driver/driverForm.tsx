@@ -53,7 +53,7 @@ export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => v
         mutate: createDriver,
         isError,
         error,
-        isLoading,
+        isPending,
     } = useMutation({
         mutationFn: driverCreate,
         onSuccess: () => {
@@ -61,12 +61,13 @@ export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => v
             if (setOpen) {
                 setOpen(false);
             }
-            queryClient.invalidateQueries(["drivers"]);
+            queryClient.invalidateQueries({ queryKey: ["drivers"] });
         },
     });
 
+
     const onSubmit: SubmitHandler<DriverSchema> = (data) => {
-        createDriver({ ...data, companyOrDealerShipId: user?.id });
+        createDriver({ ...data, companyOrDealerShipId: user?.identifier });
     };
 
     return (
@@ -213,8 +214,8 @@ export default function DriverForm({ setOpen }: { setOpen?: (open: boolean) => v
                             )}
                         />
 
-                        <Button type="submit" disabled={form.formState.isSubmitting || isLoading}>
-                            {form.formState.isSubmitting || isLoading
+                        <Button type="submit" disabled={form.formState.isSubmitting || isPending}>
+                            {form.formState.isSubmitting || isPending
                                 ? "Création..."
                                 : "Créer le conducteur"}
                         </Button>

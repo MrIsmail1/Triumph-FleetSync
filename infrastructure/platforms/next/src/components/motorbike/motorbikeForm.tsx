@@ -24,7 +24,7 @@ import { Button } from "../ui/button";
 import { Alert, AlertDescription } from "../ui/alert";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import React, { useEffect } from "react";
-import { modelMotorbikesList, motorbikeCreate } from "@/lib/api.ts";
+import { modelMotorbikesList, motorbikeCreate } from "@/lib/api";
 
 export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) => void }) {
     const queryClient = useQueryClient();
@@ -34,8 +34,6 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
         queryFn: modelMotorbikesList,
     });
 
-    console.log("Modèles de moto :", models);
-    console.log("Erreur API modèles :", error);
 
     const form = useForm<MotorbikeSchema>({
         resolver: zodResolver(motorbikeSchema),
@@ -59,7 +57,7 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
         mutate: createMotorbikeMutation,
         isError,
         error: mutationError,
-        isLoading,
+        isPending,
     } = useMutation({
         mutationFn: motorbikeCreate,
         onSuccess: () => {
@@ -67,7 +65,7 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
             if (setOpen) {
                 setOpen(false);
             }
-            queryClient.invalidateQueries(["motorbikes"]);
+            queryClient.invalidateQueries({ queryKey: ["motorbikes"] });
         },
     });
 
@@ -190,8 +188,8 @@ export default function MotorbikeForm({ setOpen }: { setOpen?: (open: boolean) =
                             )}
                         />
 
-                        <Button type="submit" disabled={form.formState.isSubmitting || isLoading}>
-                            {form.formState.isSubmitting || isLoading ? "Création..." : "Créer la moto"}
+                        <Button type="submit" disabled={form.formState.isSubmitting || isPending}>
+                            {form.formState.isSubmitting || isPending ? "Création..." : "Créer la moto"}
                         </Button>
                     </form>
                 </Form>
