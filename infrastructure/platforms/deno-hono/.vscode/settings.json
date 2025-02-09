@@ -1,0 +1,10 @@
+{
+  "deno.enablePaths": [
+    "./src",
+    "../../../adapters",
+    "../../../../application",
+    "../../../../../domain",
+    "../../../../../infrastructure"
+  ],
+  "editor.inlayHints.enabled": "off"
+}
