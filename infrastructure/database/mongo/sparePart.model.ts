@@ -17,7 +17,7 @@ const sparePartSchema = new mongoose.Schema(
   {
     _id: { type: String, required: true, unique: true },
     name: { type: String, required: true },
-    partNumber: { type: String, required: true, unique: true },
+    partNumber: { type: String, required: true },
     stockQuantity: { type: Number, required: true },
     reorderThreshold: { type: Number, required: true },
     purchases: [

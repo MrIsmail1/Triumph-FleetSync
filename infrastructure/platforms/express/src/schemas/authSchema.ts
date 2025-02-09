@@ -17,6 +17,7 @@ export const registerSchema = z
     email: emailSchema,
     password: passwordSchema,
     confirmPassword: passwordSchema,
+    role: z.string(),
     userAgent: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword);

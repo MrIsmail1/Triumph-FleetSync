@@ -7,25 +7,33 @@ import axios, {
 } from "axios";
 import queryClient from "./queryClient";
 
-const options: AxiosRequestConfig = {
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+const expressAPIOptions: AxiosRequestConfig = {
+  baseURL: process.env.NEXT_PUBLIC_EXPRESS_API_URL, // Express API
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 };
-const TokenRefreshClient: AxiosInstance = axios.create(options);
+
+const denoHonoAPIOptions: AxiosRequestConfig = {
+  baseURL: process.env.NEXT_PUBLIC_DENO_HONO_API_URL, // Deno Hono API
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+};
+
+const expressAPI: AxiosInstance = axios.create(expressAPIOptions);
+const denoHonoAPI: AxiosInstance = axios.create(denoHonoAPIOptions);
+
+const TokenRefreshClient: AxiosInstance = axios.create(expressAPIOptions);
 
 TokenRefreshClient.interceptors.response.use(
   (response: AxiosResponse) => response.data
 );
 
-const API: AxiosInstance = axios.create(options);
-
-API.interceptors.response.use(
-  (response: AxiosResponse) => {
-    return response.data;
-  },
+expressAPI.interceptors.response.use(
+  (response: AxiosResponse) => response.data,
   async (error: AxiosError): Promise<never> => {
     if (error.response) {
       const { config, response } = error;
@@ -47,4 +55,11 @@ API.interceptors.response.use(
   }
 );
 
-export default API;
+denoHonoAPI.interceptors.response.use(
+  (response: AxiosResponse) => response.data,
+  (error: AxiosError) => {
+    return Promise.reject(error);
+  }
+);
+
+export { denoHonoAPI, expressAPI };

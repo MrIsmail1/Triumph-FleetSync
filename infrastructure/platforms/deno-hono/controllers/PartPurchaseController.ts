@@ -17,11 +17,20 @@ export class PartPurchaseController {
 
   listPartPurchasesHandler = async (c: Context) => {
     const currentUserRole = c.get("role");
+    const filters = {
+      _id: c.req.query("id"),
+      partId: c.req.query("partId"),
+      status: c.req.query("status"),
+      orderDate: c.req.query("orderDate"),
+      receivedDate: c.req.query("receivedDate"),
+    };
+
     const sparePartPurchaseUseCase = new PartPurchaseListUsecase(
       this.partPurchaseRepository
     );
     const purchasesOrError = await sparePartPurchaseUseCase.execute(
-      currentUserRole
+      currentUserRole,
+      filters
     );
 
     appAssert(

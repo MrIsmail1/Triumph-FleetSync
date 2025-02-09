@@ -82,7 +82,7 @@ export class AuthController {
       validatedUserData.lastName,
       validatedUserData.email,
       validatedUserData.password,
-      "client"
+      validatedUserData.role
     );
     //if error return error
     appAssert(

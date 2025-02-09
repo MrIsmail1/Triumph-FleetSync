@@ -13,7 +13,7 @@ export class TrackStockUsecase {
       return new UnauthorizedActionError();
     }
 
-    const allParts = await this.sparePartRepository.findAll();
+    const allParts = await this.sparePartRepository.find();
 
     const belowThresholdParts = allParts.filter(
       (part) => part.stockQuantity.value < part.reorderThreshold.value

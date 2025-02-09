@@ -1,5 +1,5 @@
 import { PartPurchase } from "../../../domain/entities/PartPurchase.ts";
-import { PartPurchaseNotFoundError } from "../../../domain/errors/PartPurchaseNotFoundError";
+import { PartPurchaseNotFoundError } from "../../../domain/errors/PartPurchaseNotFoundError.ts";
 import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError.ts";
 import { PartPurchaseStatus } from "../../../domain/types/PartPurchaseStatus.ts";
 import { PartPurchaseRepository } from "../../repositories/PartPurchaseRepository.ts";

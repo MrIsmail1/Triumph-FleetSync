@@ -1,8 +1,17 @@
 import { Sidebar } from "@/components/ui/sidebar";
-import {Bike, Book, Calendar1, HousePlus, OctagonAlert, Users2} from "lucide-react";
-import { HiOutlineHome } from "react-icons/hi2";
-import { User } from "./AuthResponses.ts";
+import {
+  Bike,
+  Book,
+  Calendar1,
+  HousePlus,
+  OctagonAlert,
+  Users2,
+} from "lucide-react";
 import React from "react";
+import { GiAutoRepair } from "react-icons/gi";
+import { HiOutlineHome } from "react-icons/hi2";
+
+import { User } from "./AuthResponses";
 
 interface SidebarData {
   title: string;
@@ -26,7 +35,7 @@ export const sidebarData: SidebarData[] = [
     title: "Tableau de bord",
     url: "/dashboard",
     isActive: false,
-    authorizedRoles: ["admin", "company", "dealership","technicien" ],
+    authorizedRoles: ["admin", "company", "dealership", "technicien"],
     icon: <HiOutlineHome className="w-6 h-6" />,
   },
   {
@@ -77,5 +86,12 @@ export const sidebarData: SidebarData[] = [
     authorizedRoles: ["admin", "company", "dealership"],
     isActive: false,
     icon: <OctagonAlert className="w-6 h-6" />,
+  },
+  {
+    title: "Pièces détachées",
+    url: "/sparepart",
+    authorizedRoles: ["admin"],
+    isActive: false,
+    icon: <GiAutoRepair className="w-6 h-6" />,
   },
 ];

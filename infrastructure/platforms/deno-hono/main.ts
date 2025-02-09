@@ -8,6 +8,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { ContentfulStatusCode } from "hono/utils/http-status";
 import { ZodError } from "zod";
+import partPurchase from "./routes/partPurchase.route.ts";
 
 const app = new Hono().basePath("/api");
 app.use("/*", cors({ origin: APP_ORIGIN, credentials: true }));
@@ -40,6 +41,8 @@ app.onError((err, c) => {
 
 app.use("/spare-part/*", authenticate);
 app.route("/spare-part", sparePart);
+app.use("/part-purchase/*", authenticate);
+app.route("/part-purchase", partPurchase);
 
 await connectToMongoDB();
 Deno.serve(app.fetch);
