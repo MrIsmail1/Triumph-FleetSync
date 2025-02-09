@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../../platforms/express/node_modules/@prisma" // change this to ./prisma/client if the generation doesn't work
+  output   = "../../platforms/express/node_modules/.prisma/client" // change this to .prisma/client if the generation doesn't work
 }
 
 generator client_deno {

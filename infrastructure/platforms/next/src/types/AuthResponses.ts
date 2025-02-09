@@ -1,14 +1,17 @@
-import { Driver } from "./DriverResponses";
-import { Fleet } from "./FleetResponses";
-import { Motorbike } from "./MotorbikeResponses";
+import { Driver } from "@/types/DriverResponses";
+import { Fleet } from "@/types/FleetResponses";
+import { Motorbike } from "@/types/MotorbikeResponses";
 
 export interface User {
   identifier: string;
-  email?: { value: string };
   firstName?: { value: string };
   lastName?: { value: string };
+  email?: { value: string };
+  passwordHash: string;
   role?: { value: string };
-  isVerified?: { value: string };
+  isVerified: boolean;
+  createdAt: string;
+  updatedAt: string;
   motorbikes: Motorbike[];
   drivers: Driver[];
   fleets: Fleet[];

@@ -373,7 +373,7 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Metrics 
+   * Metrics
    */
   export type Metrics = runtime.Metrics
   export type Metric<T> = runtime.Metric<T>
@@ -391,14 +391,14 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.2.1
+   * Prisma Client JS version: 6.3.1
    * Query Engine version: acc0b9dd43eb689cbd20c9470515d719db10d0b0
    */
   export type PrismaVersion = {
     client: string
   }
 
-  export const prismaVersion: PrismaVersion 
+  export const prismaVersion: PrismaVersion
 
   /**
    * Utility Types
@@ -414,15 +414,15 @@ export namespace Prisma {
 
   /**
    * Types of the values used to represent different kinds of `null` values when working with JSON fields.
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   namespace NullTypes {
     /**
     * Type of `Prisma.DbNull`.
-    * 
+    *
     * You cannot use other instances of this class. Please use the `Prisma.DbNull` value.
-    * 
+    *
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class DbNull {
@@ -432,9 +432,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.JsonNull`.
-    * 
+    *
     * You cannot use other instances of this class. Please use the `Prisma.JsonNull` value.
-    * 
+    *
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class JsonNull {
@@ -444,9 +444,9 @@ export namespace Prisma {
 
     /**
     * Type of `Prisma.AnyNull`.
-    * 
+    *
     * You cannot use other instances of this class. Please use the `Prisma.AnyNull` value.
-    * 
+    *
     * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
     */
     class AnyNull {
@@ -457,21 +457,21 @@ export namespace Prisma {
 
   /**
    * Helper for filtering JSON entries that have `null` on the database (empty on the db)
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const DbNull: NullTypes.DbNull
 
   /**
    * Helper for filtering JSON entries that have JSON `null` values (not empty on the db)
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const JsonNull: NullTypes.JsonNull
 
   /**
    * Helper for filtering JSON entries that are `Prisma.DbNull` or `Prisma.JsonNull`
-   * 
+   *
    * @see https://www.prisma.io/docs/concepts/components/prisma-client/working-with-fields/working-with-json-fields#filtering-on-a-json-field
    */
   export const AnyNull: NullTypes.AnyNull
@@ -3225,6 +3225,9 @@ export namespace Prisma {
      * Filter which Users to update
      */
     where?: UserWhereInput
+    /**
+     * Limit how many Users to update.
+     */
     limit?: number
   }
 
@@ -3248,6 +3251,9 @@ export namespace Prisma {
      * Filter which Users to update
      */
     where?: UserWhereInput
+    /**
+     * Limit how many Users to update.
+     */
     limit?: number
   }
 
@@ -3311,6 +3317,9 @@ export namespace Prisma {
      * Filter which Users to delete
      */
     where?: UserWhereInput
+    /**
+     * Limit how many Users to delete.
+     */
     limit?: number
   }
 
@@ -4446,6 +4455,9 @@ export namespace Prisma {
      * Filter which DriverHistoricals to update
      */
     where?: DriverHistoricalWhereInput
+    /**
+     * Limit how many DriverHistoricals to update.
+     */
     limit?: number
   }
 
@@ -4469,6 +4481,9 @@ export namespace Prisma {
      * Filter which DriverHistoricals to update
      */
     where?: DriverHistoricalWhereInput
+    /**
+     * Limit how many DriverHistoricals to update.
+     */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
@@ -4536,6 +4551,9 @@ export namespace Prisma {
      * Filter which DriverHistoricals to delete
      */
     where?: DriverHistoricalWhereInput
+    /**
+     * Limit how many DriverHistoricals to delete.
+     */
     limit?: number
   }
 
@@ -5461,6 +5479,9 @@ export namespace Prisma {
      * Filter which VerificationCodes to update
      */
     where?: VerificationCodeWhereInput
+    /**
+     * Limit how many VerificationCodes to update.
+     */
     limit?: number
   }
 
@@ -5484,6 +5505,9 @@ export namespace Prisma {
      * Filter which VerificationCodes to update
      */
     where?: VerificationCodeWhereInput
+    /**
+     * Limit how many VerificationCodes to update.
+     */
     limit?: number
   }
 
@@ -5539,6 +5563,9 @@ export namespace Prisma {
      * Filter which VerificationCodes to delete
      */
     where?: VerificationCodeWhereInput
+    /**
+     * Limit how many VerificationCodes to delete.
+     */
     limit?: number
   }
 
@@ -6447,6 +6474,9 @@ export namespace Prisma {
      * Filter which Sessions to update
      */
     where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
     limit?: number
   }
 
@@ -6470,6 +6500,9 @@ export namespace Prisma {
      * Filter which Sessions to update
      */
     where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
     limit?: number
   }
 
@@ -6525,6 +6558,9 @@ export namespace Prisma {
      * Filter which Sessions to delete
      */
     where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to delete.
+     */
     limit?: number
   }
 
@@ -7633,6 +7669,9 @@ export namespace Prisma {
      * Filter which Maintenances to update
      */
     where?: MaintenanceWhereInput
+    /**
+     * Limit how many Maintenances to update.
+     */
     limit?: number
   }
 
@@ -7656,6 +7695,9 @@ export namespace Prisma {
      * Filter which Maintenances to update
      */
     where?: MaintenanceWhereInput
+    /**
+     * Limit how many Maintenances to update.
+     */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
@@ -7723,6 +7765,9 @@ export namespace Prisma {
      * Filter which Maintenances to delete
      */
     where?: MaintenanceWhereInput
+    /**
+     * Limit how many Maintenances to delete.
+     */
     limit?: number
   }
 
@@ -8855,6 +8900,9 @@ export namespace Prisma {
      * Filter which Drivers to update
      */
     where?: DriverWhereInput
+    /**
+     * Limit how many Drivers to update.
+     */
     limit?: number
   }
 
@@ -8878,6 +8926,9 @@ export namespace Prisma {
      * Filter which Drivers to update
      */
     where?: DriverWhereInput
+    /**
+     * Limit how many Drivers to update.
+     */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
@@ -8945,6 +8996,9 @@ export namespace Prisma {
      * Filter which Drivers to delete
      */
     where?: DriverWhereInput
+    /**
+     * Limit how many Drivers to delete.
+     */
     limit?: number
   }
 
@@ -10167,6 +10221,9 @@ export namespace Prisma {
      * Filter which Motorbikes to update
      */
     where?: MotorbikeWhereInput
+    /**
+     * Limit how many Motorbikes to update.
+     */
     limit?: number
   }
 
@@ -10190,6 +10247,9 @@ export namespace Prisma {
      * Filter which Motorbikes to update
      */
     where?: MotorbikeWhereInput
+    /**
+     * Limit how many Motorbikes to update.
+     */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
@@ -10257,6 +10317,9 @@ export namespace Prisma {
      * Filter which Motorbikes to delete
      */
     where?: MotorbikeWhereInput
+    /**
+     * Limit how many Motorbikes to delete.
+     */
     limit?: number
   }
 
@@ -11412,6 +11475,9 @@ export namespace Prisma {
      * Filter which Breakdowns to update
      */
     where?: BreakdownWhereInput
+    /**
+     * Limit how many Breakdowns to update.
+     */
     limit?: number
   }
 
@@ -11435,6 +11501,9 @@ export namespace Prisma {
      * Filter which Breakdowns to update
      */
     where?: BreakdownWhereInput
+    /**
+     * Limit how many Breakdowns to update.
+     */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
@@ -11502,6 +11571,9 @@ export namespace Prisma {
      * Filter which Breakdowns to delete
      */
     where?: BreakdownWhereInput
+    /**
+     * Limit how many Breakdowns to delete.
+     */
     limit?: number
   }
 
@@ -12496,6 +12568,9 @@ export namespace Prisma {
      * Filter which Warranties to update
      */
     where?: WarrantyWhereInput
+    /**
+     * Limit how many Warranties to update.
+     */
     limit?: number
   }
 
@@ -12519,6 +12594,9 @@ export namespace Prisma {
      * Filter which Warranties to update
      */
     where?: WarrantyWhereInput
+    /**
+     * Limit how many Warranties to update.
+     */
     limit?: number
   }
 
@@ -12582,6 +12660,9 @@ export namespace Prisma {
      * Filter which Warranties to delete
      */
     where?: WarrantyWhereInput
+    /**
+     * Limit how many Warranties to delete.
+     */
     limit?: number
   }
 
@@ -13566,6 +13647,9 @@ export namespace Prisma {
      * Filter which Fleets to update
      */
     where?: FleetWhereInput
+    /**
+     * Limit how many Fleets to update.
+     */
     limit?: number
   }
 
@@ -13589,6 +13673,9 @@ export namespace Prisma {
      * Filter which Fleets to update
      */
     where?: FleetWhereInput
+    /**
+     * Limit how many Fleets to update.
+     */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
@@ -13656,6 +13743,9 @@ export namespace Prisma {
      * Filter which Fleets to delete
      */
     where?: FleetWhereInput
+    /**
+     * Limit how many Fleets to delete.
+     */
     limit?: number
   }
 
@@ -14695,6 +14785,9 @@ export namespace Prisma {
      * Filter which ModelMotorbikes to update
      */
     where?: ModelMotorbikeWhereInput
+    /**
+     * Limit how many ModelMotorbikes to update.
+     */
     limit?: number
   }
 
@@ -14718,6 +14811,9 @@ export namespace Prisma {
      * Filter which ModelMotorbikes to update
      */
     where?: ModelMotorbikeWhereInput
+    /**
+     * Limit how many ModelMotorbikes to update.
+     */
     limit?: number
   }
 
@@ -14781,6 +14877,9 @@ export namespace Prisma {
      * Filter which ModelMotorbikes to delete
      */
     where?: ModelMotorbikeWhereInput
+    /**
+     * Limit how many ModelMotorbikes to delete.
+     */
     limit?: number
   }
 
@@ -15806,6 +15905,9 @@ export namespace Prisma {
      * Filter which Tries to update
      */
     where?: TryWhereInput
+    /**
+     * Limit how many Tries to update.
+     */
     limit?: number
   }
 
@@ -15829,6 +15931,9 @@ export namespace Prisma {
      * Filter which Tries to update
      */
     where?: TryWhereInput
+    /**
+     * Limit how many Tries to update.
+     */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
@@ -15896,6 +16001,9 @@ export namespace Prisma {
      * Filter which Tries to delete
      */
     where?: TryWhereInput
+    /**
+     * Limit how many Tries to delete.
+     */
     limit?: number
   }
 
@@ -16910,6 +17018,9 @@ export namespace Prisma {
      * Filter which MotorbikeIncidents to update
      */
     where?: MotorbikeIncidentWhereInput
+    /**
+     * Limit how many MotorbikeIncidents to update.
+     */
     limit?: number
   }
 
@@ -16933,6 +17044,9 @@ export namespace Prisma {
      * Filter which MotorbikeIncidents to update
      */
     where?: MotorbikeIncidentWhereInput
+    /**
+     * Limit how many MotorbikeIncidents to update.
+     */
     limit?: number
     /**
      * Choose, which related nodes to fetch as well
@@ -17000,6 +17114,9 @@ export namespace Prisma {
      * Filter which MotorbikeIncidents to delete
      */
     where?: MotorbikeIncidentWhereInput
+    /**
+     * Limit how many MotorbikeIncidents to delete.
+     */
     limit?: number
   }
 
