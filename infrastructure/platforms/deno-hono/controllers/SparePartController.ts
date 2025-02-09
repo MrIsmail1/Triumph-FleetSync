@@ -16,7 +16,7 @@ export class SparePartController {
   listSparePartsHandler = async (c: Context) => {
     const currentUserRole = c.get("role");
     const rawQuery = {
-      id: c.req.query("id"),
+      _id: c.req.query("id"),
       name: c.req.query("name"),
       partNumber: c.req.query("partNumber"),
       brand: c.req.query("brand"),

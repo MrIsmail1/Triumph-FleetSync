@@ -20,7 +20,7 @@ export class Role {
 
   public static isClient(value: string) {
     const role = value.trim();
-    if (role != "client") {
+    if (role != "company" && role != "dealership") {
       return new RoleSelectionError();
     }
     return new Role(role);

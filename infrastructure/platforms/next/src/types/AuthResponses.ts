@@ -1,32 +1,29 @@
-import {Driver} from "./DriverResponses.ts";
-import {Fleet} from "./FleetResponses.ts";
-import {Motorbike} from "./MotorbikeResponses.ts";
+import { Driver } from "./DriverResponses";
+import { Fleet } from "./FleetResponses";
+import { Motorbike } from "./MotorbikeResponses";
 
 export interface User {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    passwordHash: string;
-    role: string;
-    isVerified: boolean;
-    createdAt: string;
-    updatedAt: string;
-    motorbikes: Motorbike[];
-    drivers: Driver[];
-    fleets: Fleet[];
+  identifier: string;
+  email?: { value: string };
+  firstName?: { value: string };
+  lastName?: { value: string };
+  role?: { value: string };
+  isVerified?: { value: string };
+  motorbikes: Motorbike[];
+  drivers: Driver[];
+  fleets: Fleet[];
 }
 
 export interface LoginResponse {
-    token: string;
-    user: User;
+  token: string;
+  user: User;
 }
 
 export interface UseAuthOptions
-    extends Omit<
-        import("@tanstack/react-query").UseQueryOptions<User, Error>,
-        "queryKey" | "queryFn"
-    > {
-    queryKey?: unknown[];
-    queryFn?: () => unknown;
+  extends Omit<
+    import("@tanstack/react-query").UseQueryOptions<User, Error>,
+    "queryKey" | "queryFn"
+  > {
+  queryKey?: unknown[];
+  queryFn?: () => unknown;
 }

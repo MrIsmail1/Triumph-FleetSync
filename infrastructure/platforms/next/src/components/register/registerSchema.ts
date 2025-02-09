@@ -18,6 +18,8 @@ export const registerSchema = z
       .nonempty("La confirmation du mot de passe ne peut pas être vide"),
     firstName: z.string().nonempty("Le prénom ne peut pas être vide"),
     lastName: z.string().nonempty("Le nom ne peut pas être vide"),
+    role: z.string(),
+    isDealership: z.boolean(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Les mots de passe ne correspondent pas",

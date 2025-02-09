@@ -4,6 +4,7 @@ import { User } from "@/types/AuthResponses";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Toast } from "../common/Toast";
 import { Alert, AlertDescription } from "../ui/alert";
@@ -25,7 +26,6 @@ import {
   SelectValue,
 } from "../ui/select";
 import { editUserSchema, EditUserSchema } from "./editUserSchema";
-import React from "react";
 export default function EditUserForm({
   user,
   setOpen,
@@ -39,7 +39,7 @@ export default function EditUserForm({
     email: user.email?.value,
     firstName: user.firstName?.value,
     lastName: user.lastName?.value,
-    role: user.role?.value as "client" | "admin" | "technician" | "manager",
+    role: user.role?.value as "company" | "dealership" | "admin" | "technician",
   };
 
   const form = useForm<EditUserSchema>({
@@ -61,7 +61,7 @@ export default function EditUserForm({
       setTimeout(() => {
         setOpen(false);
         router.replace("/user");
-      }, 3000);
+      }, 300);
     },
   });
 
@@ -127,8 +127,6 @@ export default function EditUserForm({
             )}
           />
 
-
-
           <FormField
             control={form.control}
             name="firstName"
@@ -174,8 +172,10 @@ export default function EditUserForm({
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
                       <SelectItem value="technician">Technician</SelectItem>
-                      <SelectItem value="client">Client</SelectItem>
-                      <SelectItem value="manager">Manager</SelectItem>
+                      <SelectItem value="dealership">
+                        Concessionnaire
+                      </SelectItem>
+                      <SelectItem value="company">Entreprise</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

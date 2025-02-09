@@ -22,8 +22,7 @@ import { Modal } from "@/components/common/Modal";
 import EditUserForm from "@/components/user/EditUserForm";
 import { moveColumnsDown, moveColumnsUp } from "@/lib/utils";
 import { User } from "@/types/AuthResponses";
-import { useState } from "react";
-import React from "react";
+import React, { useState } from "react";
 
 export function buildUserColumns() {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
@@ -31,7 +30,6 @@ export function buildUserColumns() {
 
   const onDelete = (id: string) => {
     setDeleteModalOpen(false);
-    console.log(id);
   };
 
   const columns: ColumnDef<User>[] = [

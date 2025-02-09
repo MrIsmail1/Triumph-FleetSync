@@ -29,26 +29,25 @@ export class MongoPartPurchaseRepository implements PartPurchaseRepository {
   }
   async save(partPurchase: PartPurchase): Promise<PartPurchase> {
     const createdPartPurchase = await PartPurchaseModel.create({
-      id: partPurchase.identifier,
+      _id: partPurchase.identifier,
       partId: partPurchase.partId,
       quantity: partPurchase.quantity.value,
       costPerUnit: partPurchase.costPerUnit.value,
       totalCost: partPurchase.totalCost.value,
-      status: partPurchase.status,
-      orderDate: partPurchase.orderDate,
+      status: partPurchase.status.value,
+      orderDate: partPurchase.orderDate ?? null,
       receivedDate: partPurchase.receivedDate,
     });
     return PartPurchase.reconstitute(createdPartPurchase);
   }
   async update(partPurchase: PartPurchase): Promise<PartPurchase | null> {
     const updatedPartPurchase = await PartPurchaseModel.updateOne(
-      { id: partPurchase.identifier },
+      { _id: partPurchase.identifier },
       {
-        partId: partPurchase.partId,
         quantity: partPurchase.quantity.value,
         costPerUnit: partPurchase.costPerUnit.value,
         totalCost: partPurchase.totalCost.value,
-        status: partPurchase.status,
+        status: partPurchase.status.value,
         orderDate: partPurchase.orderDate,
         receivedDate: partPurchase.receivedDate,
       }

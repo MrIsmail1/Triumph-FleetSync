@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Alert, AlertDescription } from "../ui/alert";
 import { Button } from "../ui/button";
@@ -14,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { Checkbox } from "../ui/checkbox";
 import {
   Form,
   FormControl,
@@ -25,7 +27,6 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { registerSchema, RegisterSchema } from "./registerSchema";
-import React from "react";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -37,6 +38,8 @@ export default function RegisterForm() {
       email: "",
       password: "",
       confirmPassword: "",
+      role: "company",
+      isDealership: false,
     },
   });
   const {
@@ -55,7 +58,8 @@ export default function RegisterForm() {
     data: RegisterSchema
   ) => {
     try {
-      signUp(data);
+      const role = data.isDealership ? "dealership" : "company";
+      signUp({ ...data, role });
     } catch (error) {
       console.error(error);
     }
@@ -85,7 +89,7 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Nom</FormLabel>
                   <FormControl>
-                    <Input type="lastName" placeholder="Nom..." {...field} />
+                    <Input type="text" placeholder="Nom..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,11 +102,7 @@ export default function RegisterForm() {
                 <FormItem>
                   <FormLabel>Prénom</FormLabel>
                   <FormControl>
-                    <Input
-                      type="firstName"
-                      placeholder="Prénom..."
-                      {...field}
-                    />
+                    <Input type="text" placeholder="Prénom..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,12 +154,25 @@ export default function RegisterForm() {
                       type="password"
                       placeholder="Confirmer le mot de passe..."
                       {...field}
-                      onKeyDown={(e) =>
-                        e.key === "Enter" && form.handleSubmit(onSubmit)()
-                      }
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="isDealership"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(checked) => field.onChange(checked)}
+                    />
+                  </FormControl>{" "}
+                  <FormLabel>Êtes-vous un concessionnaire ?</FormLabel>
                 </FormItem>
               )}
             />
