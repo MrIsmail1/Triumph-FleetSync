@@ -1,7 +1,7 @@
 import mongoose, { Document, Query, Schema } from "mongoose";
 
 export interface PartPurchaseDocument extends Document {
-  id: string;
+  _id: string;
   partId: string;
   quantity: number;
   costPerUnit: number;
@@ -15,7 +15,7 @@ export interface PartPurchaseDocument extends Document {
 
 const partPurchaseSchema = new Schema<PartPurchaseDocument>(
   {
-    id: { type: String, required: true, unique: true },
+    _id: { type: String, required: true, unique: true },
     partId: { type: String, required: true },
     quantity: { type: Number, required: true },
     costPerUnit: { type: Number, required: true },
