@@ -4,11 +4,7 @@ import { MaintenanceCreateUsecase } from "../../../../../application/usecases/ma
 import { MaintenanceDeleteUsecase } from "../../../../../application/usecases/maintenance/MaintenanceDeleteUsecase";
 import { MaintenancesListUsecase } from "../../../../../application/usecases/maintenance/MaintenancesListUsecase";
 import { MaintenanceUpdateUsecase } from "../../../../../application/usecases/maintenance/MaintenanceUpdateUsecase";
-import { CREATED, OK } from "../constants/http";
-import {
-  maintenanceCreateSchema,
-  maintenanceUpdateSchema,
-} from "../schemas/maintenanceSchema";
+import { CREATED, OK, NOT_FOUND } from "../constants/http";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 import { mapDomainErrorToHttp } from "../utils/errorsMapper";
@@ -20,21 +16,38 @@ export class MaintenanceController {
     private readonly userRepository: UserRepository
   ) {}
 
+  /**
+   * ✅ Créer une maintenance
+   */
   addMaintenanceHandler = catchErrors(async (request, response) => {
     const currentUser = request.user as AccessTokenPayload;
 
-    const validatedMaintenanceData = maintenanceCreateSchema.parse({
-      ...request.body,
-      clientId: currentUser.userIdentifier,
-      userRole: currentUser.role,
-    });
+    const {
+      motorbikeId,
+      maintenanceDate,
+      mileageAtMaintenance,
+      maintenanceType,
+      maintenanceCost,
+      maintenanceDescription,
+      companyOrDealerShipId,
+      breakdownId,
+      warrantyId,
+    } = request.body;
 
-    const maintenanceCreateUsecase = new MaintenanceCreateUsecase(
-      this.maintenanceRepository
-    );
-
+    const maintenanceCreateUsecase = new MaintenanceCreateUsecase(this.maintenanceRepository);
+    
     const maintenanceOrError = await maintenanceCreateUsecase.execute(
-      validatedMaintenanceData
+      motorbikeId,
+      maintenanceDate,
+      mileageAtMaintenance,
+      maintenanceType,
+      maintenanceCost,
+      maintenanceDescription,
+      currentUser.userIdentifier,
+      currentUser.role,
+      companyOrDealerShipId,
+      breakdownId ?? undefined,
+      warrantyId ?? undefined
     );
 
     appAssert(
@@ -48,8 +61,12 @@ export class MaintenanceController {
     });
   });
 
+  /**
+   * ✅ Lister les maintenances
+   */
   listMaintenancesHandler = catchErrors(async (request, response) => {
     const currentUser = request.user as AccessTokenPayload;
+
     const maintenancesListUsecase = new MaintenancesListUsecase(
       this.maintenanceRepository,
       this.userRepository
@@ -68,23 +85,49 @@ export class MaintenanceController {
     response.status(OK).json(maintenancesOrError);
   });
 
+  /**
+   * ✅ Récupérer une maintenance spécifique
+   */
+  getMaintenanceHandler = catchErrors(async (request, response) => {
+    const currentUser = request.user as AccessTokenPayload;
+    const { maintenanceId } = request.params;
+
+    const maintenancesListUsecase = new MaintenancesListUsecase(
+      this.maintenanceRepository,
+      this.userRepository
+    );
+
+    const maintenanceOrError = await maintenancesListUsecase.execute(
+      currentUser.userIdentifier,
+      currentUser.role,
+      maintenanceId
+    );
+
+    appAssert(
+      !(maintenanceOrError instanceof Error),
+      NOT_FOUND,
+      "MaintenanceNotFound",
+      "Maintenance introuvable."
+    );
+
+    response.status(OK).json(maintenanceOrError);
+  });
+
+  /**
+   * ✅ Mettre à jour une maintenance
+   */
   updateMaintenanceHandler = catchErrors(async (request, response) => {
     const currentUser = request.user as AccessTokenPayload;
-    const { id: maintenanceId } = request.params;
+    const maintenanceId = request.params.id;
+    const dataToUpdate = request.body;
 
-    const validatedMaintenanceData = maintenanceUpdateSchema.parse(
-      request.body
-    );
-
-    const maintenanceUpdateUsecase = new MaintenanceUpdateUsecase(
-      this.maintenanceRepository
-    );
+    const maintenanceUpdateUsecase = new MaintenanceUpdateUsecase(this.maintenanceRepository);
 
     const maintenanceOrError = await maintenanceUpdateUsecase.execute(
       currentUser.userIdentifier,
       currentUser.role,
       maintenanceId,
-      validatedMaintenanceData
+      dataToUpdate
     );
 
     appAssert(
@@ -100,15 +143,14 @@ export class MaintenanceController {
 
   deleteMaintenanceHandler = catchErrors(async (request, response) => {
     const currentUser = request.user as AccessTokenPayload;
-    const { id: maintenanceId } = request.params;
+    const maintenanceId = request.params.id;
 
-    const maintenanceDeleteUsecase = new MaintenanceDeleteUsecase(
-      this.maintenanceRepository
-    );
+    const maintenanceDeleteUsecase = new MaintenanceDeleteUsecase(this.maintenanceRepository);
 
     const maintenanceDeletedOrError = await maintenanceDeleteUsecase.execute(
-      currentUser.role,
-      maintenanceId
+      maintenanceId, // Correction ici
+      currentUser.userIdentifier,
+      currentUser.role
     );
 
     appAssert(
@@ -119,5 +161,6 @@ export class MaintenanceController {
     response.status(OK).json({
       message: "Maintenance supprimée avec succès.",
     });
-  });
+});
+
 }

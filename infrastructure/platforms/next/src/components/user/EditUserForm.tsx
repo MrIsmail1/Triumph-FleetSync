@@ -39,7 +39,7 @@ export default function EditUserForm({
     email: user.email?.value,
     firstName: user.firstName?.value,
     lastName: user.lastName?.value,
-    role: user.role?.value as "client" | "admin" | "technician" | "manager",
+    role: user.role?.value as "client" | "admin" | "technician" | "company",
   };
 
   const form = useForm<EditUserSchema>({
@@ -175,7 +175,7 @@ export default function EditUserForm({
                       <SelectItem value="admin">Admin</SelectItem>
                       <SelectItem value="technician">Technician</SelectItem>
                       <SelectItem value="client">Client</SelectItem>
-                      <SelectItem value="manager">Manager</SelectItem>
+                      <SelectItem value="company">company</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormControl>

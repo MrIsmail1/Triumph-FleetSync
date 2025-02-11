@@ -15,25 +15,24 @@ const maintenanceController = new MaintenanceController(
 );
 
 maintenanceRoutes.post(
-  "/",
-  authorize(["admin", "manager"]),
+  "/create",
+  authorize(["admin", "company","technician","dealership" ]),
   maintenanceController.addMaintenanceHandler
 );
 
 maintenanceRoutes.get(
-  "/",
-  authorize(["admin", "technician", "manager", "client"]),
+  "/list",
   maintenanceController.listMaintenancesHandler
 );
 
 maintenanceRoutes.put(
-  "/:id",
-  authorize(["admin", "manager"]),
+  "/update/:id",
+  authorize(["admin", "company"]),
   maintenanceController.updateMaintenanceHandler
 );
 
 maintenanceRoutes.delete(
-  "/:id",
+  "/delete/:id",
   authorize(["admin"]),
   maintenanceController.deleteMaintenanceHandler
 );

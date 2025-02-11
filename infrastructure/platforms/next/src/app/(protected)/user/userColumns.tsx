@@ -31,7 +31,6 @@ export function buildUserColumns() {
 
   const onDelete = (id: string) => {
     setDeleteModalOpen(false);
-    console.log(id);
   };
 
   const columns: ColumnDef<User>[] = [

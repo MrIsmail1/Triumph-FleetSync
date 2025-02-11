@@ -15,7 +15,6 @@ export class ModelMotorbikeUpdateUsecase {
             maintenanceIntervalTimeMonths: number;
         }>
     ) {
-        console.log("Données reçues dans Usecase :", dataToUpdate);
 
         if (!dataToUpdate) {
             console.error("Erreur : dataToUpdate est undefined dans le Usecase !");
@@ -28,7 +27,6 @@ export class ModelMotorbikeUpdateUsecase {
 
         const modelMotorbike = await this.modelMotorbikeRepository.findById(modelMotorbikeId);
         if (!modelMotorbike) {
-            console.log('tes un caca')
             return new ModelMotorbikeNotFoundError();
         }
 

@@ -15,21 +15,27 @@ const warrantyController = new WarrantyController(
 );
 
 warrantyRoutes.post(
-  "/",
-  authorize(["admin", "manager"]),
+  "/create",
+  authorize(["admin", "company"]),
   warrantyController.addWarrantyHandler
 );
 
 warrantyRoutes.get(
-  "/",
-  authorize(["admin", "technician", "manager"]),
+  "/list",
+  authorize(["admin", "technician", "company"]),
   warrantyController.listWarrantiesHandler
 );
 
 warrantyRoutes.delete(
-  "/:id",
+  "/delete/:id",
   authorize(["admin"]),
   warrantyController.deleteWarrantyHandler
+);
+
+warrantyRoutes.put(
+  "/update/:id",
+  authorize(["admin"]),
+  warrantyController.updateWarrantyHandler
 );
 
 export default warrantyRoutes;

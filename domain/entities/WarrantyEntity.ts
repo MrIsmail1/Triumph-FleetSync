@@ -8,15 +8,20 @@ export class WarrantyEntity {
     public providerName: ValidString,
     public warrantyDetails: ValidString,
     public createdAt: Date,
-    public updatedAt: Date
+    public updatedAt: Date,
+    public motorbikeId: string,
+    public companyOrDealerShipId?: string
   ) {}
 
   public static create(
     validFrom: Date,
     validUntil: Date,
     providerName: ValidString,
-    warrantyDetails: ValidString
+    warrantyDetails: ValidString,
+    motorbikeId: string,
+    companyOrDealerShipId?: string
   ): WarrantyEntity {
+
     const identifier = crypto.randomUUID();
     const createdAt = new Date();
     const updatedAt = new Date();
@@ -28,11 +33,13 @@ export class WarrantyEntity {
       providerName,
       warrantyDetails,
       createdAt,
-      updatedAt
+      updatedAt,
+      motorbikeId,
+      companyOrDealerShipId
     );
   }
 
-  public static reconstitute(data: {
+public static reconstitute(data: {
     id: string;
     validFrom: Date;
     validUntil: Date;
@@ -40,7 +47,9 @@ export class WarrantyEntity {
     warrantyDetails: string;
     createdAt: Date;
     updatedAt: Date;
-  }): WarrantyEntity {
+    companyOrDealerShipId?: string;
+    motorbikeId: string;
+}): WarrantyEntity {
     return new WarrantyEntity(
       data.id,
       data.validFrom,
@@ -48,7 +57,14 @@ export class WarrantyEntity {
       ValidString.reconstitute(data.providerName),
       ValidString.reconstitute(data.warrantyDetails),
       data.createdAt,
-      data.updatedAt
+      data.updatedAt,
+      data.motorbikeId,
+      data.companyOrDealerShipId
     );
+}
+
+
+  public isExpired(): boolean {
+    return new Date() > this.validUntil;
   }
 }

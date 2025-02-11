@@ -3,12 +3,15 @@ import { RegisterSchema } from "@/components/register/registerSchema";
 import { PasswordResetSchema } from "@/components/reset-password/passwordResetSchema";
 import API from "@/config/apiClient";
 
-import {FleetSchema} from "@/components/fleet/fleetSchema.ts"; // adjust import paths accordingly
+import {FleetSchema} from "@/components/fleet/fleetSchema.ts";
 import { LoginResponse, User } from "../types/AuthResponses.ts";
 import { Fleet } from "../types/FleetResponses.ts";
 import { ModelMotorbike } from "../types/ModelMotorbikeResponses.ts";
 import { Motorbike } from "../types/MotorbikeResponses.ts";
 import { Driver } from "../types/DriverResponses.ts";
+import { Maintenance } from "../types/MaintenanceResponses.ts";
+import { Warranty } from "../types/WarrantyResponses.ts";
+import { Breakdown } from "../types/BreakdownResponses.ts";
 
 export const login = async (data: LoginSchema) =>
   API.post<LoginResponse>("/auth/login", data);
@@ -53,7 +56,7 @@ export const modelMotorbikeDelete = async (modelMotorbikeId: string) => API.dele
 // Motorbike
 export const motorbikesList = async () => API.get<Motorbike[], Motorbike[]>("/motorbike/list");
 export const motorbikeCreate = async (data: Motorbike) => API.post<{ message: string }>("/motorbike/create", data);
-export const motorbikeGetOne = async (motorbikeId: string) => API.get<Motorbike>(`/motorbike/${motorbikeId}`);
+export const motorbikeGetOne = async (motorbikeId: string) => API.get<Motorbike>(`/motorbike/motorbike/${motorbikeId}`);
 export const motorbikeUpdate = async (motorbikeId: string, data: Motorbike) => API.put<Motorbike>(`/motorbike/update/${motorbikeId}`, data);
 export const motorbikeDelete = async (motorbikeId: string) => API.delete<{ message: string }>(`/motorbike/delete/${motorbikeId}`);
 
@@ -64,3 +67,25 @@ export const driverCreate = async (data: Driver) => API.post<{ message: string }
 export const driverUpdate = async (driverId: string, data: Driver) => API.put<Driver>(`/driver/update/${driverId}`, data);
 export const driverGetOne = async (driverId: string) => API.get<Driver>(`/driver/driver/${driverId}`);
 export const driverDelete = async (driverId: string) => API.delete<{ message: string }>(`/driver/delete/${driverId}`);
+
+// Maintenance
+export const maintenancesList = async () => API.get<Maintenance[], Maintenance[]>("/maintenance/list");
+export const maintenanceCreate = async (data: Maintenance) => API.post<{ message: string }>("/maintenance/create", data);
+export const maintenanceGetOne = async (maintenanceId: string) => API.get<Maintenance>(`/maintenance/${maintenanceId}`);
+export const maintenanceUpdate = async (maintenanceId: string, data: Maintenance) => API.put<Maintenance>(`/maintenance/update/${maintenanceId}`, data);
+export const maintenanceDelete = async (maintenanceId: string) => API.delete<{ message: string }>(`/maintenance/delete/${maintenanceId}`);
+
+
+// Warranties
+export const warrantiesList = async () => API.get<Warranty[], Warranty[]>("/warranty/list");
+export const warrantyCreate = async (data: Warranty) => API.post<{ message: string }>("/warranty/create", data);
+export const warrantyGetOne = async (warrantyId: string) => API.get<Warranty>(`/warranty/${warrantyId}`);
+export const warrantyUpdate = async (warrantyId: string, data: Warranty) => API.put<Warranty>(`/warranty/update/${warrantyId}`, data);
+export const warrantyDelete = async (warrantyId: string) => API.delete<{ message: string }>(`/warranty/delete/${warrantyId}`);
+
+//Breakdowns
+export const breakdownsList = async () => API.get<Breakdown[], Breakdown[]>("/breakdown/list");
+export const breakdownCreate = async (data: Breakdown) => API.post<{ message: string }>("/breakdown/create", data);
+export const breakdownGetOne = async (breakdownId: string) => API.get<Breakdown>(`/breakdown/${breakdownId}`);
+export const breakdownUpdate = async (breakdownId: string, data: Breakdown) => API.put<Breakdown>(`/breakdown/update/${breakdownId}`, data);
+export const breakdownDelete = async (breakdownId: string) => API.delete<{ message: string }>(`/breakdown/delete/${breakdownId}`);

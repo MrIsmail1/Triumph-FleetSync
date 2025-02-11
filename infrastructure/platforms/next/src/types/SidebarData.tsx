@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/ui/sidebar";
-import {Bike, Book, HousePlus, Users2} from "lucide-react";
+import { Bike, Book, HousePlus, Users2, Wrench, AlertTriangle,ShieldCheck } from "lucide-react"; // Ajout de Wrench pour Maintenance
 import { HiOutlineHome } from "react-icons/hi2";
 import { User } from "./AuthResponses.ts";
 import React from "react";
@@ -12,6 +12,7 @@ interface SidebarData {
   authorizedRoles?: string[];
   icon?: React.ReactNode;
 }
+
 export type AppSidebarProps = {
   user: User;
 } & React.ComponentProps<typeof Sidebar>;
@@ -26,7 +27,7 @@ export const sidebarData: SidebarData[] = [
     title: "Tableau de bord",
     url: "/dashboard",
     isActive: false,
-    authorizedRoles: ["admin", "company", "dealership","technicien" ],
+    authorizedRoles: ["admin", "company", "dealership", "technician"],
     icon: <HiOutlineHome className="w-6 h-6" />,
   },
   {
@@ -58,10 +59,32 @@ export const sidebarData: SidebarData[] = [
     icon: <Bike className="w-6 h-6" />,
   },
   {
-    title: "Conducteur",
+    title: "Conducteurs",
     url: "/driver",
     authorizedRoles: ["admin", "company", "dealership"],
     isActive: false,
     icon: <Users2 className="w-6 h-6" />,
   },
+  {
+    title: "Maintenances",
+    url: "/maintenance",
+    authorizedRoles: ["admin", "company", "dealership", "technician"],
+    isActive: false,
+    icon: <Wrench className="w-6 h-6" />,
+  },
+  {
+    title: "Garanties",
+    url: "/warranty",
+    authorizedRoles: ["admin", "company", "dealership", "technician"],
+    isActive: false,
+    icon: <ShieldCheck className="w-6 h-6 text-red-600" />,
+  },
+  {
+    title: "Pannes",
+    url: "/breakdown",
+    authorizedRoles: ["admin", "company", "dealership", "technician"],
+    isActive: false,
+    icon: <AlertTriangle className="w-6 h-6 text-red-600" />,
+  },
+  
 ];

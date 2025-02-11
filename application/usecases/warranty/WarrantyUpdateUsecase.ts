@@ -1,6 +1,7 @@
 import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
 import { WarrantyNotFoundError } from "../../../domain/errors/WarrantyNotFoundError";
 import { WarrantyUpdateError } from "../../../domain/errors/WarrantyUpdateError";
+import { AccessDeniedError } from "../../../domain/errors/AccessDeniedError";
 import { WarrantyRepository } from "../../repositories/WarrantyRepository";
 import { ValidString } from "../../../domain/types/ValidString";
 
@@ -8,7 +9,8 @@ export class WarrantyUpdateUsecase {
   constructor(private readonly warrantyRepository: WarrantyRepository) {}
 
   public async execute(
-    userRole: string,
+    currentUserIdentifier: string,
+    currentUserRole: string,
     warrantyId: string,
     dataToUpdate: Partial<{
       validFrom: Date;
@@ -17,20 +19,28 @@ export class WarrantyUpdateUsecase {
       warrantyDetails: string;
     }>
   ) {
-    if (userRole !== "admin" && userRole !== "manager") {
-      return new UnauthorizedActionError();
-    }
 
     const warranty = await this.warrantyRepository.findById(warrantyId);
     if (!warranty) {
       return new WarrantyNotFoundError();
     }
 
-    if (dataToUpdate.validFrom && dataToUpdate.validUntil) {
-      if (dataToUpdate.validUntil < dataToUpdate.validFrom) {
+    if (currentUserRole !== "admin" && currentUserRole !== "company") {
+      const userWarranties = await this.warrantyRepository.findByMotorbikeId(warrantyId);
+
+      if (!userWarranties || userWarranties.length === 0) {
+        return new AccessDeniedError();
+      }
+    }
+
+    if (dataToUpdate.validFrom) {
+      warranty.validFrom = dataToUpdate.validFrom;
+    }
+
+    if (dataToUpdate.validUntil) {
+      if (dataToUpdate.validUntil < warranty.validFrom) {
         return new WarrantyUpdateError();
       }
-      warranty.validFrom = dataToUpdate.validFrom;
       warranty.validUntil = dataToUpdate.validUntil;
     }
 
@@ -54,7 +64,6 @@ export class WarrantyUpdateUsecase {
     if (!updatedWarranty) {
       return new WarrantyUpdateError();
     }
-
     return updatedWarranty;
   }
 }

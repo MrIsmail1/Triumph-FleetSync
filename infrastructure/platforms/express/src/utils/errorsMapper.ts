@@ -22,6 +22,8 @@ import { InvalidWarrantyProviderNameError } from "../../../../../domain/errors/I
 import { MaintenanceNotFoundError } from "../../../../../domain/errors/MaintenanceNotFoundError"
 import { MaintenanceUpdateError } from "../../../../../domain/errors/MaintenanceUpdateError"
 import { WarrantyUpdateError } from "../../../../../domain/errors/WarrantyUpdateError"
+import { WarrantyAlreadyExistsError } from "../../../../../domain/errors/WarrantyAlreadyExistsError"
+import { InvalidBreakdownActionError } from "../../../../../domain/errors/InvalidBreakdownActionError"
 
 import {
   BAD_REQUEST,
@@ -130,6 +132,18 @@ export function mapDomainErrorToHttp(
 
   if (error instanceof WarrantyUpdateError) {
     return [NOT_FOUND, error.name, "Warranty update failed"];
+  }
+
+  if (error instanceof WarrantyAlreadyExistsError) {
+    return [CONFLICT, error.name, "Warranty already exists."];
+  }
+
+  if (error instanceof InvalidBreakdownActionError) {
+    return [BAD_REQUEST, error.name, "Invalid Breakdown Action Error."];
+  }
+
+  if (error instanceof Error) {
+    console.error(error);
   }
 
   return [

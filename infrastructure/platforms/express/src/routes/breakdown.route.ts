@@ -15,31 +15,31 @@ const breakdownController = new BreakdownController(
 );
 
 breakdownRoutes.post(
-  "/",
-  authorize(["admin", "manager", "technician", "client"]),
+  "/create",
+  authorize(["admin", "company", "technician", "client"]),
   breakdownController.addBreakdownHandler
 );
 
 breakdownRoutes.get(
-  "/",
-  authorize(["admin", "manager", "technician", "client"]),
+  "/list",
+  authorize(["admin", "company", "technician", "client"]),
   breakdownController.listBreakdownsHandler
 );
 
 breakdownRoutes.get(
-  "/:id",
-  authorize(["admin", "manager", "technician", "client"]),
+  "/breakdown/:id",
+  authorize(["admin", "company", "technician", "client"]),
   breakdownController.listBreakdownsHandler
 );
 
 breakdownRoutes.put(
-  "/:id",
-  authorize(["admin", "manager", "technician"]),
+  "/update/:id",
+  authorize(["admin", "company", "technician"]),
   breakdownController.updateBreakdownHandler
 );
 
 breakdownRoutes.delete(
-  "/:id",
+  "/delete/:id",
   authorize(["admin"]),
   breakdownController.deleteBreakdownHandler
 );

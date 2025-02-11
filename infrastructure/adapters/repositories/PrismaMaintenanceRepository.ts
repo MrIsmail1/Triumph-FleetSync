@@ -1,171 +1,145 @@
-import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity";
-import { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository";
 import { Prisma } from "../../platforms/express/src/config/prisma.db";
+import { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository";
+import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity";
 
 export class PrismaMaintenanceRepository implements MaintenanceRepository {
-    constructor(private readonly prisma: Prisma) {}
+  constructor(private readonly prisma: Prisma) {}
 
-    async findByCompanyOrDealershipId(
-        companyOrDealershipId: string,
-        filters?: { motorbikeId?: string; fromDate?: Date; toDate?: Date }
-    ): Promise<MaintenanceEntity[]> {
-        const maintenaces = await this.prisma.maintenance.findMany({
-            where: {
-                companyOrDealerShipId: companyOrDealershipId,
-                motorbikeId: filters?.motorbikeId,
-                maintenanceDate: {
-                    gte: filters?.fromDate,
-                    lte: filters?.toDate,
-                },
-            },
-        });
-        return maintenaces.map((maintenance: any) =>
-            MaintenanceEntity.reconstitute({
-                id: maintenance.id,
-                motorbikeId: maintenance.motorbikeId,
-                createdAt: maintenance.createdAt,
-                updatedAt: maintenance.updatedAt,
-                maintenanceDate: maintenance.maintenanceDate,
-                mileageAtMaintenance: maintenance.mileageAtMaintenance,
-                maintenanceType: maintenance.maintenanceType,
-                maintenanceCost: maintenance.maintenanceCost,
-                maintenanceDescription: maintenance.maintenanceDescription,
-                companyOrDealerShipId: maintenance.companyOrDealerShipId,
-                breakdownId: maintenance.breakdownId,
-                warrantyId: maintenance.warrantyId,
-            })
-        );
+  /**
+   * Trouver une maintenance par son identifiant unique
+   */
+  public async findById(identifier: string): Promise<MaintenanceEntity | null> {
+    const maintenance = await this.prisma.maintenance.findUnique({
+      where: { id: identifier },
+      include: {
+        motorbike: { select: { licensePlate: true } },
+        companyOrDealerShip: { select: { id: true, firstName: true, lastName: true } },
+      },
+    });
+
+    return maintenance ? MaintenanceEntity.reconstitute(maintenance) : null;
+  }
+
+  /**
+   * Récupérer toutes les maintenances avec filtres optionnels
+   */
+  public async findAll(filters?: {
+    companyOrDealershipId?: string;
+    motorbikeId?: string;
+    fromDate?: Date;
+    toDate?: Date;
+  }): Promise<MaintenanceEntity[]> {
+
+    const whereClause: any = {};
+    if (filters?.companyOrDealershipId) whereClause.companyOrDealerShipId = filters.companyOrDealershipId;
+    if (filters?.motorbikeId) whereClause.motorbikeId = filters.motorbikeId;
+    if (filters?.fromDate || filters?.toDate) {
+      whereClause.maintenanceDate = {
+        gte: filters.fromDate,
+        lte: filters.toDate,
+      };
     }
 
-    async save(maintenance: MaintenanceEntity): Promise<void> {
-        await this.prisma.maintenance.create({
-            data: {
-                id: maintenance.identifier,
-                motorbikeId: maintenance.motorbikeId,
-                createdAt: maintenance.createdAt,
-                updatedAt: maintenance.updatedAt,
-                maintenanceDate: maintenance.maintenanceDate,
-                mileageAtMaintenance: maintenance.mileageAtMaintenance,
-                maintenanceType: maintenance.maintenanceType.value,
-                maintenanceCost: maintenance.maintenanceCost,
-                maintenanceDescription: maintenance.maintenanceDescription.value,
-                companyOrDealerShipId: maintenance.companyOrDealerShipId,
-                breakdownId: maintenance.breakdownId,
-                warrantyId: maintenance.warrantyId,
-            },
-        });
+    const maintenances = await this.prisma.maintenance.findMany({
+      where: whereClause,
+      include: {
+        motorbike: { select: { licensePlate: true } },
+        companyOrDealerShip: { select: { id: true, firstName: true, lastName: true } },
+      },
+    });
+
+    return maintenances.map(MaintenanceEntity.reconstitute);
+  }
+
+  /**
+   * Trouver toutes les maintenances pour une entreprise ou concessionnaire
+   */
+  public async findByCompanyOrDealershipId(
+    companyOrDealershipId: string,
+    filters?: { motorbikeId?: string; fromDate?: Date; toDate?: Date }
+  ): Promise<MaintenanceEntity[]> {
+
+    const whereClause: any = { companyOrDealerShipId: companyOrDealershipId };
+    if (filters?.motorbikeId) whereClause.motorbikeId = filters.motorbikeId;
+    if (filters?.fromDate || filters?.toDate) {
+      whereClause.maintenanceDate = {
+        gte: filters.fromDate,
+        lte: filters.toDate,
+      };
     }
 
-    async findById(identifier: string): Promise<MaintenanceEntity | null> {
-        const record = await this.prisma.maintenance.findUnique({
-            where: { id: identifier },
-            include: { breakdown: true, warranty: true },
-        });
+    const maintenances = await this.prisma.maintenance.findMany({
+      where: whereClause,
+      include: {
+        motorbike: { select: { licensePlate: true } },
+        companyOrDealerShip: { select: { id: true, firstName: true, lastName: true } },
+      },
+    });
 
-        if (!record) return null;
+    return maintenances.map(MaintenanceEntity.reconstitute);
+  }
 
-        return MaintenanceEntity.reconstitute({
-            id: record.id,
-            motorbikeId: record.motorbikeId,
-            createdAt: record.createdAt,
-            updatedAt: record.updatedAt,
-            maintenanceDate: record.maintenanceDate,
-            mileageAtMaintenance: record.mileageAtMaintenance,
-            maintenanceType: record.maintenanceType,
-            maintenanceCost: record.maintenanceCost,
-            maintenanceDescription: record.maintenanceDescription,
-            companyOrDealerShipId: record.companyOrDealerShipId,
-            breakdownId: record.breakdownId,
-            warrantyId: record.warrantyId,
-        });
-    }
+  /**
+   * Sauvegarder une nouvelle maintenance
+   */
+public async save(maintenance: MaintenanceEntity): Promise<void> {
+    await this.prisma.maintenance.create({
+        data: {
+            id: maintenance.identifier,
+            motorbikeId: maintenance.motorbikeId,
+            companyOrDealerShipId: maintenance.companyOrDealerShipId,
+            maintenanceDate: maintenance.maintenanceDate,
+            mileageAtMaintenance: maintenance.mileageAtMaintenance,
+            maintenanceType: maintenance.maintenanceType.value,
+            maintenanceCost: maintenance.maintenanceCost,
+            maintenanceDescription: maintenance.maintenanceDescription.value,
+            breakdownId: maintenance.breakdownId,
+            warrantyId: maintenance.warrantyId,
+            createdAt: maintenance.createdAt,
+            updatedAt: maintenance.updatedAt,
+        },
+    });
+}
 
 
-    async findAll(): Promise<MaintenanceEntity[]> {
-        const records = await this.prisma.maintenance.findMany({
-            include: { breakdown: true, warranty: true },
-        });
+  public async update(maintenance: MaintenanceEntity): Promise<MaintenanceEntity | null> {
+    const updatedMaintenance = await this.prisma.maintenance.update({
+      where: { id: maintenance.identifier },
+      data: {
+        motorbikeId: maintenance.motorbikeId,
+        companyOrDealerShipId: maintenance.companyOrDealerShipId,
+        maintenanceDate: maintenance.maintenanceDate,
+        mileageAtMaintenance: maintenance.mileageAtMaintenance,
+        maintenanceType: maintenance.maintenanceType.value,
+        maintenanceCost: maintenance.maintenanceCost,
+        maintenanceDescription: maintenance.maintenanceDescription.value,
+        breakdownId: maintenance.breakdownId,
+        warrantyId: maintenance.warrantyId,
+        updatedAt: new Date(),
+      },
+    });
 
-        return records.map((record: any) =>
-            MaintenanceEntity.reconstitute({
-                id: record.id,
-                motorbikeId: record.motorbikeId,
-                createdAt: record.createdAt,
-                updatedAt: record.updatedAt,
-                maintenanceDate: record.maintenanceDate,
-                mileageAtMaintenance: record.mileageAtMaintenance,
-                maintenanceType: record.maintenanceType,
-                maintenanceCost: record.maintenanceCost,
-                maintenanceDescription: record.maintenanceDescription,
-                companyOrDealerShipId: record.companyOrDealerShipId,
-                breakdownId: record.breakdownId,
-                warrantyId: record.warrantyId,
-            })
-        );
-    }
+    return updatedMaintenance ? MaintenanceEntity.reconstitute(updatedMaintenance) : null;
+  }
 
-    async findAllByClientId(companyOrDealerShipId: string): Promise<MaintenanceEntity[]> {
-        const records = await this.prisma.maintenance.findMany({
-            where: { companyOrDealerShipId },
-            include: { breakdown: true, warranty: true },
-        });
+  /**
+   * Supprimer une maintenance par son ID
+   */
+  public async delete(identifier: string): Promise<void> {
 
-        return records.map((record: any) =>
-            MaintenanceEntity.reconstitute({
-                id: record.id,
-                motorbikeId: record.motorbikeId,
-                createdAt: record.createdAt,
-                updatedAt: record.updatedAt,
-                maintenanceDate: record.maintenanceDate,
-                mileageAtMaintenance: record.mileageAtMaintenance,
-                maintenanceType: record.maintenanceType,
-                maintenanceCost: record.maintenanceCost,
-                maintenanceDescription: record.maintenanceDescription,
-                companyOrDealerShipId: record.companyOrDealerShipId,
-                breakdownId: record.breakdownId,
-                warrantyId: record.warrantyId,
-            })
-        );
-    }
+    await this.prisma.maintenance.delete({ where: { id: identifier } });
+  }
 
-    async update(maintenance: MaintenanceEntity): Promise<MaintenanceEntity | null> {
-        const updatedRecord = await this.prisma.maintenance.update({
-            where: { id: maintenance.identifier },
-            data: {
-                motorbikeId: maintenance.motorbikeId,
-                updatedAt: maintenance.updatedAt,
-                maintenanceDate: maintenance.maintenanceDate,
-                mileageAtMaintenance: maintenance.mileageAtMaintenance,
-                maintenanceType: maintenance.maintenanceType.value,
-                maintenanceCost: maintenance.maintenanceCost,
-                maintenanceDescription: maintenance.maintenanceDescription.value,
-                companyOrDealerShipId: maintenance.companyOrDealerShipId,
-                breakdownId: maintenance.breakdownId,
-                warrantyId: maintenance.warrantyId,
-            },
-        });
+  /**
+   * Supprimer une maintenance pour une entreprise spécifique
+   */
+  public async deleteByIdAndCompanyOrDealershipId(identifier: string, companyOrDealerShipId: string): Promise<void> {
 
-        if (!updatedRecord) return null;
-
-        return MaintenanceEntity.reconstitute({
-            id: updatedRecord.id,
-            motorbikeId: updatedRecord.motorbikeId,
-            createdAt: updatedRecord.createdAt,
-            updatedAt: updatedRecord.updatedAt,
-            maintenanceDate: updatedRecord.maintenanceDate,
-            mileageAtMaintenance: updatedRecord.mileageAtMaintenance,
-            maintenanceType: updatedRecord.maintenanceType,
-            maintenanceCost: updatedRecord.maintenanceCost,
-            maintenanceDescription: updatedRecord.maintenanceDescription,
-            companyOrDealerShipId: updatedRecord.companyOrDealerShipId,
-            breakdownId: updatedRecord.breakdownId,
-            warrantyId: updatedRecord.warrantyId,
-        });
-    }
-
-    async delete(identifier: string): Promise<void> {
-        await this.prisma.maintenance.delete({
-            where: { id: identifier },
-        });
-    }
+    await this.prisma.maintenance.deleteMany({
+      where: {
+        id: identifier,
+        companyOrDealerShipId,
+      },
+    });
+  }
 }
