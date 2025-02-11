@@ -42,10 +42,13 @@ export default function EditPartPurchaseForm({
   const form = useForm<PartPurchaseSchema>({
     resolver: zodResolver(partPurchaseSchema),
     defaultValues: {
+      partId: purchase.partId,
       costPerUnit: purchase.costPerUnit.value,
       quantity: purchase.quantity.value,
-      orderDate: purchase.orderDate,
-      receivedDate: purchase.receivedDate,
+      totalCost: purchase.totalCost.value,
+      orderDate: new Date(purchase.orderDate).toISOString().split("T")[0],
+      receivedDate:
+        new Date(purchase.receivedDate).toISOString().split("T")[0] ?? "",
       status: purchase.status,
     },
   });
@@ -65,9 +68,8 @@ export default function EditPartPurchaseForm({
 
   const onSubmit = async (data: PartPurchaseSchema) => {
     try {
-      const totalCost = data.costPerUnit * data.quantity;
-      const dataToSend = { ...data, totalCost };
-      await updatePartPurchase(dataToSend);
+      data.identifier = purchase.identifier;
+      await updatePartPurchase(data);
     } catch (error) {
       console.error(error);
     }
@@ -84,49 +86,6 @@ export default function EditPartPurchaseForm({
               </AlertDescription>
             </Alert>
           )}
-          <FormField
-            control={form.control}
-            name="costPerUnit"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Coût par unité</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Coût par unité..."
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="quantity"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Quantité</FormLabel>
-                <FormControl>
-                  <Input type="number" placeholder="Quantité" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="orderDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Date d'achat</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="receivedDate"

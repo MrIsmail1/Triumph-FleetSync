@@ -22,7 +22,9 @@ export class MongoPartPurchaseRepository implements PartPurchaseRepository {
     return spareParts.map(PartPurchase.reconstitute);
   }
   async findById(identifier: string): Promise<PartPurchase | null> {
-    const foundPartPurchase = await PartPurchaseModel.findOne(identifier);
+    const foundPartPurchase = await PartPurchaseModel.findOne({
+      _id: identifier,
+    });
     return foundPartPurchase
       ? PartPurchase.reconstitute(foundPartPurchase)
       : null;
