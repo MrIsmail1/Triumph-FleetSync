@@ -4,6 +4,8 @@ import { InvalidWarrantyDateError } from "../../../domain/errors/InvalidWarranty
 import { InvalidWarrantyProviderNameError } from "../../../domain/errors/InvalidWarrantyProviderNameError";
 import { ValidString } from "../../../domain/types/ValidString";
 import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
+import { AccessDeniedError } from "../../../domain/errors/AccessDeniedError";
+import { WarrantyAlreadyExistsError } from "../../../domain/errors/WarrantyAlreadyExistsError";
 
 export class WarrantyCreateUsecase {
   constructor(private readonly warrantyRepository: WarrantyRepository) {}
@@ -13,9 +15,12 @@ export class WarrantyCreateUsecase {
     validUntil: Date,
     providerName: string,
     warrantyDetails: string,
-    userRole: string
+    motorbikeId: string,
+    currentUserIdentifier: string,
+    currentUserRole: string
   ) {
-    if (userRole !== "admin" && userRole !== "manager") {
+
+    if (!["admin", "company", "company", "dealership"].includes(currentUserRole)) {
       return new UnauthorizedActionError();
     }
 
@@ -33,12 +38,20 @@ export class WarrantyCreateUsecase {
       return new InvalidWarrantyProviderNameError();
     }
 
+    const existingWarranty = await this.warrantyRepository.findActiveWarrantyByMotorbikeId(motorbikeId);
+    if (existingWarranty) {
+      return new WarrantyAlreadyExistsError();
+    }
+
     const warranty = WarrantyEntity.create(
       validFrom,
       validUntil,
       validProviderName,
-      validWarrantyDetails
+      validWarrantyDetails,
+      motorbikeId,
+      currentUserIdentifier,
     );
+
     await this.warrantyRepository.save(warranty);
 
     return warranty;

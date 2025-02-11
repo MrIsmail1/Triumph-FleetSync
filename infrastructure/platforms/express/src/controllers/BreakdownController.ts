@@ -9,6 +9,7 @@ import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
 import { mapDomainErrorToHttp } from "../utils/errorsMapper";
 import { ValidString } from "../../../../../domain/types/ValidString";
+import { AccessTokenPayload } from "../utils/jwt";
 
 export class BreakdownController {
   public constructor(
@@ -16,23 +17,35 @@ export class BreakdownController {
     private readonly userRepository: UserRepository
   ) {}
 
+  /**
+   * ✅ Ajouter une panne
+   */
   addBreakdownHandler = catchErrors(async (request, response) => {
-    const { description } = request.body;
-    const currentUser = request.user;
+    const { description, actionTaken, resolved, resolutionDate } = request.body;
+    const currentUser = request.user as AccessTokenPayload;
 
     const descriptionOrError = ValidString.from(description);
+    const actionTakenOrError = ValidString.from(actionTaken);
 
     appAssert(
       !(descriptionOrError instanceof Error),
       ...mapDomainErrorToHttp(descriptionOrError as Error)
     );
 
+    appAssert(
+      !(actionTakenOrError instanceof Error),
+      ...mapDomainErrorToHttp(actionTakenOrError as Error)
+    );
+
     const breakdownCreateUsecase = new BreakdownCreateUsecase(this.breakdownRepository);
 
     const breakdownOrError = await breakdownCreateUsecase.execute(
+      request.body.motorbikeId,
       descriptionOrError.value,
+      actionTakenOrError.value,
       currentUser.userIdentifier,
-      currentUser.role
+      currentUser.role,
+      resolved
     );
 
     appAssert(
@@ -47,8 +60,8 @@ export class BreakdownController {
   });
 
   listBreakdownsHandler = catchErrors(async (request, response) => {
-    const { id: breakdownId } = request.params;
-    const currentUser = request.user;
+    const breakdownId = request.params.id;
+    const currentUser = request.user as AccessTokenPayload;
 
     const breakdownsListUsecase = new BreakdownsListUsecase(
       this.breakdownRepository,
@@ -57,6 +70,7 @@ export class BreakdownController {
 
     const breakdownsOrError = await breakdownsListUsecase.execute(
       currentUser.userIdentifier,
+      currentUser.role,
       breakdownId
     );
 
@@ -69,15 +83,15 @@ export class BreakdownController {
   });
 
   deleteBreakdownHandler = catchErrors(async (request, response) => {
-    const { id: breakdownId } = request.params;
-    const currentUser = request.user;
+    const breakdownId = request.params.id;
+    const currentUser = request.user as AccessTokenPayload;
 
     const breakdownDeleteUsecase = new BreakdownDeleteUsecase(this.breakdownRepository);
 
     const breakdownDeletedOrError = await breakdownDeleteUsecase.execute(
+      breakdownId,
       currentUser.userIdentifier,
-      currentUser.role,
-      breakdownId
+      currentUser.role
     );
 
     appAssert(
@@ -91,14 +105,25 @@ export class BreakdownController {
   });
 
   updateBreakdownHandler = catchErrors(async (request, response) => {
-    const currentUser = request.user;
-    const { id: breakdownId } = request.params;
-    const { description } = request.body;
+    const currentUser = request.user as AccessTokenPayload;
+    const breakdownId = request.params.id;
+    const { description, actionTaken, resolved, resolutionDate } = request.body;
+
+    if (!breakdownId) {
+      return response.status(400).json({ message: "L'identifiant de la panne est requis." });
+    }
 
     const descriptionOrError = description ? ValidString.from(description) : null;
+    const actionTakenOrError = actionTaken ? ValidString.from(actionTaken) : null;
+
     appAssert(
       !(descriptionOrError instanceof Error),
       ...mapDomainErrorToHttp(descriptionOrError as Error)
+    );
+
+    appAssert(
+      !(actionTakenOrError instanceof Error),
+      ...mapDomainErrorToHttp(actionTakenOrError as Error)
     );
 
     const breakdownUpdateUsecase = new BreakdownUpdateUsecase(this.breakdownRepository);
@@ -107,7 +132,12 @@ export class BreakdownController {
       currentUser.userIdentifier,
       currentUser.role,
       breakdownId,
-      { description: descriptionOrError?.value }
+      {
+        description: descriptionOrError?.value,
+        actionTaken: actionTakenOrError?.value,
+        resolved,
+        resolutionDate: resolutionDate ? new Date(resolutionDate).toISOString() : undefined,
+      }
     );
 
     appAssert(

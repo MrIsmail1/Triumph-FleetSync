@@ -1,62 +1,56 @@
 import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity";
 import { InvalidMaintenanceError } from "../../../domain/errors/InvalidMaintenanceError";
 import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
-import { Role } from "../../../domain/types/Role";
 import { ValidString } from "../../../domain/types/ValidString";
 import { MaintenanceRepository } from "../../repositories/MaintenanceRepository";
 
 export class MaintenanceCreateUsecase {
   constructor(private maintenanceRepository: MaintenanceRepository) {}
 
-  async execute(data: {
-    motorbikeId: string;
-    maintenanceDate: string;
-    mileageAtMaintenance: number;
-    maintenanceType: string;
-    maintenanceCost: number;
-    maintenanceDescription: string;
-    clientId: string;
-    breakdownId?: string;
-    warrantyId?: string;
-    userRole: string;
-  }): Promise<void | Error> {
-    if (data.userRole !== "admin" && data.userRole !== "manager") {
+  public async execute(
+    motorbikeId: string,
+    maintenanceDate: string,
+    mileageAtMaintenance: number,
+    maintenanceType: string,
+    maintenanceCost: number,
+    maintenanceDescription: string,
+    currentUserIdentifier: string,
+    currentUserRole: string,
+    companyOrDealerShipId: string,
+    breakdownId?: string,
+    warrantyId?: string
+  ) {
+    const allowedRoles = ["admin", "company", "dealership", "technician"];
+    if (!allowedRoles.includes(currentUserRole)) {
       return new UnauthorizedActionError();
     }
 
-    if (
-      !data.motorbikeId ||
-      !data.maintenanceType ||
-      !data.maintenanceDate ||
-      !data.clientId
-    ) {
+    if (!motorbikeId || !maintenanceType || !maintenanceDate) {
       return new InvalidMaintenanceError();
     }
 
-    const maintenanceTypeOrError = ValidString.from(data.maintenanceType);
+    const maintenanceTypeOrError = ValidString.from(maintenanceType);
     if (maintenanceTypeOrError instanceof Error) {
       return maintenanceTypeOrError;
     }
 
-    const maintenanceDescriptionOrError = ValidString.from(
-      data.maintenanceDescription
-    );
+    const maintenanceDescriptionOrError = ValidString.from(maintenanceDescription);
     if (maintenanceDescriptionOrError instanceof Error) {
       return maintenanceDescriptionOrError;
     }
 
     const maintenance = MaintenanceEntity.create(
-      data.motorbikeId,
-      new Date(data.maintenanceDate),
-      data.mileageAtMaintenance,
+      motorbikeId,
+      new Date(maintenanceDate),
+      mileageAtMaintenance,
       maintenanceTypeOrError,
-      data.maintenanceCost,
+      maintenanceCost,
       maintenanceDescriptionOrError,
-      data.clientId,
-      data.breakdownId || null,
-      data.warrantyId || null
+      companyOrDealerShipId,
+      breakdownId || null,
+      warrantyId || null
     );
 
-    await this.maintenanceRepository.save(maintenance);
+    return await this.maintenanceRepository.save(maintenance);
   }
 }

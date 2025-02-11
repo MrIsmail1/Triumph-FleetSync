@@ -128,7 +128,8 @@ model Motorbike {
   DriverHistorical            DriverHistorical[]
   Try                         Try[]
   MotorbikeIncident           MotorbikeIncident[]
-
+  breakdowns                Breakdown[]  @relation("MotorbikeBreakdowns")
+  warranty                    Warranty?
   modelMotorbike      ModelMotorbike @relation(fields: [modelId], references: [id])
   CompanyOrDealerShip User?          @relation(fields: [companyOrDealerShipId], references: [id])
   Driver              Driver?        @relation(fields: [driverId], references: [id])
@@ -141,6 +142,8 @@ model Motorbike {
 
 model Breakdown {
   id                    String       @id @default(uuid())
+  motorbikeId           String?
+  motorbike             Motorbike?   @relation("MotorbikeBreakdowns", fields: [motorbikeId], references: [id])
   companyOrDealerShipId String
   companyOrDealerShip   User         @relation(fields: [companyOrDealerShipId], references: [id])
   description           String
@@ -156,13 +159,17 @@ model Breakdown {
 
 model Warranty {
   id              String       @id @default(uuid())
+  motorbikeId     String @unique
   validFrom       DateTime
   validUntil      DateTime
   providerName    String
   warrantyDetails String
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
-  maintenance     Maintenance?
+  motorbike       Motorbike @relation(fields: [motorbikeId], references: [id])
+  maintenances    Maintenance[]
+
+  @@index([motorbikeId])
 }
 
 model Fleet {

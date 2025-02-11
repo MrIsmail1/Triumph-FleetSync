@@ -336,7 +336,6 @@ export class AuthController {
 
   resetPasswordHandler = catchErrors(async (request, response) => {
     const requestData = passwordResetSchema.parse(request.body);
-    console.log(requestData);
     const userResetPasswordUsecase = new UserResetPasswordUsecase(
       this.userRepository,
       this.verificationCodeRepository,

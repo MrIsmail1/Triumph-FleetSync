@@ -28,7 +28,7 @@ export default function EditFleetForm({
     const queryClient = useQueryClient();
 
     const defaultValues = {
-        name: fleet.name || "",
+        name: fleet.name.value || "",
     };
 
     const form = useForm<FleetSchema>({

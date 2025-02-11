@@ -2,8 +2,8 @@ import { WarrantyRepository } from "../../../../../application/repositories/Warr
 import { UserRepository } from "../../../../../application/repositories/UserRepository";
 import { WarrantyCreateUsecase } from "../../../../../application/usecases/warranty/WarrantyCreateUsecase";
 import { WarrantyDeleteUsecase } from "../../../../../application/usecases/warranty/WarrantyDeleteUsecase";
+import { WarrantyUpdateUsecase } from "../../../../../application/usecases/warranty/WarrantyUpdateUsecase";
 import { WarrantiesListUsecase } from "../../../../../application/usecases/warranty/WarrantiesListUsecase";
-import { warrantyCreateSchema, warrantyDeleteSchema, warrantiesListSchema } from "../schemas/warrantySchema";
 import { OK, CREATED } from "../constants/http";
 import appAssert from "../utils/appAssert";
 import catchErrors from "../utils/catchErrors";
@@ -19,18 +19,23 @@ export class WarrantyController {
   addWarrantyHandler = catchErrors(async (request, response) => {
     const currentUser = request.user as AccessTokenPayload;
 
-    const validatedWarrantyData = warrantyCreateSchema.parse({
-      ...request.body,
-      userRole: currentUser.role,
-    });
+    const {
+      validFrom,
+      validUntil,
+      providerName,
+      warrantyDetails,
+      motorbikeId,
+    } = request.body;
 
     const warrantyCreateUsecase = new WarrantyCreateUsecase(this.warrantyRepository);
     const warrantyOrError = await warrantyCreateUsecase.execute(
-      new Date(validatedWarrantyData.validFrom),
-      new Date(validatedWarrantyData.validUntil),
-      validatedWarrantyData.providerName,
-      validatedWarrantyData.warrantyDetails,
-      validatedWarrantyData.userRole
+      new Date(validFrom),
+      new Date(validUntil),
+      providerName,
+      warrantyDetails,
+      motorbikeId,
+      currentUser.userIdentifier,
+      currentUser.role
     );
 
     appAssert(
@@ -44,15 +49,20 @@ export class WarrantyController {
     });
   });
 
-  deleteWarrantyHandler = catchErrors(async (request, response) => {
+ deleteWarrantyHandler = catchErrors(async (request, response) => {
     const currentUser = request.user as AccessTokenPayload;
+    const warrantyId = request.params.id;
 
-    const validatedData = warrantyDeleteSchema.parse({
-      id: request.params.id,
-    });
+    if (!warrantyId) {
+        return response.status(400).json({ message: "L'identifiant de la garantie est requis." });
+    }
 
     const warrantyDeleteUsecase = new WarrantyDeleteUsecase(this.warrantyRepository);
-    const warrantyDeletedOrError = await warrantyDeleteUsecase.execute(validatedData.id, currentUser.role);
+    const warrantyDeletedOrError = await warrantyDeleteUsecase.execute(
+      currentUser.userIdentifier,
+      currentUser.role,
+      warrantyId
+    );
 
     appAssert(
       !(warrantyDeletedOrError instanceof Error),
@@ -62,23 +72,41 @@ export class WarrantyController {
     response.status(OK).json({
       message: "Warranty deleted successfully",
     });
+});
+
+
+
+  updateWarrantyHandler = catchErrors(async (request, response) => {
+    const currentUser = request.user as AccessTokenPayload;
+    const warrantyId = request.params.id;
+    const dataToUpdate = request.body;
+
+    const warrantyUpdateUsecase = new WarrantyUpdateUsecase(this.warrantyRepository);
+    const updatedWarrantyOrError = await warrantyUpdateUsecase.execute(
+      currentUser.userIdentifier,
+      currentUser.role,
+      warrantyId,
+      dataToUpdate
+    );
+
+    appAssert(
+      !(updatedWarrantyOrError instanceof Error),
+      ...mapDomainErrorToHttp(updatedWarrantyOrError as Error)
+    );
+
+    response.status(OK).json({
+      message: "Warranty updated successfully.",
+      warranty: updatedWarrantyOrError,
+    });
   });
 
   listWarrantiesHandler = catchErrors(async (request, response) => {
     const currentUser = request.user as AccessTokenPayload;
 
-    const validatedData = warrantiesListSchema.parse({
-      userIdentifier: currentUser.userIdentifier,
-      role: currentUser.role,
-    });
-
-    const warrantiesListUsecase = new WarrantiesListUsecase(
-      this.warrantyRepository,
-      this.userRepository
-    );
+    const warrantiesListUsecase = new WarrantiesListUsecase(this.warrantyRepository);
     const warrantiesOrError = await warrantiesListUsecase.execute(
-      validatedData.userIdentifier,
-      validatedData.role
+      currentUser.userIdentifier,
+      currentUser.role
     );
 
     appAssert(

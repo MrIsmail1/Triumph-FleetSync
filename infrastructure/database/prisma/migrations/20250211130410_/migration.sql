@@ -106,6 +106,7 @@ CREATE TABLE "Motorbike" (
 -- CreateTable
 CREATE TABLE "Breakdown" (
     "id" TEXT NOT NULL,
+    "motorbikeId" TEXT,
     "companyOrDealerShipId" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "actionTaken" TEXT NOT NULL,
@@ -120,6 +121,7 @@ CREATE TABLE "Breakdown" (
 -- CreateTable
 CREATE TABLE "Warranty" (
     "id" TEXT NOT NULL,
+    "motorbikeId" TEXT NOT NULL,
     "validFrom" TIMESTAMP(3) NOT NULL,
     "validUntil" TIMESTAMP(3) NOT NULL,
     "providerName" TEXT NOT NULL,
@@ -227,6 +229,12 @@ CREATE INDEX "Motorbike_fleetId_idx" ON "Motorbike"("fleetId");
 CREATE INDEX "Breakdown_companyOrDealerShipId_idx" ON "Breakdown"("companyOrDealerShipId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Warranty_motorbikeId_key" ON "Warranty"("motorbikeId");
+
+-- CreateIndex
+CREATE INDEX "Warranty_motorbikeId_idx" ON "Warranty"("motorbikeId");
+
+-- CreateIndex
 CREATE INDEX "Fleet_companyOrDealerShipId_idx" ON "Fleet"("companyOrDealerShipId");
 
 -- CreateIndex
@@ -275,7 +283,13 @@ ALTER TABLE "Motorbike" ADD CONSTRAINT "Motorbike_driverId_fkey" FOREIGN KEY ("d
 ALTER TABLE "Motorbike" ADD CONSTRAINT "Motorbike_fleetId_fkey" FOREIGN KEY ("fleetId") REFERENCES "Fleet"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Breakdown" ADD CONSTRAINT "Breakdown_motorbikeId_fkey" FOREIGN KEY ("motorbikeId") REFERENCES "Motorbike"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Breakdown" ADD CONSTRAINT "Breakdown_companyOrDealerShipId_fkey" FOREIGN KEY ("companyOrDealerShipId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Warranty" ADD CONSTRAINT "Warranty_motorbikeId_fkey" FOREIGN KEY ("motorbikeId") REFERENCES "Motorbike"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Fleet" ADD CONSTRAINT "Fleet_companyOrDealerShipId_fkey" FOREIGN KEY ("companyOrDealerShipId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

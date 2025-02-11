@@ -12,15 +12,15 @@ export class BreakdownsListUsecase {
 
   public async execute(
     currentUserIdentifier: string,
-    breakdownId?: string
+    currentUserRole: string,
+    breakdownId?: string,
+    motorbikeId?: string
   ) {
-    const currentUser = await this.userRepository.findById(currentUserIdentifier);
 
+    const currentUser = await this.userRepository.findById(currentUserIdentifier);
     if (!currentUser) {
       return new UserNotFoundError();
     }
-
-    const roleValue = currentUser.role.value.toString();
 
     if (breakdownId) {
       const breakdown = await this.breakdownRepository.findById(breakdownId);
@@ -28,22 +28,30 @@ export class BreakdownsListUsecase {
         return new BreakdownNotFoundError();
       }
 
-      if (roleValue === "admin") {
+      if (currentUserRole === "admin") {
         return breakdown;
-      } else if (roleValue === "client") {
-        if (breakdown.companyOrDealerShipId !== currentUser.identifier) {
+      }
+
+      if (currentUserRole === "dealership" || currentUserRole === "company") {
+        if (breakdown.companyOrDealerShipId !== currentUserIdentifier) {
           return new AccessDeniedError();
         }
         return breakdown;
-      } else {
-        return new AccessDeniedError();
       }
+
+      return new AccessDeniedError();
     }
 
-    if (roleValue === "admin") {
+    if (motorbikeId) {
+      return await this.breakdownRepository.findAllByMotorbikeId(motorbikeId);
+    }
+
+    if (currentUserRole === "admin") {
       return await this.breakdownRepository.findAll();
-    } else if (roleValue === "client") {
-      return await this.breakdownRepository.findAllByClientId(currentUser.identifier);
+    }
+
+    if (currentUserRole === "dealership" || currentUserRole === "company") {
+      return await this.breakdownRepository.findAllByCompanyOrDealershipId(currentUserIdentifier);
     }
 
     return new AccessDeniedError();

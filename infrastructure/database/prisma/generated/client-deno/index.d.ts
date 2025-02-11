@@ -2105,6 +2105,7 @@ export namespace Prisma {
     DriverHistorical: number
     Try: number
     MotorbikeIncident: number
+    breakdowns: number
   }
 
   export type MotorbikeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2112,6 +2113,7 @@ export namespace Prisma {
     DriverHistorical?: boolean | MotorbikeCountOutputTypeCountDriverHistoricalArgs
     Try?: boolean | MotorbikeCountOutputTypeCountTryArgs
     MotorbikeIncident?: boolean | MotorbikeCountOutputTypeCountMotorbikeIncidentArgs
+    breakdowns?: boolean | MotorbikeCountOutputTypeCountBreakdownsArgs
   }
 
   // Custom InputTypes
@@ -2151,6 +2153,44 @@ export namespace Prisma {
    */
   export type MotorbikeCountOutputTypeCountMotorbikeIncidentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MotorbikeIncidentWhereInput
+  }
+
+  /**
+   * MotorbikeCountOutputType without action
+   */
+  export type MotorbikeCountOutputTypeCountBreakdownsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BreakdownWhereInput
+  }
+
+
+  /**
+   * Count Type WarrantyCountOutputType
+   */
+
+  export type WarrantyCountOutputType = {
+    maintenances: number
+  }
+
+  export type WarrantyCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    maintenances?: boolean | WarrantyCountOutputTypeCountMaintenancesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * WarrantyCountOutputType without action
+   */
+  export type WarrantyCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WarrantyCountOutputType
+     */
+    select?: WarrantyCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * WarrantyCountOutputType without action
+   */
+  export type WarrantyCountOutputTypeCountMaintenancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceWhereInput
   }
 
 
@@ -9375,6 +9415,8 @@ export namespace Prisma {
     DriverHistorical?: boolean | Motorbike$DriverHistoricalArgs<ExtArgs>
     Try?: boolean | Motorbike$TryArgs<ExtArgs>
     MotorbikeIncident?: boolean | Motorbike$MotorbikeIncidentArgs<ExtArgs>
+    breakdowns?: boolean | Motorbike$breakdownsArgs<ExtArgs>
+    warranty?: boolean | Motorbike$warrantyArgs<ExtArgs>
     modelMotorbike?: boolean | ModelMotorbikeDefaultArgs<ExtArgs>
     CompanyOrDealerShip?: boolean | Motorbike$CompanyOrDealerShipArgs<ExtArgs>
     Driver?: boolean | Motorbike$DriverArgs<ExtArgs>
@@ -9441,6 +9483,8 @@ export namespace Prisma {
     DriverHistorical?: boolean | Motorbike$DriverHistoricalArgs<ExtArgs>
     Try?: boolean | Motorbike$TryArgs<ExtArgs>
     MotorbikeIncident?: boolean | Motorbike$MotorbikeIncidentArgs<ExtArgs>
+    breakdowns?: boolean | Motorbike$breakdownsArgs<ExtArgs>
+    warranty?: boolean | Motorbike$warrantyArgs<ExtArgs>
     modelMotorbike?: boolean | ModelMotorbikeDefaultArgs<ExtArgs>
     CompanyOrDealerShip?: boolean | Motorbike$CompanyOrDealerShipArgs<ExtArgs>
     Driver?: boolean | Motorbike$DriverArgs<ExtArgs>
@@ -9467,6 +9511,8 @@ export namespace Prisma {
       DriverHistorical: Prisma.$DriverHistoricalPayload<ExtArgs>[]
       Try: Prisma.$TryPayload<ExtArgs>[]
       MotorbikeIncident: Prisma.$MotorbikeIncidentPayload<ExtArgs>[]
+      breakdowns: Prisma.$BreakdownPayload<ExtArgs>[]
+      warranty: Prisma.$WarrantyPayload<ExtArgs> | null
       modelMotorbike: Prisma.$ModelMotorbikePayload<ExtArgs>
       CompanyOrDealerShip: Prisma.$UserPayload<ExtArgs> | null
       Driver: Prisma.$DriverPayload<ExtArgs> | null
@@ -9883,6 +9929,8 @@ export namespace Prisma {
     DriverHistorical<T extends Motorbike$DriverHistoricalArgs<ExtArgs> = {}>(args?: Subset<T, Motorbike$DriverHistoricalArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriverHistoricalPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     Try<T extends Motorbike$TryArgs<ExtArgs> = {}>(args?: Subset<T, Motorbike$TryArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TryPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     MotorbikeIncident<T extends Motorbike$MotorbikeIncidentArgs<ExtArgs> = {}>(args?: Subset<T, Motorbike$MotorbikeIncidentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorbikeIncidentPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    breakdowns<T extends Motorbike$breakdownsArgs<ExtArgs> = {}>(args?: Subset<T, Motorbike$breakdownsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BreakdownPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    warranty<T extends Motorbike$warrantyArgs<ExtArgs> = {}>(args?: Subset<T, Motorbike$warrantyArgs<ExtArgs>>): Prisma__WarrantyClient<$Result.GetResult<Prisma.$WarrantyPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     modelMotorbike<T extends ModelMotorbikeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ModelMotorbikeDefaultArgs<ExtArgs>>): Prisma__ModelMotorbikeClient<$Result.GetResult<Prisma.$ModelMotorbikePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     CompanyOrDealerShip<T extends Motorbike$CompanyOrDealerShipArgs<ExtArgs> = {}>(args?: Subset<T, Motorbike$CompanyOrDealerShipArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     Driver<T extends Motorbike$DriverArgs<ExtArgs> = {}>(args?: Subset<T, Motorbike$DriverArgs<ExtArgs>>): Prisma__DriverClient<$Result.GetResult<Prisma.$DriverPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
@@ -10420,6 +10468,49 @@ export namespace Prisma {
   }
 
   /**
+   * Motorbike.breakdowns
+   */
+  export type Motorbike$breakdownsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Breakdown
+     */
+    select?: BreakdownSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Breakdown
+     */
+    omit?: BreakdownOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BreakdownInclude<ExtArgs> | null
+    where?: BreakdownWhereInput
+    orderBy?: BreakdownOrderByWithRelationInput | BreakdownOrderByWithRelationInput[]
+    cursor?: BreakdownWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BreakdownScalarFieldEnum | BreakdownScalarFieldEnum[]
+  }
+
+  /**
+   * Motorbike.warranty
+   */
+  export type Motorbike$warrantyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Warranty
+     */
+    select?: WarrantySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Warranty
+     */
+    omit?: WarrantyOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarrantyInclude<ExtArgs> | null
+    where?: WarrantyWhereInput
+  }
+
+  /**
    * Motorbike.CompanyOrDealerShip
    */
   export type Motorbike$CompanyOrDealerShipArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10507,6 +10598,7 @@ export namespace Prisma {
 
   export type BreakdownMinAggregateOutputType = {
     id: string | null
+    motorbikeId: string | null
     companyOrDealerShipId: string | null
     description: string | null
     actionTaken: string | null
@@ -10518,6 +10610,7 @@ export namespace Prisma {
 
   export type BreakdownMaxAggregateOutputType = {
     id: string | null
+    motorbikeId: string | null
     companyOrDealerShipId: string | null
     description: string | null
     actionTaken: string | null
@@ -10529,6 +10622,7 @@ export namespace Prisma {
 
   export type BreakdownCountAggregateOutputType = {
     id: number
+    motorbikeId: number
     companyOrDealerShipId: number
     description: number
     actionTaken: number
@@ -10542,6 +10636,7 @@ export namespace Prisma {
 
   export type BreakdownMinAggregateInputType = {
     id?: true
+    motorbikeId?: true
     companyOrDealerShipId?: true
     description?: true
     actionTaken?: true
@@ -10553,6 +10648,7 @@ export namespace Prisma {
 
   export type BreakdownMaxAggregateInputType = {
     id?: true
+    motorbikeId?: true
     companyOrDealerShipId?: true
     description?: true
     actionTaken?: true
@@ -10564,6 +10660,7 @@ export namespace Prisma {
 
   export type BreakdownCountAggregateInputType = {
     id?: true
+    motorbikeId?: true
     companyOrDealerShipId?: true
     description?: true
     actionTaken?: true
@@ -10648,6 +10745,7 @@ export namespace Prisma {
 
   export type BreakdownGroupByOutputType = {
     id: string
+    motorbikeId: string | null
     companyOrDealerShipId: string
     description: string
     actionTaken: string
@@ -10676,6 +10774,7 @@ export namespace Prisma {
 
   export type BreakdownSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    motorbikeId?: boolean
     companyOrDealerShipId?: boolean
     description?: boolean
     actionTaken?: boolean
@@ -10683,12 +10782,14 @@ export namespace Prisma {
     resolutionDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    motorbike?: boolean | Breakdown$motorbikeArgs<ExtArgs>
     companyOrDealerShip?: boolean | UserDefaultArgs<ExtArgs>
     maintenance?: boolean | Breakdown$maintenanceArgs<ExtArgs>
   }, ExtArgs["result"]["breakdown"]>
 
   export type BreakdownSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    motorbikeId?: boolean
     companyOrDealerShipId?: boolean
     description?: boolean
     actionTaken?: boolean
@@ -10696,11 +10797,13 @@ export namespace Prisma {
     resolutionDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    motorbike?: boolean | Breakdown$motorbikeArgs<ExtArgs>
     companyOrDealerShip?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["breakdown"]>
 
   export type BreakdownSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    motorbikeId?: boolean
     companyOrDealerShipId?: boolean
     description?: boolean
     actionTaken?: boolean
@@ -10708,11 +10811,13 @@ export namespace Prisma {
     resolutionDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    motorbike?: boolean | Breakdown$motorbikeArgs<ExtArgs>
     companyOrDealerShip?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["breakdown"]>
 
   export type BreakdownSelectScalar = {
     id?: boolean
+    motorbikeId?: boolean
     companyOrDealerShipId?: boolean
     description?: boolean
     actionTaken?: boolean
@@ -10722,26 +10827,31 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BreakdownOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "companyOrDealerShipId" | "description" | "actionTaken" | "resolved" | "resolutionDate" | "createdAt" | "updatedAt", ExtArgs["result"]["breakdown"]>
+  export type BreakdownOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "motorbikeId" | "companyOrDealerShipId" | "description" | "actionTaken" | "resolved" | "resolutionDate" | "createdAt" | "updatedAt", ExtArgs["result"]["breakdown"]>
   export type BreakdownInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorbike?: boolean | Breakdown$motorbikeArgs<ExtArgs>
     companyOrDealerShip?: boolean | UserDefaultArgs<ExtArgs>
     maintenance?: boolean | Breakdown$maintenanceArgs<ExtArgs>
   }
   export type BreakdownIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorbike?: boolean | Breakdown$motorbikeArgs<ExtArgs>
     companyOrDealerShip?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type BreakdownIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorbike?: boolean | Breakdown$motorbikeArgs<ExtArgs>
     companyOrDealerShip?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $BreakdownPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Breakdown"
     objects: {
+      motorbike: Prisma.$MotorbikePayload<ExtArgs> | null
       companyOrDealerShip: Prisma.$UserPayload<ExtArgs>
       maintenance: Prisma.$MaintenancePayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      motorbikeId: string | null
       companyOrDealerShipId: string
       description: string
       actionTaken: string
@@ -11143,6 +11253,7 @@ export namespace Prisma {
    */
   export interface Prisma__BreakdownClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    motorbike<T extends Breakdown$motorbikeArgs<ExtArgs> = {}>(args?: Subset<T, Breakdown$motorbikeArgs<ExtArgs>>): Prisma__MotorbikeClient<$Result.GetResult<Prisma.$MotorbikePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     companyOrDealerShip<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     maintenance<T extends Breakdown$maintenanceArgs<ExtArgs> = {}>(args?: Subset<T, Breakdown$maintenanceArgs<ExtArgs>>): Prisma__MaintenanceClient<$Result.GetResult<Prisma.$MaintenancePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     /**
@@ -11175,6 +11286,7 @@ export namespace Prisma {
    */ 
   interface BreakdownFieldRefs {
     readonly id: FieldRef<"Breakdown", 'String'>
+    readonly motorbikeId: FieldRef<"Breakdown", 'String'>
     readonly companyOrDealerShipId: FieldRef<"Breakdown", 'String'>
     readonly description: FieldRef<"Breakdown", 'String'>
     readonly actionTaken: FieldRef<"Breakdown", 'String'>
@@ -11578,6 +11690,25 @@ export namespace Prisma {
   }
 
   /**
+   * Breakdown.motorbike
+   */
+  export type Breakdown$motorbikeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Motorbike
+     */
+    select?: MotorbikeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Motorbike
+     */
+    omit?: MotorbikeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorbikeInclude<ExtArgs> | null
+    where?: MotorbikeWhereInput
+  }
+
+  /**
    * Breakdown.maintenance
    */
   export type Breakdown$maintenanceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -11627,6 +11758,7 @@ export namespace Prisma {
 
   export type WarrantyMinAggregateOutputType = {
     id: string | null
+    motorbikeId: string | null
     validFrom: Date | null
     validUntil: Date | null
     providerName: string | null
@@ -11637,6 +11769,7 @@ export namespace Prisma {
 
   export type WarrantyMaxAggregateOutputType = {
     id: string | null
+    motorbikeId: string | null
     validFrom: Date | null
     validUntil: Date | null
     providerName: string | null
@@ -11647,6 +11780,7 @@ export namespace Prisma {
 
   export type WarrantyCountAggregateOutputType = {
     id: number
+    motorbikeId: number
     validFrom: number
     validUntil: number
     providerName: number
@@ -11659,6 +11793,7 @@ export namespace Prisma {
 
   export type WarrantyMinAggregateInputType = {
     id?: true
+    motorbikeId?: true
     validFrom?: true
     validUntil?: true
     providerName?: true
@@ -11669,6 +11804,7 @@ export namespace Prisma {
 
   export type WarrantyMaxAggregateInputType = {
     id?: true
+    motorbikeId?: true
     validFrom?: true
     validUntil?: true
     providerName?: true
@@ -11679,6 +11815,7 @@ export namespace Prisma {
 
   export type WarrantyCountAggregateInputType = {
     id?: true
+    motorbikeId?: true
     validFrom?: true
     validUntil?: true
     providerName?: true
@@ -11762,6 +11899,7 @@ export namespace Prisma {
 
   export type WarrantyGroupByOutputType = {
     id: string
+    motorbikeId: string
     validFrom: Date
     validUntil: Date
     providerName: string
@@ -11789,37 +11927,45 @@ export namespace Prisma {
 
   export type WarrantySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    motorbikeId?: boolean
     validFrom?: boolean
     validUntil?: boolean
     providerName?: boolean
     warrantyDetails?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    maintenance?: boolean | Warranty$maintenanceArgs<ExtArgs>
+    motorbike?: boolean | MotorbikeDefaultArgs<ExtArgs>
+    maintenances?: boolean | Warranty$maintenancesArgs<ExtArgs>
+    _count?: boolean | WarrantyCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["warranty"]>
 
   export type WarrantySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    motorbikeId?: boolean
     validFrom?: boolean
     validUntil?: boolean
     providerName?: boolean
     warrantyDetails?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    motorbike?: boolean | MotorbikeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["warranty"]>
 
   export type WarrantySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    motorbikeId?: boolean
     validFrom?: boolean
     validUntil?: boolean
     providerName?: boolean
     warrantyDetails?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    motorbike?: boolean | MotorbikeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["warranty"]>
 
   export type WarrantySelectScalar = {
     id?: boolean
+    motorbikeId?: boolean
     validFrom?: boolean
     validUntil?: boolean
     providerName?: boolean
@@ -11828,20 +11974,28 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type WarrantyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "validFrom" | "validUntil" | "providerName" | "warrantyDetails" | "createdAt" | "updatedAt", ExtArgs["result"]["warranty"]>
+  export type WarrantyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "motorbikeId" | "validFrom" | "validUntil" | "providerName" | "warrantyDetails" | "createdAt" | "updatedAt", ExtArgs["result"]["warranty"]>
   export type WarrantyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    maintenance?: boolean | Warranty$maintenanceArgs<ExtArgs>
+    motorbike?: boolean | MotorbikeDefaultArgs<ExtArgs>
+    maintenances?: boolean | Warranty$maintenancesArgs<ExtArgs>
+    _count?: boolean | WarrantyCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type WarrantyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type WarrantyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type WarrantyIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorbike?: boolean | MotorbikeDefaultArgs<ExtArgs>
+  }
+  export type WarrantyIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorbike?: boolean | MotorbikeDefaultArgs<ExtArgs>
+  }
 
   export type $WarrantyPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Warranty"
     objects: {
-      maintenance: Prisma.$MaintenancePayload<ExtArgs> | null
+      motorbike: Prisma.$MotorbikePayload<ExtArgs>
+      maintenances: Prisma.$MaintenancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      motorbikeId: string
       validFrom: Date
       validUntil: Date
       providerName: string
@@ -12242,7 +12396,8 @@ export namespace Prisma {
    */
   export interface Prisma__WarrantyClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    maintenance<T extends Warranty$maintenanceArgs<ExtArgs> = {}>(args?: Subset<T, Warranty$maintenanceArgs<ExtArgs>>): Prisma__MaintenanceClient<$Result.GetResult<Prisma.$MaintenancePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
+    motorbike<T extends MotorbikeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MotorbikeDefaultArgs<ExtArgs>>): Prisma__MotorbikeClient<$Result.GetResult<Prisma.$MotorbikePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    maintenances<T extends Warranty$maintenancesArgs<ExtArgs> = {}>(args?: Subset<T, Warranty$maintenancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenancePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12273,6 +12428,7 @@ export namespace Prisma {
    */ 
   interface WarrantyFieldRefs {
     readonly id: FieldRef<"Warranty", 'String'>
+    readonly motorbikeId: FieldRef<"Warranty", 'String'>
     readonly validFrom: FieldRef<"Warranty", 'DateTime'>
     readonly validUntil: FieldRef<"Warranty", 'DateTime'>
     readonly providerName: FieldRef<"Warranty", 'String'>
@@ -12528,6 +12684,10 @@ export namespace Prisma {
      */
     data: WarrantyCreateManyInput | WarrantyCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarrantyIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -12598,6 +12758,10 @@ export namespace Prisma {
      * Limit how many Warranties to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WarrantyIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -12667,9 +12831,9 @@ export namespace Prisma {
   }
 
   /**
-   * Warranty.maintenance
+   * Warranty.maintenances
    */
-  export type Warranty$maintenanceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Warranty$maintenancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Maintenance
      */
@@ -12683,6 +12847,11 @@ export namespace Prisma {
      */
     include?: MaintenanceInclude<ExtArgs> | null
     where?: MaintenanceWhereInput
+    orderBy?: MaintenanceOrderByWithRelationInput | MaintenanceOrderByWithRelationInput[]
+    cursor?: MaintenanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceScalarFieldEnum | MaintenanceScalarFieldEnum[]
   }
 
   /**
@@ -17260,6 +17429,7 @@ export namespace Prisma {
 
   export const BreakdownScalarFieldEnum: {
     id: 'id',
+    motorbikeId: 'motorbikeId',
     companyOrDealerShipId: 'companyOrDealerShipId',
     description: 'description',
     actionTaken: 'actionTaken',
@@ -17274,6 +17444,7 @@ export namespace Prisma {
 
   export const WarrantyScalarFieldEnum: {
     id: 'id',
+    motorbikeId: 'motorbikeId',
     validFrom: 'validFrom',
     validUntil: 'validUntil',
     providerName: 'providerName',
@@ -17924,6 +18095,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalListRelationFilter
     Try?: TryListRelationFilter
     MotorbikeIncident?: MotorbikeIncidentListRelationFilter
+    breakdowns?: BreakdownListRelationFilter
+    warranty?: XOR<WarrantyNullableScalarRelationFilter, WarrantyWhereInput> | null
     modelMotorbike?: XOR<ModelMotorbikeScalarRelationFilter, ModelMotorbikeWhereInput>
     CompanyOrDealerShip?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     Driver?: XOR<DriverNullableScalarRelationFilter, DriverWhereInput> | null
@@ -17947,6 +18120,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalOrderByRelationAggregateInput
     Try?: TryOrderByRelationAggregateInput
     MotorbikeIncident?: MotorbikeIncidentOrderByRelationAggregateInput
+    breakdowns?: BreakdownOrderByRelationAggregateInput
+    warranty?: WarrantyOrderByWithRelationInput
     modelMotorbike?: ModelMotorbikeOrderByWithRelationInput
     CompanyOrDealerShip?: UserOrderByWithRelationInput
     Driver?: DriverOrderByWithRelationInput
@@ -17973,6 +18148,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalListRelationFilter
     Try?: TryListRelationFilter
     MotorbikeIncident?: MotorbikeIncidentListRelationFilter
+    breakdowns?: BreakdownListRelationFilter
+    warranty?: XOR<WarrantyNullableScalarRelationFilter, WarrantyWhereInput> | null
     modelMotorbike?: XOR<ModelMotorbikeScalarRelationFilter, ModelMotorbikeWhereInput>
     CompanyOrDealerShip?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     Driver?: XOR<DriverNullableScalarRelationFilter, DriverWhereInput> | null
@@ -18022,6 +18199,7 @@ export namespace Prisma {
     OR?: BreakdownWhereInput[]
     NOT?: BreakdownWhereInput | BreakdownWhereInput[]
     id?: StringFilter<"Breakdown"> | string
+    motorbikeId?: StringNullableFilter<"Breakdown"> | string | null
     companyOrDealerShipId?: StringFilter<"Breakdown"> | string
     description?: StringFilter<"Breakdown"> | string
     actionTaken?: StringFilter<"Breakdown"> | string
@@ -18029,12 +18207,14 @@ export namespace Prisma {
     resolutionDate?: DateTimeNullableFilter<"Breakdown"> | Date | string | null
     createdAt?: DateTimeFilter<"Breakdown"> | Date | string
     updatedAt?: DateTimeFilter<"Breakdown"> | Date | string
+    motorbike?: XOR<MotorbikeNullableScalarRelationFilter, MotorbikeWhereInput> | null
     companyOrDealerShip?: XOR<UserScalarRelationFilter, UserWhereInput>
     maintenance?: XOR<MaintenanceNullableScalarRelationFilter, MaintenanceWhereInput> | null
   }
 
   export type BreakdownOrderByWithRelationInput = {
     id?: SortOrder
+    motorbikeId?: SortOrderInput | SortOrder
     companyOrDealerShipId?: SortOrder
     description?: SortOrder
     actionTaken?: SortOrder
@@ -18042,6 +18222,7 @@ export namespace Prisma {
     resolutionDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    motorbike?: MotorbikeOrderByWithRelationInput
     companyOrDealerShip?: UserOrderByWithRelationInput
     maintenance?: MaintenanceOrderByWithRelationInput
   }
@@ -18051,6 +18232,7 @@ export namespace Prisma {
     AND?: BreakdownWhereInput | BreakdownWhereInput[]
     OR?: BreakdownWhereInput[]
     NOT?: BreakdownWhereInput | BreakdownWhereInput[]
+    motorbikeId?: StringNullableFilter<"Breakdown"> | string | null
     companyOrDealerShipId?: StringFilter<"Breakdown"> | string
     description?: StringFilter<"Breakdown"> | string
     actionTaken?: StringFilter<"Breakdown"> | string
@@ -18058,12 +18240,14 @@ export namespace Prisma {
     resolutionDate?: DateTimeNullableFilter<"Breakdown"> | Date | string | null
     createdAt?: DateTimeFilter<"Breakdown"> | Date | string
     updatedAt?: DateTimeFilter<"Breakdown"> | Date | string
+    motorbike?: XOR<MotorbikeNullableScalarRelationFilter, MotorbikeWhereInput> | null
     companyOrDealerShip?: XOR<UserScalarRelationFilter, UserWhereInput>
     maintenance?: XOR<MaintenanceNullableScalarRelationFilter, MaintenanceWhereInput> | null
   }, "id">
 
   export type BreakdownOrderByWithAggregationInput = {
     id?: SortOrder
+    motorbikeId?: SortOrderInput | SortOrder
     companyOrDealerShipId?: SortOrder
     description?: SortOrder
     actionTaken?: SortOrder
@@ -18081,6 +18265,7 @@ export namespace Prisma {
     OR?: BreakdownScalarWhereWithAggregatesInput[]
     NOT?: BreakdownScalarWhereWithAggregatesInput | BreakdownScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Breakdown"> | string
+    motorbikeId?: StringNullableWithAggregatesFilter<"Breakdown"> | string | null
     companyOrDealerShipId?: StringWithAggregatesFilter<"Breakdown"> | string
     description?: StringWithAggregatesFilter<"Breakdown"> | string
     actionTaken?: StringWithAggregatesFilter<"Breakdown"> | string
@@ -18095,28 +18280,33 @@ export namespace Prisma {
     OR?: WarrantyWhereInput[]
     NOT?: WarrantyWhereInput | WarrantyWhereInput[]
     id?: StringFilter<"Warranty"> | string
+    motorbikeId?: StringFilter<"Warranty"> | string
     validFrom?: DateTimeFilter<"Warranty"> | Date | string
     validUntil?: DateTimeFilter<"Warranty"> | Date | string
     providerName?: StringFilter<"Warranty"> | string
     warrantyDetails?: StringFilter<"Warranty"> | string
     createdAt?: DateTimeFilter<"Warranty"> | Date | string
     updatedAt?: DateTimeFilter<"Warranty"> | Date | string
-    maintenance?: XOR<MaintenanceNullableScalarRelationFilter, MaintenanceWhereInput> | null
+    motorbike?: XOR<MotorbikeScalarRelationFilter, MotorbikeWhereInput>
+    maintenances?: MaintenanceListRelationFilter
   }
 
   export type WarrantyOrderByWithRelationInput = {
     id?: SortOrder
+    motorbikeId?: SortOrder
     validFrom?: SortOrder
     validUntil?: SortOrder
     providerName?: SortOrder
     warrantyDetails?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    maintenance?: MaintenanceOrderByWithRelationInput
+    motorbike?: MotorbikeOrderByWithRelationInput
+    maintenances?: MaintenanceOrderByRelationAggregateInput
   }
 
   export type WarrantyWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    motorbikeId?: string
     AND?: WarrantyWhereInput | WarrantyWhereInput[]
     OR?: WarrantyWhereInput[]
     NOT?: WarrantyWhereInput | WarrantyWhereInput[]
@@ -18126,11 +18316,13 @@ export namespace Prisma {
     warrantyDetails?: StringFilter<"Warranty"> | string
     createdAt?: DateTimeFilter<"Warranty"> | Date | string
     updatedAt?: DateTimeFilter<"Warranty"> | Date | string
-    maintenance?: XOR<MaintenanceNullableScalarRelationFilter, MaintenanceWhereInput> | null
-  }, "id">
+    motorbike?: XOR<MotorbikeScalarRelationFilter, MotorbikeWhereInput>
+    maintenances?: MaintenanceListRelationFilter
+  }, "id" | "motorbikeId">
 
   export type WarrantyOrderByWithAggregationInput = {
     id?: SortOrder
+    motorbikeId?: SortOrder
     validFrom?: SortOrder
     validUntil?: SortOrder
     providerName?: SortOrder
@@ -18147,6 +18339,7 @@ export namespace Prisma {
     OR?: WarrantyScalarWhereWithAggregatesInput[]
     NOT?: WarrantyScalarWhereWithAggregatesInput | WarrantyScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Warranty"> | string
+    motorbikeId?: StringWithAggregatesFilter<"Warranty"> | string
     validFrom?: DateTimeWithAggregatesFilter<"Warranty"> | Date | string
     validUntil?: DateTimeWithAggregatesFilter<"Warranty"> | Date | string
     providerName?: StringWithAggregatesFilter<"Warranty"> | string
@@ -18724,7 +18917,7 @@ export namespace Prisma {
     companyOrDealerShip: UserCreateNestedOneWithoutMaintenancesInput
     motorbike: MotorbikeCreateNestedOneWithoutMaintenancesInput
     breakdown?: BreakdownCreateNestedOneWithoutMaintenanceInput
-    warranty?: WarrantyCreateNestedOneWithoutMaintenanceInput
+    warranty?: WarrantyCreateNestedOneWithoutMaintenancesInput
   }
 
   export type MaintenanceUncheckedCreateInput = {
@@ -18754,7 +18947,7 @@ export namespace Prisma {
     companyOrDealerShip?: UserUpdateOneRequiredWithoutMaintenancesNestedInput
     motorbike?: MotorbikeUpdateOneRequiredWithoutMaintenancesNestedInput
     breakdown?: BreakdownUpdateOneWithoutMaintenanceNestedInput
-    warranty?: WarrantyUpdateOneWithoutMaintenanceNestedInput
+    warranty?: WarrantyUpdateOneWithoutMaintenancesNestedInput
   }
 
   export type MaintenanceUncheckedUpdateInput = {
@@ -18960,6 +19153,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
     Try?: TryCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
     CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
     Driver?: DriverCreateNestedOneWithoutMotorbikeInput
@@ -18983,6 +19178,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
     Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeUpdateInput = {
@@ -18998,6 +19195,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
     CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
     Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
@@ -19021,6 +19220,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type MotorbikeCreateManyInput = {
@@ -19072,12 +19273,14 @@ export namespace Prisma {
     resolutionDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    motorbike?: MotorbikeCreateNestedOneWithoutBreakdownsInput
     companyOrDealerShip: UserCreateNestedOneWithoutBreakdownsInput
     maintenance?: MaintenanceCreateNestedOneWithoutBreakdownInput
   }
 
   export type BreakdownUncheckedCreateInput = {
     id?: string
+    motorbikeId?: string | null
     companyOrDealerShipId: string
     description: string
     actionTaken: string
@@ -19096,12 +19299,14 @@ export namespace Prisma {
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorbike?: MotorbikeUpdateOneWithoutBreakdownsNestedInput
     companyOrDealerShip?: UserUpdateOneRequiredWithoutBreakdownsNestedInput
     maintenance?: MaintenanceUpdateOneWithoutBreakdownNestedInput
   }
 
   export type BreakdownUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: NullableStringFieldUpdateOperationsInput | string | null
     companyOrDealerShipId?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     actionTaken?: StringFieldUpdateOperationsInput | string
@@ -19114,6 +19319,7 @@ export namespace Prisma {
 
   export type BreakdownCreateManyInput = {
     id?: string
+    motorbikeId?: string | null
     companyOrDealerShipId: string
     description: string
     actionTaken: string
@@ -19135,6 +19341,7 @@ export namespace Prisma {
 
   export type BreakdownUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: NullableStringFieldUpdateOperationsInput | string | null
     companyOrDealerShipId?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     actionTaken?: StringFieldUpdateOperationsInput | string
@@ -19152,18 +19359,20 @@ export namespace Prisma {
     warrantyDetails: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    maintenance?: MaintenanceCreateNestedOneWithoutWarrantyInput
+    motorbike: MotorbikeCreateNestedOneWithoutWarrantyInput
+    maintenances?: MaintenanceCreateNestedManyWithoutWarrantyInput
   }
 
   export type WarrantyUncheckedCreateInput = {
     id?: string
+    motorbikeId: string
     validFrom: Date | string
     validUntil: Date | string
     providerName: string
     warrantyDetails: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    maintenance?: MaintenanceUncheckedCreateNestedOneWithoutWarrantyInput
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutWarrantyInput
   }
 
   export type WarrantyUpdateInput = {
@@ -19174,22 +19383,25 @@ export namespace Prisma {
     warrantyDetails?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    maintenance?: MaintenanceUpdateOneWithoutWarrantyNestedInput
+    motorbike?: MotorbikeUpdateOneRequiredWithoutWarrantyNestedInput
+    maintenances?: MaintenanceUpdateManyWithoutWarrantyNestedInput
   }
 
   export type WarrantyUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     providerName?: StringFieldUpdateOperationsInput | string
     warrantyDetails?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    maintenance?: MaintenanceUncheckedUpdateOneWithoutWarrantyNestedInput
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutWarrantyNestedInput
   }
 
   export type WarrantyCreateManyInput = {
     id?: string
+    motorbikeId: string
     validFrom: Date | string
     validUntil: Date | string
     providerName: string
@@ -19210,6 +19422,7 @@ export namespace Prisma {
 
   export type WarrantyUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     providerName?: StringFieldUpdateOperationsInput | string
@@ -20061,6 +20274,11 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
+  export type MotorbikeNullableScalarRelationFilter = {
+    is?: MotorbikeWhereInput | null
+    isNot?: MotorbikeWhereInput | null
+  }
+
   export type MaintenanceNullableScalarRelationFilter = {
     is?: MaintenanceWhereInput | null
     isNot?: MaintenanceWhereInput | null
@@ -20068,6 +20286,7 @@ export namespace Prisma {
 
   export type BreakdownCountOrderByAggregateInput = {
     id?: SortOrder
+    motorbikeId?: SortOrder
     companyOrDealerShipId?: SortOrder
     description?: SortOrder
     actionTaken?: SortOrder
@@ -20079,6 +20298,7 @@ export namespace Prisma {
 
   export type BreakdownMaxOrderByAggregateInput = {
     id?: SortOrder
+    motorbikeId?: SortOrder
     companyOrDealerShipId?: SortOrder
     description?: SortOrder
     actionTaken?: SortOrder
@@ -20090,6 +20310,7 @@ export namespace Prisma {
 
   export type BreakdownMinOrderByAggregateInput = {
     id?: SortOrder
+    motorbikeId?: SortOrder
     companyOrDealerShipId?: SortOrder
     description?: SortOrder
     actionTaken?: SortOrder
@@ -20115,6 +20336,7 @@ export namespace Prisma {
 
   export type WarrantyCountOrderByAggregateInput = {
     id?: SortOrder
+    motorbikeId?: SortOrder
     validFrom?: SortOrder
     validUntil?: SortOrder
     providerName?: SortOrder
@@ -20125,6 +20347,7 @@ export namespace Prisma {
 
   export type WarrantyMaxOrderByAggregateInput = {
     id?: SortOrder
+    motorbikeId?: SortOrder
     validFrom?: SortOrder
     validUntil?: SortOrder
     providerName?: SortOrder
@@ -20135,6 +20358,7 @@ export namespace Prisma {
 
   export type WarrantyMinOrderByAggregateInput = {
     id?: SortOrder
+    motorbikeId?: SortOrder
     validFrom?: SortOrder
     validUntil?: SortOrder
     providerName?: SortOrder
@@ -20626,9 +20850,9 @@ export namespace Prisma {
     connect?: BreakdownWhereUniqueInput
   }
 
-  export type WarrantyCreateNestedOneWithoutMaintenanceInput = {
-    create?: XOR<WarrantyCreateWithoutMaintenanceInput, WarrantyUncheckedCreateWithoutMaintenanceInput>
-    connectOrCreate?: WarrantyCreateOrConnectWithoutMaintenanceInput
+  export type WarrantyCreateNestedOneWithoutMaintenancesInput = {
+    create?: XOR<WarrantyCreateWithoutMaintenancesInput, WarrantyUncheckedCreateWithoutMaintenancesInput>
+    connectOrCreate?: WarrantyCreateOrConnectWithoutMaintenancesInput
     connect?: WarrantyWhereUniqueInput
   }
 
@@ -20674,14 +20898,14 @@ export namespace Prisma {
     update?: XOR<XOR<BreakdownUpdateToOneWithWhereWithoutMaintenanceInput, BreakdownUpdateWithoutMaintenanceInput>, BreakdownUncheckedUpdateWithoutMaintenanceInput>
   }
 
-  export type WarrantyUpdateOneWithoutMaintenanceNestedInput = {
-    create?: XOR<WarrantyCreateWithoutMaintenanceInput, WarrantyUncheckedCreateWithoutMaintenanceInput>
-    connectOrCreate?: WarrantyCreateOrConnectWithoutMaintenanceInput
-    upsert?: WarrantyUpsertWithoutMaintenanceInput
+  export type WarrantyUpdateOneWithoutMaintenancesNestedInput = {
+    create?: XOR<WarrantyCreateWithoutMaintenancesInput, WarrantyUncheckedCreateWithoutMaintenancesInput>
+    connectOrCreate?: WarrantyCreateOrConnectWithoutMaintenancesInput
+    upsert?: WarrantyUpsertWithoutMaintenancesInput
     disconnect?: WarrantyWhereInput | boolean
     delete?: WarrantyWhereInput | boolean
     connect?: WarrantyWhereUniqueInput
-    update?: XOR<XOR<WarrantyUpdateToOneWithWhereWithoutMaintenanceInput, WarrantyUpdateWithoutMaintenanceInput>, WarrantyUncheckedUpdateWithoutMaintenanceInput>
+    update?: XOR<XOR<WarrantyUpdateToOneWithWhereWithoutMaintenancesInput, WarrantyUpdateWithoutMaintenancesInput>, WarrantyUncheckedUpdateWithoutMaintenancesInput>
   }
 
   export type UserCreateNestedOneWithoutDriverInput = {
@@ -20894,6 +21118,19 @@ export namespace Prisma {
     connect?: MotorbikeIncidentWhereUniqueInput | MotorbikeIncidentWhereUniqueInput[]
   }
 
+  export type BreakdownCreateNestedManyWithoutMotorbikeInput = {
+    create?: XOR<BreakdownCreateWithoutMotorbikeInput, BreakdownUncheckedCreateWithoutMotorbikeInput> | BreakdownCreateWithoutMotorbikeInput[] | BreakdownUncheckedCreateWithoutMotorbikeInput[]
+    connectOrCreate?: BreakdownCreateOrConnectWithoutMotorbikeInput | BreakdownCreateOrConnectWithoutMotorbikeInput[]
+    createMany?: BreakdownCreateManyMotorbikeInputEnvelope
+    connect?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+  }
+
+  export type WarrantyCreateNestedOneWithoutMotorbikeInput = {
+    create?: XOR<WarrantyCreateWithoutMotorbikeInput, WarrantyUncheckedCreateWithoutMotorbikeInput>
+    connectOrCreate?: WarrantyCreateOrConnectWithoutMotorbikeInput
+    connect?: WarrantyWhereUniqueInput
+  }
+
   export type ModelMotorbikeCreateNestedOneWithoutMotorbikeInput = {
     create?: XOR<ModelMotorbikeCreateWithoutMotorbikeInput, ModelMotorbikeUncheckedCreateWithoutMotorbikeInput>
     connectOrCreate?: ModelMotorbikeCreateOrConnectWithoutMotorbikeInput
@@ -20944,6 +21181,19 @@ export namespace Prisma {
     connectOrCreate?: MotorbikeIncidentCreateOrConnectWithoutMotorbikeInput | MotorbikeIncidentCreateOrConnectWithoutMotorbikeInput[]
     createMany?: MotorbikeIncidentCreateManyMotorbikeInputEnvelope
     connect?: MotorbikeIncidentWhereUniqueInput | MotorbikeIncidentWhereUniqueInput[]
+  }
+
+  export type BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput = {
+    create?: XOR<BreakdownCreateWithoutMotorbikeInput, BreakdownUncheckedCreateWithoutMotorbikeInput> | BreakdownCreateWithoutMotorbikeInput[] | BreakdownUncheckedCreateWithoutMotorbikeInput[]
+    connectOrCreate?: BreakdownCreateOrConnectWithoutMotorbikeInput | BreakdownCreateOrConnectWithoutMotorbikeInput[]
+    createMany?: BreakdownCreateManyMotorbikeInputEnvelope
+    connect?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+  }
+
+  export type WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput = {
+    create?: XOR<WarrantyCreateWithoutMotorbikeInput, WarrantyUncheckedCreateWithoutMotorbikeInput>
+    connectOrCreate?: WarrantyCreateOrConnectWithoutMotorbikeInput
+    connect?: WarrantyWhereUniqueInput
   }
 
   export type MaintenanceUpdateManyWithoutMotorbikeNestedInput = {
@@ -21000,6 +21250,30 @@ export namespace Prisma {
     update?: MotorbikeIncidentUpdateWithWhereUniqueWithoutMotorbikeInput | MotorbikeIncidentUpdateWithWhereUniqueWithoutMotorbikeInput[]
     updateMany?: MotorbikeIncidentUpdateManyWithWhereWithoutMotorbikeInput | MotorbikeIncidentUpdateManyWithWhereWithoutMotorbikeInput[]
     deleteMany?: MotorbikeIncidentScalarWhereInput | MotorbikeIncidentScalarWhereInput[]
+  }
+
+  export type BreakdownUpdateManyWithoutMotorbikeNestedInput = {
+    create?: XOR<BreakdownCreateWithoutMotorbikeInput, BreakdownUncheckedCreateWithoutMotorbikeInput> | BreakdownCreateWithoutMotorbikeInput[] | BreakdownUncheckedCreateWithoutMotorbikeInput[]
+    connectOrCreate?: BreakdownCreateOrConnectWithoutMotorbikeInput | BreakdownCreateOrConnectWithoutMotorbikeInput[]
+    upsert?: BreakdownUpsertWithWhereUniqueWithoutMotorbikeInput | BreakdownUpsertWithWhereUniqueWithoutMotorbikeInput[]
+    createMany?: BreakdownCreateManyMotorbikeInputEnvelope
+    set?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+    disconnect?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+    delete?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+    connect?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+    update?: BreakdownUpdateWithWhereUniqueWithoutMotorbikeInput | BreakdownUpdateWithWhereUniqueWithoutMotorbikeInput[]
+    updateMany?: BreakdownUpdateManyWithWhereWithoutMotorbikeInput | BreakdownUpdateManyWithWhereWithoutMotorbikeInput[]
+    deleteMany?: BreakdownScalarWhereInput | BreakdownScalarWhereInput[]
+  }
+
+  export type WarrantyUpdateOneWithoutMotorbikeNestedInput = {
+    create?: XOR<WarrantyCreateWithoutMotorbikeInput, WarrantyUncheckedCreateWithoutMotorbikeInput>
+    connectOrCreate?: WarrantyCreateOrConnectWithoutMotorbikeInput
+    upsert?: WarrantyUpsertWithoutMotorbikeInput
+    disconnect?: WarrantyWhereInput | boolean
+    delete?: WarrantyWhereInput | boolean
+    connect?: WarrantyWhereUniqueInput
+    update?: XOR<XOR<WarrantyUpdateToOneWithWhereWithoutMotorbikeInput, WarrantyUpdateWithoutMotorbikeInput>, WarrantyUncheckedUpdateWithoutMotorbikeInput>
   }
 
   export type ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput = {
@@ -21096,6 +21370,36 @@ export namespace Prisma {
     deleteMany?: MotorbikeIncidentScalarWhereInput | MotorbikeIncidentScalarWhereInput[]
   }
 
+  export type BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput = {
+    create?: XOR<BreakdownCreateWithoutMotorbikeInput, BreakdownUncheckedCreateWithoutMotorbikeInput> | BreakdownCreateWithoutMotorbikeInput[] | BreakdownUncheckedCreateWithoutMotorbikeInput[]
+    connectOrCreate?: BreakdownCreateOrConnectWithoutMotorbikeInput | BreakdownCreateOrConnectWithoutMotorbikeInput[]
+    upsert?: BreakdownUpsertWithWhereUniqueWithoutMotorbikeInput | BreakdownUpsertWithWhereUniqueWithoutMotorbikeInput[]
+    createMany?: BreakdownCreateManyMotorbikeInputEnvelope
+    set?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+    disconnect?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+    delete?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+    connect?: BreakdownWhereUniqueInput | BreakdownWhereUniqueInput[]
+    update?: BreakdownUpdateWithWhereUniqueWithoutMotorbikeInput | BreakdownUpdateWithWhereUniqueWithoutMotorbikeInput[]
+    updateMany?: BreakdownUpdateManyWithWhereWithoutMotorbikeInput | BreakdownUpdateManyWithWhereWithoutMotorbikeInput[]
+    deleteMany?: BreakdownScalarWhereInput | BreakdownScalarWhereInput[]
+  }
+
+  export type WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput = {
+    create?: XOR<WarrantyCreateWithoutMotorbikeInput, WarrantyUncheckedCreateWithoutMotorbikeInput>
+    connectOrCreate?: WarrantyCreateOrConnectWithoutMotorbikeInput
+    upsert?: WarrantyUpsertWithoutMotorbikeInput
+    disconnect?: WarrantyWhereInput | boolean
+    delete?: WarrantyWhereInput | boolean
+    connect?: WarrantyWhereUniqueInput
+    update?: XOR<XOR<WarrantyUpdateToOneWithWhereWithoutMotorbikeInput, WarrantyUpdateWithoutMotorbikeInput>, WarrantyUncheckedUpdateWithoutMotorbikeInput>
+  }
+
+  export type MotorbikeCreateNestedOneWithoutBreakdownsInput = {
+    create?: XOR<MotorbikeCreateWithoutBreakdownsInput, MotorbikeUncheckedCreateWithoutBreakdownsInput>
+    connectOrCreate?: MotorbikeCreateOrConnectWithoutBreakdownsInput
+    connect?: MotorbikeWhereUniqueInput
+  }
+
   export type UserCreateNestedOneWithoutBreakdownsInput = {
     create?: XOR<UserCreateWithoutBreakdownsInput, UserUncheckedCreateWithoutBreakdownsInput>
     connectOrCreate?: UserCreateOrConnectWithoutBreakdownsInput
@@ -21116,6 +21420,16 @@ export namespace Prisma {
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null
+  }
+
+  export type MotorbikeUpdateOneWithoutBreakdownsNestedInput = {
+    create?: XOR<MotorbikeCreateWithoutBreakdownsInput, MotorbikeUncheckedCreateWithoutBreakdownsInput>
+    connectOrCreate?: MotorbikeCreateOrConnectWithoutBreakdownsInput
+    upsert?: MotorbikeUpsertWithoutBreakdownsInput
+    disconnect?: MotorbikeWhereInput | boolean
+    delete?: MotorbikeWhereInput | boolean
+    connect?: MotorbikeWhereUniqueInput
+    update?: XOR<XOR<MotorbikeUpdateToOneWithWhereWithoutBreakdownsInput, MotorbikeUpdateWithoutBreakdownsInput>, MotorbikeUncheckedUpdateWithoutBreakdownsInput>
   }
 
   export type UserUpdateOneRequiredWithoutBreakdownsNestedInput = {
@@ -21146,36 +21460,60 @@ export namespace Prisma {
     update?: XOR<XOR<MaintenanceUpdateToOneWithWhereWithoutBreakdownInput, MaintenanceUpdateWithoutBreakdownInput>, MaintenanceUncheckedUpdateWithoutBreakdownInput>
   }
 
-  export type MaintenanceCreateNestedOneWithoutWarrantyInput = {
-    create?: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput>
-    connectOrCreate?: MaintenanceCreateOrConnectWithoutWarrantyInput
-    connect?: MaintenanceWhereUniqueInput
+  export type MotorbikeCreateNestedOneWithoutWarrantyInput = {
+    create?: XOR<MotorbikeCreateWithoutWarrantyInput, MotorbikeUncheckedCreateWithoutWarrantyInput>
+    connectOrCreate?: MotorbikeCreateOrConnectWithoutWarrantyInput
+    connect?: MotorbikeWhereUniqueInput
   }
 
-  export type MaintenanceUncheckedCreateNestedOneWithoutWarrantyInput = {
-    create?: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput>
-    connectOrCreate?: MaintenanceCreateOrConnectWithoutWarrantyInput
-    connect?: MaintenanceWhereUniqueInput
+  export type MaintenanceCreateNestedManyWithoutWarrantyInput = {
+    create?: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput> | MaintenanceCreateWithoutWarrantyInput[] | MaintenanceUncheckedCreateWithoutWarrantyInput[]
+    connectOrCreate?: MaintenanceCreateOrConnectWithoutWarrantyInput | MaintenanceCreateOrConnectWithoutWarrantyInput[]
+    createMany?: MaintenanceCreateManyWarrantyInputEnvelope
+    connect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
   }
 
-  export type MaintenanceUpdateOneWithoutWarrantyNestedInput = {
-    create?: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput>
-    connectOrCreate?: MaintenanceCreateOrConnectWithoutWarrantyInput
-    upsert?: MaintenanceUpsertWithoutWarrantyInput
-    disconnect?: MaintenanceWhereInput | boolean
-    delete?: MaintenanceWhereInput | boolean
-    connect?: MaintenanceWhereUniqueInput
-    update?: XOR<XOR<MaintenanceUpdateToOneWithWhereWithoutWarrantyInput, MaintenanceUpdateWithoutWarrantyInput>, MaintenanceUncheckedUpdateWithoutWarrantyInput>
+  export type MaintenanceUncheckedCreateNestedManyWithoutWarrantyInput = {
+    create?: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput> | MaintenanceCreateWithoutWarrantyInput[] | MaintenanceUncheckedCreateWithoutWarrantyInput[]
+    connectOrCreate?: MaintenanceCreateOrConnectWithoutWarrantyInput | MaintenanceCreateOrConnectWithoutWarrantyInput[]
+    createMany?: MaintenanceCreateManyWarrantyInputEnvelope
+    connect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
   }
 
-  export type MaintenanceUncheckedUpdateOneWithoutWarrantyNestedInput = {
-    create?: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput>
-    connectOrCreate?: MaintenanceCreateOrConnectWithoutWarrantyInput
-    upsert?: MaintenanceUpsertWithoutWarrantyInput
-    disconnect?: MaintenanceWhereInput | boolean
-    delete?: MaintenanceWhereInput | boolean
-    connect?: MaintenanceWhereUniqueInput
-    update?: XOR<XOR<MaintenanceUpdateToOneWithWhereWithoutWarrantyInput, MaintenanceUpdateWithoutWarrantyInput>, MaintenanceUncheckedUpdateWithoutWarrantyInput>
+  export type MotorbikeUpdateOneRequiredWithoutWarrantyNestedInput = {
+    create?: XOR<MotorbikeCreateWithoutWarrantyInput, MotorbikeUncheckedCreateWithoutWarrantyInput>
+    connectOrCreate?: MotorbikeCreateOrConnectWithoutWarrantyInput
+    upsert?: MotorbikeUpsertWithoutWarrantyInput
+    connect?: MotorbikeWhereUniqueInput
+    update?: XOR<XOR<MotorbikeUpdateToOneWithWhereWithoutWarrantyInput, MotorbikeUpdateWithoutWarrantyInput>, MotorbikeUncheckedUpdateWithoutWarrantyInput>
+  }
+
+  export type MaintenanceUpdateManyWithoutWarrantyNestedInput = {
+    create?: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput> | MaintenanceCreateWithoutWarrantyInput[] | MaintenanceUncheckedCreateWithoutWarrantyInput[]
+    connectOrCreate?: MaintenanceCreateOrConnectWithoutWarrantyInput | MaintenanceCreateOrConnectWithoutWarrantyInput[]
+    upsert?: MaintenanceUpsertWithWhereUniqueWithoutWarrantyInput | MaintenanceUpsertWithWhereUniqueWithoutWarrantyInput[]
+    createMany?: MaintenanceCreateManyWarrantyInputEnvelope
+    set?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    disconnect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    delete?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    connect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    update?: MaintenanceUpdateWithWhereUniqueWithoutWarrantyInput | MaintenanceUpdateWithWhereUniqueWithoutWarrantyInput[]
+    updateMany?: MaintenanceUpdateManyWithWhereWithoutWarrantyInput | MaintenanceUpdateManyWithWhereWithoutWarrantyInput[]
+    deleteMany?: MaintenanceScalarWhereInput | MaintenanceScalarWhereInput[]
+  }
+
+  export type MaintenanceUncheckedUpdateManyWithoutWarrantyNestedInput = {
+    create?: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput> | MaintenanceCreateWithoutWarrantyInput[] | MaintenanceUncheckedCreateWithoutWarrantyInput[]
+    connectOrCreate?: MaintenanceCreateOrConnectWithoutWarrantyInput | MaintenanceCreateOrConnectWithoutWarrantyInput[]
+    upsert?: MaintenanceUpsertWithWhereUniqueWithoutWarrantyInput | MaintenanceUpsertWithWhereUniqueWithoutWarrantyInput[]
+    createMany?: MaintenanceCreateManyWarrantyInputEnvelope
+    set?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    disconnect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    delete?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    connect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    update?: MaintenanceUpdateWithWhereUniqueWithoutWarrantyInput | MaintenanceUpdateWithWhereUniqueWithoutWarrantyInput[]
+    updateMany?: MaintenanceUpdateManyWithWhereWithoutWarrantyInput | MaintenanceUpdateManyWithWhereWithoutWarrantyInput[]
+    deleteMany?: MaintenanceScalarWhereInput | MaintenanceScalarWhereInput[]
   }
 
   export type MotorbikeCreateNestedManyWithoutFleetInput = {
@@ -21558,11 +21896,13 @@ export namespace Prisma {
     resolutionDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    motorbike?: MotorbikeCreateNestedOneWithoutBreakdownsInput
     maintenance?: MaintenanceCreateNestedOneWithoutBreakdownInput
   }
 
   export type BreakdownUncheckedCreateWithoutCompanyOrDealerShipInput = {
     id?: string
+    motorbikeId?: string | null
     description: string
     actionTaken: string
     resolved?: boolean
@@ -21593,7 +21933,7 @@ export namespace Prisma {
     maintenanceDescription: string
     motorbike: MotorbikeCreateNestedOneWithoutMaintenancesInput
     breakdown?: BreakdownCreateNestedOneWithoutMaintenanceInput
-    warranty?: WarrantyCreateNestedOneWithoutMaintenanceInput
+    warranty?: WarrantyCreateNestedOneWithoutMaintenancesInput
   }
 
   export type MaintenanceUncheckedCreateWithoutCompanyOrDealerShipInput = {
@@ -21633,6 +21973,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
     Try?: TryCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
     Driver?: DriverCreateNestedOneWithoutMotorbikeInput
     Fleet?: FleetCreateNestedOneWithoutMotorbikesInput
@@ -21654,6 +21996,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
     Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeCreateOrConnectWithoutCompanyOrDealerShipInput = {
@@ -21821,6 +22165,7 @@ export namespace Prisma {
     OR?: BreakdownScalarWhereInput[]
     NOT?: BreakdownScalarWhereInput | BreakdownScalarWhereInput[]
     id?: StringFilter<"Breakdown"> | string
+    motorbikeId?: StringNullableFilter<"Breakdown"> | string | null
     companyOrDealerShipId?: StringFilter<"Breakdown"> | string
     description?: StringFilter<"Breakdown"> | string
     actionTaken?: StringFilter<"Breakdown"> | string
@@ -22077,6 +22422,8 @@ export namespace Prisma {
     maintenances?: MaintenanceCreateNestedManyWithoutMotorbikeInput
     Try?: TryCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
     CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
     Driver?: DriverCreateNestedOneWithoutMotorbikeInput
@@ -22099,6 +22446,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorbikeInput
     Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeCreateOrConnectWithoutDriverHistoricalInput = {
@@ -22180,6 +22529,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
     CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
     Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
@@ -22202,6 +22553,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type UserCreateWithoutMaintenancesInput = {
@@ -22257,6 +22610,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
     Try?: TryCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
     CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
     Driver?: DriverCreateNestedOneWithoutMotorbikeInput
@@ -22279,6 +22634,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
     Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeCreateOrConnectWithoutMaintenancesInput = {
@@ -22294,11 +22651,13 @@ export namespace Prisma {
     resolutionDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    motorbike?: MotorbikeCreateNestedOneWithoutBreakdownsInput
     companyOrDealerShip: UserCreateNestedOneWithoutBreakdownsInput
   }
 
   export type BreakdownUncheckedCreateWithoutMaintenanceInput = {
     id?: string
+    motorbikeId?: string | null
     companyOrDealerShipId: string
     description: string
     actionTaken: string
@@ -22313,8 +22672,20 @@ export namespace Prisma {
     create: XOR<BreakdownCreateWithoutMaintenanceInput, BreakdownUncheckedCreateWithoutMaintenanceInput>
   }
 
-  export type WarrantyCreateWithoutMaintenanceInput = {
+  export type WarrantyCreateWithoutMaintenancesInput = {
     id?: string
+    validFrom: Date | string
+    validUntil: Date | string
+    providerName: string
+    warrantyDetails: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorbike: MotorbikeCreateNestedOneWithoutWarrantyInput
+  }
+
+  export type WarrantyUncheckedCreateWithoutMaintenancesInput = {
+    id?: string
+    motorbikeId: string
     validFrom: Date | string
     validUntil: Date | string
     providerName: string
@@ -22323,19 +22694,9 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
-  export type WarrantyUncheckedCreateWithoutMaintenanceInput = {
-    id?: string
-    validFrom: Date | string
-    validUntil: Date | string
-    providerName: string
-    warrantyDetails: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type WarrantyCreateOrConnectWithoutMaintenanceInput = {
+  export type WarrantyCreateOrConnectWithoutMaintenancesInput = {
     where: WarrantyWhereUniqueInput
-    create: XOR<WarrantyCreateWithoutMaintenanceInput, WarrantyUncheckedCreateWithoutMaintenanceInput>
+    create: XOR<WarrantyCreateWithoutMaintenancesInput, WarrantyUncheckedCreateWithoutMaintenancesInput>
   }
 
   export type UserUpsertWithoutMaintenancesInput = {
@@ -22408,6 +22769,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
     CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
     Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
@@ -22430,6 +22793,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type BreakdownUpsertWithoutMaintenanceInput = {
@@ -22451,11 +22816,13 @@ export namespace Prisma {
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorbike?: MotorbikeUpdateOneWithoutBreakdownsNestedInput
     companyOrDealerShip?: UserUpdateOneRequiredWithoutBreakdownsNestedInput
   }
 
   export type BreakdownUncheckedUpdateWithoutMaintenanceInput = {
     id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: NullableStringFieldUpdateOperationsInput | string | null
     companyOrDealerShipId?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     actionTaken?: StringFieldUpdateOperationsInput | string
@@ -22465,18 +22832,18 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type WarrantyUpsertWithoutMaintenanceInput = {
-    update: XOR<WarrantyUpdateWithoutMaintenanceInput, WarrantyUncheckedUpdateWithoutMaintenanceInput>
-    create: XOR<WarrantyCreateWithoutMaintenanceInput, WarrantyUncheckedCreateWithoutMaintenanceInput>
+  export type WarrantyUpsertWithoutMaintenancesInput = {
+    update: XOR<WarrantyUpdateWithoutMaintenancesInput, WarrantyUncheckedUpdateWithoutMaintenancesInput>
+    create: XOR<WarrantyCreateWithoutMaintenancesInput, WarrantyUncheckedCreateWithoutMaintenancesInput>
     where?: WarrantyWhereInput
   }
 
-  export type WarrantyUpdateToOneWithWhereWithoutMaintenanceInput = {
+  export type WarrantyUpdateToOneWithWhereWithoutMaintenancesInput = {
     where?: WarrantyWhereInput
-    data: XOR<WarrantyUpdateWithoutMaintenanceInput, WarrantyUncheckedUpdateWithoutMaintenanceInput>
+    data: XOR<WarrantyUpdateWithoutMaintenancesInput, WarrantyUncheckedUpdateWithoutMaintenancesInput>
   }
 
-  export type WarrantyUpdateWithoutMaintenanceInput = {
+  export type WarrantyUpdateWithoutMaintenancesInput = {
     id?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22484,10 +22851,12 @@ export namespace Prisma {
     warrantyDetails?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorbike?: MotorbikeUpdateOneRequiredWithoutWarrantyNestedInput
   }
 
-  export type WarrantyUncheckedUpdateWithoutMaintenanceInput = {
+  export type WarrantyUncheckedUpdateWithoutMaintenancesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: StringFieldUpdateOperationsInput | string
     validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
     validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
     providerName?: StringFieldUpdateOperationsInput | string
@@ -22550,6 +22919,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
     Try?: TryCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
     CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
     Fleet?: FleetCreateNestedOneWithoutMotorbikesInput
@@ -22571,6 +22942,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
     Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeCreateOrConnectWithoutDriverInput = {
@@ -22798,7 +23171,7 @@ export namespace Prisma {
     maintenanceDescription: string
     companyOrDealerShip: UserCreateNestedOneWithoutMaintenancesInput
     breakdown?: BreakdownCreateNestedOneWithoutMaintenanceInput
-    warranty?: WarrantyCreateNestedOneWithoutMaintenanceInput
+    warranty?: WarrantyCreateNestedOneWithoutMaintenancesInput
   }
 
   export type MaintenanceUncheckedCreateWithoutMotorbikeInput = {
@@ -22905,6 +23278,67 @@ export namespace Prisma {
   export type MotorbikeIncidentCreateManyMotorbikeInputEnvelope = {
     data: MotorbikeIncidentCreateManyMotorbikeInput | MotorbikeIncidentCreateManyMotorbikeInput[]
     skipDuplicates?: boolean
+  }
+
+  export type BreakdownCreateWithoutMotorbikeInput = {
+    id?: string
+    description: string
+    actionTaken: string
+    resolved?: boolean
+    resolutionDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    companyOrDealerShip: UserCreateNestedOneWithoutBreakdownsInput
+    maintenance?: MaintenanceCreateNestedOneWithoutBreakdownInput
+  }
+
+  export type BreakdownUncheckedCreateWithoutMotorbikeInput = {
+    id?: string
+    companyOrDealerShipId: string
+    description: string
+    actionTaken: string
+    resolved?: boolean
+    resolutionDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenance?: MaintenanceUncheckedCreateNestedOneWithoutBreakdownInput
+  }
+
+  export type BreakdownCreateOrConnectWithoutMotorbikeInput = {
+    where: BreakdownWhereUniqueInput
+    create: XOR<BreakdownCreateWithoutMotorbikeInput, BreakdownUncheckedCreateWithoutMotorbikeInput>
+  }
+
+  export type BreakdownCreateManyMotorbikeInputEnvelope = {
+    data: BreakdownCreateManyMotorbikeInput | BreakdownCreateManyMotorbikeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WarrantyCreateWithoutMotorbikeInput = {
+    id?: string
+    validFrom: Date | string
+    validUntil: Date | string
+    providerName: string
+    warrantyDetails: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenances?: MaintenanceCreateNestedManyWithoutWarrantyInput
+  }
+
+  export type WarrantyUncheckedCreateWithoutMotorbikeInput = {
+    id?: string
+    validFrom: Date | string
+    validUntil: Date | string
+    providerName: string
+    warrantyDetails: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutWarrantyInput
+  }
+
+  export type WarrantyCreateOrConnectWithoutMotorbikeInput = {
+    where: WarrantyWhereUniqueInput
+    create: XOR<WarrantyCreateWithoutMotorbikeInput, WarrantyUncheckedCreateWithoutMotorbikeInput>
   }
 
   export type ModelMotorbikeCreateWithoutMotorbikeInput = {
@@ -23103,6 +23537,55 @@ export namespace Prisma {
     data: XOR<MotorbikeIncidentUpdateManyMutationInput, MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeInput>
   }
 
+  export type BreakdownUpsertWithWhereUniqueWithoutMotorbikeInput = {
+    where: BreakdownWhereUniqueInput
+    update: XOR<BreakdownUpdateWithoutMotorbikeInput, BreakdownUncheckedUpdateWithoutMotorbikeInput>
+    create: XOR<BreakdownCreateWithoutMotorbikeInput, BreakdownUncheckedCreateWithoutMotorbikeInput>
+  }
+
+  export type BreakdownUpdateWithWhereUniqueWithoutMotorbikeInput = {
+    where: BreakdownWhereUniqueInput
+    data: XOR<BreakdownUpdateWithoutMotorbikeInput, BreakdownUncheckedUpdateWithoutMotorbikeInput>
+  }
+
+  export type BreakdownUpdateManyWithWhereWithoutMotorbikeInput = {
+    where: BreakdownScalarWhereInput
+    data: XOR<BreakdownUpdateManyMutationInput, BreakdownUncheckedUpdateManyWithoutMotorbikeInput>
+  }
+
+  export type WarrantyUpsertWithoutMotorbikeInput = {
+    update: XOR<WarrantyUpdateWithoutMotorbikeInput, WarrantyUncheckedUpdateWithoutMotorbikeInput>
+    create: XOR<WarrantyCreateWithoutMotorbikeInput, WarrantyUncheckedCreateWithoutMotorbikeInput>
+    where?: WarrantyWhereInput
+  }
+
+  export type WarrantyUpdateToOneWithWhereWithoutMotorbikeInput = {
+    where?: WarrantyWhereInput
+    data: XOR<WarrantyUpdateWithoutMotorbikeInput, WarrantyUncheckedUpdateWithoutMotorbikeInput>
+  }
+
+  export type WarrantyUpdateWithoutMotorbikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerName?: StringFieldUpdateOperationsInput | string
+    warrantyDetails?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenances?: MaintenanceUpdateManyWithoutWarrantyNestedInput
+  }
+
+  export type WarrantyUncheckedUpdateWithoutMotorbikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    validFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    validUntil?: DateTimeFieldUpdateOperationsInput | Date | string
+    providerName?: StringFieldUpdateOperationsInput | string
+    warrantyDetails?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutWarrantyNestedInput
+  }
+
   export type ModelMotorbikeUpsertWithoutMotorbikeInput = {
     update: XOR<ModelMotorbikeUpdateWithoutMotorbikeInput, ModelMotorbikeUncheckedUpdateWithoutMotorbikeInput>
     create: XOR<ModelMotorbikeCreateWithoutMotorbikeInput, ModelMotorbikeUncheckedCreateWithoutMotorbikeInput>
@@ -23259,6 +23742,51 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MotorbikeCreateWithoutBreakdownsInput = {
+    id?: string
+    licensePlate: string
+    vehicleIdentificationNumber: string
+    color: string
+    mileage: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenances?: MaintenanceCreateNestedManyWithoutMotorbikeInput
+    DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
+    Try?: TryCreateNestedManyWithoutMotorbikeInput
+    MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
+    modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
+    CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
+    Driver?: DriverCreateNestedOneWithoutMotorbikeInput
+    Fleet?: FleetCreateNestedOneWithoutMotorbikesInput
+  }
+
+  export type MotorbikeUncheckedCreateWithoutBreakdownsInput = {
+    id?: string
+    modelId: string
+    fleetId?: string | null
+    companyOrDealerShipId?: string | null
+    driverId?: string | null
+    licensePlate: string
+    vehicleIdentificationNumber: string
+    color: string
+    mileage: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorbikeInput
+    DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
+    Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
+    MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
+  }
+
+  export type MotorbikeCreateOrConnectWithoutBreakdownsInput = {
+    where: MotorbikeWhereUniqueInput
+    create: XOR<MotorbikeCreateWithoutBreakdownsInput, MotorbikeUncheckedCreateWithoutBreakdownsInput>
+  }
+
   export type UserCreateWithoutBreakdownsInput = {
     id?: string
     firstName: string
@@ -23311,7 +23839,7 @@ export namespace Prisma {
     maintenanceDescription: string
     companyOrDealerShip: UserCreateNestedOneWithoutMaintenancesInput
     motorbike: MotorbikeCreateNestedOneWithoutMaintenancesInput
-    warranty?: WarrantyCreateNestedOneWithoutMaintenanceInput
+    warranty?: WarrantyCreateNestedOneWithoutMaintenancesInput
   }
 
   export type MaintenanceUncheckedCreateWithoutBreakdownInput = {
@@ -23331,6 +23859,57 @@ export namespace Prisma {
   export type MaintenanceCreateOrConnectWithoutBreakdownInput = {
     where: MaintenanceWhereUniqueInput
     create: XOR<MaintenanceCreateWithoutBreakdownInput, MaintenanceUncheckedCreateWithoutBreakdownInput>
+  }
+
+  export type MotorbikeUpsertWithoutBreakdownsInput = {
+    update: XOR<MotorbikeUpdateWithoutBreakdownsInput, MotorbikeUncheckedUpdateWithoutBreakdownsInput>
+    create: XOR<MotorbikeCreateWithoutBreakdownsInput, MotorbikeUncheckedCreateWithoutBreakdownsInput>
+    where?: MotorbikeWhereInput
+  }
+
+  export type MotorbikeUpdateToOneWithWhereWithoutBreakdownsInput = {
+    where?: MotorbikeWhereInput
+    data: XOR<MotorbikeUpdateWithoutBreakdownsInput, MotorbikeUncheckedUpdateWithoutBreakdownsInput>
+  }
+
+  export type MotorbikeUpdateWithoutBreakdownsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    licensePlate?: StringFieldUpdateOperationsInput | string
+    vehicleIdentificationNumber?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    mileage?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenances?: MaintenanceUpdateManyWithoutMotorbikeNestedInput
+    DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
+    Try?: TryUpdateManyWithoutMotorbikeNestedInput
+    MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
+    modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
+    CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
+    Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
+    Fleet?: FleetUpdateOneWithoutMotorbikesNestedInput
+  }
+
+  export type MotorbikeUncheckedUpdateWithoutBreakdownsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    fleetId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyOrDealerShipId?: NullableStringFieldUpdateOperationsInput | string | null
+    driverId?: NullableStringFieldUpdateOperationsInput | string | null
+    licensePlate?: StringFieldUpdateOperationsInput | string
+    vehicleIdentificationNumber?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    mileage?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorbikeNestedInput
+    DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
+    Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
+    MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type UserUpsertWithoutBreakdownsInput = {
@@ -23402,7 +23981,7 @@ export namespace Prisma {
     maintenanceDescription?: StringFieldUpdateOperationsInput | string
     companyOrDealerShip?: UserUpdateOneRequiredWithoutMaintenancesNestedInput
     motorbike?: MotorbikeUpdateOneRequiredWithoutMaintenancesNestedInput
-    warranty?: WarrantyUpdateOneWithoutMaintenanceNestedInput
+    warranty?: WarrantyUpdateOneWithoutMaintenancesNestedInput
   }
 
   export type MaintenanceUncheckedUpdateWithoutBreakdownInput = {
@@ -23417,6 +23996,51 @@ export namespace Prisma {
     maintenanceCost?: FloatFieldUpdateOperationsInput | number
     maintenanceDescription?: StringFieldUpdateOperationsInput | string
     warrantyId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MotorbikeCreateWithoutWarrantyInput = {
+    id?: string
+    licensePlate: string
+    vehicleIdentificationNumber: string
+    color: string
+    mileage: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenances?: MaintenanceCreateNestedManyWithoutMotorbikeInput
+    DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
+    Try?: TryCreateNestedManyWithoutMotorbikeInput
+    MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
+    CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
+    Driver?: DriverCreateNestedOneWithoutMotorbikeInput
+    Fleet?: FleetCreateNestedOneWithoutMotorbikesInput
+  }
+
+  export type MotorbikeUncheckedCreateWithoutWarrantyInput = {
+    id?: string
+    modelId: string
+    fleetId?: string | null
+    companyOrDealerShipId?: string | null
+    driverId?: string | null
+    licensePlate: string
+    vehicleIdentificationNumber: string
+    color: string
+    mileage: number
+    status: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorbikeInput
+    DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
+    Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
+    MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+  }
+
+  export type MotorbikeCreateOrConnectWithoutWarrantyInput = {
+    where: MotorbikeWhereUniqueInput
+    create: XOR<MotorbikeCreateWithoutWarrantyInput, MotorbikeUncheckedCreateWithoutWarrantyInput>
   }
 
   export type MaintenanceCreateWithoutWarrantyInput = {
@@ -23452,43 +24076,76 @@ export namespace Prisma {
     create: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput>
   }
 
-  export type MaintenanceUpsertWithoutWarrantyInput = {
-    update: XOR<MaintenanceUpdateWithoutWarrantyInput, MaintenanceUncheckedUpdateWithoutWarrantyInput>
-    create: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput>
-    where?: MaintenanceWhereInput
+  export type MaintenanceCreateManyWarrantyInputEnvelope = {
+    data: MaintenanceCreateManyWarrantyInput | MaintenanceCreateManyWarrantyInput[]
+    skipDuplicates?: boolean
   }
 
-  export type MaintenanceUpdateToOneWithWhereWithoutWarrantyInput = {
-    where?: MaintenanceWhereInput
+  export type MotorbikeUpsertWithoutWarrantyInput = {
+    update: XOR<MotorbikeUpdateWithoutWarrantyInput, MotorbikeUncheckedUpdateWithoutWarrantyInput>
+    create: XOR<MotorbikeCreateWithoutWarrantyInput, MotorbikeUncheckedCreateWithoutWarrantyInput>
+    where?: MotorbikeWhereInput
+  }
+
+  export type MotorbikeUpdateToOneWithWhereWithoutWarrantyInput = {
+    where?: MotorbikeWhereInput
+    data: XOR<MotorbikeUpdateWithoutWarrantyInput, MotorbikeUncheckedUpdateWithoutWarrantyInput>
+  }
+
+  export type MotorbikeUpdateWithoutWarrantyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    licensePlate?: StringFieldUpdateOperationsInput | string
+    vehicleIdentificationNumber?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    mileage?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenances?: MaintenanceUpdateManyWithoutMotorbikeNestedInput
+    DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
+    Try?: TryUpdateManyWithoutMotorbikeNestedInput
+    MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
+    CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
+    Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
+    Fleet?: FleetUpdateOneWithoutMotorbikesNestedInput
+  }
+
+  export type MotorbikeUncheckedUpdateWithoutWarrantyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    modelId?: StringFieldUpdateOperationsInput | string
+    fleetId?: NullableStringFieldUpdateOperationsInput | string | null
+    companyOrDealerShipId?: NullableStringFieldUpdateOperationsInput | string | null
+    driverId?: NullableStringFieldUpdateOperationsInput | string | null
+    licensePlate?: StringFieldUpdateOperationsInput | string
+    vehicleIdentificationNumber?: StringFieldUpdateOperationsInput | string
+    color?: StringFieldUpdateOperationsInput | string
+    mileage?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorbikeNestedInput
+    DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
+    Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
+    MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+  }
+
+  export type MaintenanceUpsertWithWhereUniqueWithoutWarrantyInput = {
+    where: MaintenanceWhereUniqueInput
+    update: XOR<MaintenanceUpdateWithoutWarrantyInput, MaintenanceUncheckedUpdateWithoutWarrantyInput>
+    create: XOR<MaintenanceCreateWithoutWarrantyInput, MaintenanceUncheckedCreateWithoutWarrantyInput>
+  }
+
+  export type MaintenanceUpdateWithWhereUniqueWithoutWarrantyInput = {
+    where: MaintenanceWhereUniqueInput
     data: XOR<MaintenanceUpdateWithoutWarrantyInput, MaintenanceUncheckedUpdateWithoutWarrantyInput>
   }
 
-  export type MaintenanceUpdateWithoutWarrantyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    maintenanceDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    mileageAtMaintenance?: IntFieldUpdateOperationsInput | number
-    maintenanceType?: StringFieldUpdateOperationsInput | string
-    maintenanceCost?: FloatFieldUpdateOperationsInput | number
-    maintenanceDescription?: StringFieldUpdateOperationsInput | string
-    companyOrDealerShip?: UserUpdateOneRequiredWithoutMaintenancesNestedInput
-    motorbike?: MotorbikeUpdateOneRequiredWithoutMaintenancesNestedInput
-    breakdown?: BreakdownUpdateOneWithoutMaintenanceNestedInput
-  }
-
-  export type MaintenanceUncheckedUpdateWithoutWarrantyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    motorbikeId?: StringFieldUpdateOperationsInput | string
-    companyOrDealerShipId?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    maintenanceDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    mileageAtMaintenance?: IntFieldUpdateOperationsInput | number
-    maintenanceType?: StringFieldUpdateOperationsInput | string
-    maintenanceCost?: FloatFieldUpdateOperationsInput | number
-    maintenanceDescription?: StringFieldUpdateOperationsInput | string
-    breakdownId?: NullableStringFieldUpdateOperationsInput | string | null
+  export type MaintenanceUpdateManyWithWhereWithoutWarrantyInput = {
+    where: MaintenanceScalarWhereInput
+    data: XOR<MaintenanceUpdateManyMutationInput, MaintenanceUncheckedUpdateManyWithoutWarrantyInput>
   }
 
   export type MotorbikeCreateWithoutFleetInput = {
@@ -23504,6 +24161,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
     Try?: TryCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
     CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
     Driver?: DriverCreateNestedOneWithoutMotorbikeInput
@@ -23525,6 +24184,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
     Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeCreateOrConnectWithoutFleetInput = {
@@ -23654,6 +24315,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
     Try?: TryCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
     Driver?: DriverCreateNestedOneWithoutMotorbikeInput
     Fleet?: FleetCreateNestedOneWithoutMotorbikesInput
@@ -23675,6 +24338,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
     Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeCreateOrConnectWithoutModelMotorbikeInput = {
@@ -23760,6 +24425,8 @@ export namespace Prisma {
     maintenances?: MaintenanceCreateNestedManyWithoutMotorbikeInput
     DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
     CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
     Driver?: DriverCreateNestedOneWithoutMotorbikeInput
@@ -23782,6 +24449,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorbikeInput
     DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeCreateOrConnectWithoutTryInput = {
@@ -23904,6 +24573,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUpdateManyWithoutMotorbikeNestedInput
     DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
     CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
     Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
@@ -23926,6 +24597,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorbikeNestedInput
     DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type UserUpsertWithoutTryInput = {
@@ -24032,6 +24705,8 @@ export namespace Prisma {
     maintenances?: MaintenanceCreateNestedManyWithoutMotorbikeInput
     DriverHistorical?: DriverHistoricalCreateNestedManyWithoutMotorbikeInput
     Try?: TryCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyCreateNestedOneWithoutMotorbikeInput
     modelMotorbike: ModelMotorbikeCreateNestedOneWithoutMotorbikeInput
     CompanyOrDealerShip?: UserCreateNestedOneWithoutMotorbikeInput
     Driver?: DriverCreateNestedOneWithoutMotorbikeInput
@@ -24054,6 +24729,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorbikeInput
     DriverHistorical?: DriverHistoricalUncheckedCreateNestedManyWithoutMotorbikeInput
     Try?: TryUncheckedCreateNestedManyWithoutMotorbikeInput
+    breakdowns?: BreakdownUncheckedCreateNestedManyWithoutMotorbikeInput
+    warranty?: WarrantyUncheckedCreateNestedOneWithoutMotorbikeInput
   }
 
   export type MotorbikeCreateOrConnectWithoutMotorbikeIncidentInput = {
@@ -24176,6 +24853,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUpdateManyWithoutMotorbikeNestedInput
     DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
     CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
     Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
@@ -24198,6 +24877,8 @@ export namespace Prisma {
     maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorbikeNestedInput
     DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type UserUpsertWithoutMotorbikeIncidentInput = {
@@ -24249,6 +24930,7 @@ export namespace Prisma {
 
   export type BreakdownCreateManyCompanyOrDealerShipInput = {
     id?: string
+    motorbikeId?: string | null
     description: string
     actionTaken: string
     resolved?: boolean
@@ -24335,11 +25017,13 @@ export namespace Prisma {
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorbike?: MotorbikeUpdateOneWithoutBreakdownsNestedInput
     maintenance?: MaintenanceUpdateOneWithoutBreakdownNestedInput
   }
 
   export type BreakdownUncheckedUpdateWithoutCompanyOrDealerShipInput = {
     id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     actionTaken?: StringFieldUpdateOperationsInput | string
     resolved?: BoolFieldUpdateOperationsInput | boolean
@@ -24351,6 +25035,7 @@ export namespace Prisma {
 
   export type BreakdownUncheckedUpdateManyWithoutCompanyOrDealerShipInput = {
     id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: NullableStringFieldUpdateOperationsInput | string | null
     description?: StringFieldUpdateOperationsInput | string
     actionTaken?: StringFieldUpdateOperationsInput | string
     resolved?: BoolFieldUpdateOperationsInput | boolean
@@ -24370,7 +25055,7 @@ export namespace Prisma {
     maintenanceDescription?: StringFieldUpdateOperationsInput | string
     motorbike?: MotorbikeUpdateOneRequiredWithoutMaintenancesNestedInput
     breakdown?: BreakdownUpdateOneWithoutMaintenanceNestedInput
-    warranty?: WarrantyUpdateOneWithoutMaintenanceNestedInput
+    warranty?: WarrantyUpdateOneWithoutMaintenancesNestedInput
   }
 
   export type MaintenanceUncheckedUpdateWithoutCompanyOrDealerShipInput = {
@@ -24414,6 +25099,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
     Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
     Fleet?: FleetUpdateOneWithoutMotorbikesNestedInput
@@ -24435,6 +25122,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type MotorbikeUncheckedUpdateManyWithoutCompanyOrDealerShipInput = {
@@ -24640,6 +25329,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
     CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
     Fleet?: FleetUpdateOneWithoutMotorbikesNestedInput
@@ -24661,6 +25352,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type MotorbikeUncheckedUpdateManyWithoutDriverInput = {
@@ -24795,6 +25488,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type BreakdownCreateManyMotorbikeInput = {
+    id?: string
+    companyOrDealerShipId: string
+    description: string
+    actionTaken: string
+    resolved?: boolean
+    resolutionDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type MaintenanceUpdateWithoutMotorbikeInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24806,7 +25510,7 @@ export namespace Prisma {
     maintenanceDescription?: StringFieldUpdateOperationsInput | string
     companyOrDealerShip?: UserUpdateOneRequiredWithoutMaintenancesNestedInput
     breakdown?: BreakdownUpdateOneWithoutMaintenanceNestedInput
-    warranty?: WarrantyUpdateOneWithoutMaintenanceNestedInput
+    warranty?: WarrantyUpdateOneWithoutMaintenancesNestedInput
   }
 
   export type MaintenanceUncheckedUpdateWithoutMotorbikeInput = {
@@ -24915,6 +25619,97 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type BreakdownUpdateWithoutMotorbikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    actionTaken?: StringFieldUpdateOperationsInput | string
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    companyOrDealerShip?: UserUpdateOneRequiredWithoutBreakdownsNestedInput
+    maintenance?: MaintenanceUpdateOneWithoutBreakdownNestedInput
+  }
+
+  export type BreakdownUncheckedUpdateWithoutMotorbikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyOrDealerShipId?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    actionTaken?: StringFieldUpdateOperationsInput | string
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenance?: MaintenanceUncheckedUpdateOneWithoutBreakdownNestedInput
+  }
+
+  export type BreakdownUncheckedUpdateManyWithoutMotorbikeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    companyOrDealerShipId?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    actionTaken?: StringFieldUpdateOperationsInput | string
+    resolved?: BoolFieldUpdateOperationsInput | boolean
+    resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceCreateManyWarrantyInput = {
+    id?: string
+    motorbikeId: string
+    companyOrDealerShipId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenanceDate: Date | string
+    mileageAtMaintenance: number
+    maintenanceType: string
+    maintenanceCost: number
+    maintenanceDescription: string
+    breakdownId?: string | null
+  }
+
+  export type MaintenanceUpdateWithoutWarrantyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    mileageAtMaintenance?: IntFieldUpdateOperationsInput | number
+    maintenanceType?: StringFieldUpdateOperationsInput | string
+    maintenanceCost?: FloatFieldUpdateOperationsInput | number
+    maintenanceDescription?: StringFieldUpdateOperationsInput | string
+    companyOrDealerShip?: UserUpdateOneRequiredWithoutMaintenancesNestedInput
+    motorbike?: MotorbikeUpdateOneRequiredWithoutMaintenancesNestedInput
+    breakdown?: BreakdownUpdateOneWithoutMaintenanceNestedInput
+  }
+
+  export type MaintenanceUncheckedUpdateWithoutWarrantyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: StringFieldUpdateOperationsInput | string
+    companyOrDealerShipId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    mileageAtMaintenance?: IntFieldUpdateOperationsInput | number
+    maintenanceType?: StringFieldUpdateOperationsInput | string
+    maintenanceCost?: FloatFieldUpdateOperationsInput | number
+    maintenanceDescription?: StringFieldUpdateOperationsInput | string
+    breakdownId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MaintenanceUncheckedUpdateManyWithoutWarrantyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorbikeId?: StringFieldUpdateOperationsInput | string
+    companyOrDealerShipId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenanceDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    mileageAtMaintenance?: IntFieldUpdateOperationsInput | number
+    maintenanceType?: StringFieldUpdateOperationsInput | string
+    maintenanceCost?: FloatFieldUpdateOperationsInput | number
+    maintenanceDescription?: StringFieldUpdateOperationsInput | string
+    breakdownId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type MotorbikeCreateManyFleetInput = {
     id?: string
     modelId: string
@@ -24942,6 +25737,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     modelMotorbike?: ModelMotorbikeUpdateOneRequiredWithoutMotorbikeNestedInput
     CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
     Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
@@ -24963,6 +25760,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type MotorbikeUncheckedUpdateManyWithoutFleetInput = {
@@ -25006,6 +25805,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUpdateOneWithoutMotorbikeNestedInput
     CompanyOrDealerShip?: UserUpdateOneWithoutMotorbikeNestedInput
     Driver?: DriverUpdateOneWithoutMotorbikeNestedInput
     Fleet?: FleetUpdateOneWithoutMotorbikesNestedInput
@@ -25027,6 +25828,8 @@ export namespace Prisma {
     DriverHistorical?: DriverHistoricalUncheckedUpdateManyWithoutMotorbikeNestedInput
     Try?: TryUncheckedUpdateManyWithoutMotorbikeNestedInput
     MotorbikeIncident?: MotorbikeIncidentUncheckedUpdateManyWithoutMotorbikeNestedInput
+    breakdowns?: BreakdownUncheckedUpdateManyWithoutMotorbikeNestedInput
+    warranty?: WarrantyUncheckedUpdateOneWithoutMotorbikeNestedInput
   }
 
   export type MotorbikeUncheckedUpdateManyWithoutModelMotorbikeInput = {

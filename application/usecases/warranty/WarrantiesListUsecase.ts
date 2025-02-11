@@ -1,43 +1,36 @@
 import { WarrantyRepository } from "../../repositories/WarrantyRepository";
-import { UserRepository } from "../../repositories/UserRepository";
-import { WarrantyNotFoundError } from "../../../domain/errors/WarrantyNotFoundError";
-import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError";
 import { AccessDeniedError } from "../../../domain/errors/AccessDeniedError";
+import { WarrantyNotFoundError } from "../../../domain/errors/WarrantyNotFoundError";
 
 export class WarrantiesListUsecase {
   public constructor(
-    private readonly warrantyRepository: WarrantyRepository,
-    private readonly userRepository: UserRepository
+    private readonly warrantyRepository: WarrantyRepository
   ) {}
 
   public async execute(
     currentUserIdentifier: string,
+    currentUserRole: string,
     warrantyId?: string
   ) {
-    const currentUser = await this.userRepository.findById(currentUserIdentifier);
-
-    if (!currentUser) {
-      return new UserNotFoundError();
-    }
-
-    const roleValue = currentUser.role.value;
-
     if (warrantyId) {
       const warranty = await this.warrantyRepository.findById(warrantyId);
-
       if (!warranty) {
         return new WarrantyNotFoundError();
       }
 
-      if (roleValue === "admin" || roleValue === "manager" || roleValue === "technician") {
+      if (["admin", "company", "technician"].includes(currentUserRole)) {
         return warranty;
       }
 
       return new AccessDeniedError();
     }
 
-    if (roleValue === "admin" || roleValue === "manager" || roleValue === "technician") {
+    if (currentUserRole === "admin") {
       return await this.warrantyRepository.findAll();
+    }
+
+    if (["company", "dealership"].includes(currentUserRole)) {
+      return await this.warrantyRepository.findAllByCompanyOrDealershipId(currentUserIdentifier);
     }
 
     return new AccessDeniedError();

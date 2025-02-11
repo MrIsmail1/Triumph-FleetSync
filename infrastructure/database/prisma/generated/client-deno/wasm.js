@@ -203,6 +203,7 @@ exports.Prisma.MotorbikeScalarFieldEnum = {
 
 exports.Prisma.BreakdownScalarFieldEnum = {
   id: 'id',
+  motorbikeId: 'motorbikeId',
   companyOrDealerShipId: 'companyOrDealerShipId',
   description: 'description',
   actionTaken: 'actionTaken',
@@ -214,6 +215,7 @@ exports.Prisma.BreakdownScalarFieldEnum = {
 
 exports.Prisma.WarrantyScalarFieldEnum = {
   id: 'id',
+  motorbikeId: 'motorbikeId',
   validFrom: 'validFrom',
   validUntil: 'validUntil',
   providerName: 'providerName',

@@ -12,16 +12,28 @@ export class BreakdownUpdateUsecase {
     userRole: string,
     breakdownId: string,
     dataToUpdate: Partial<{
+      motorbikeId: string;
       description: string;
+      actionTaken: string;
+      resolved: boolean;
+      resolutionDate: string | null;
     }>
   ) {
-    if (userRole === "client") {
+    if (!["admin", "company", "dealership"].includes(userRole)) {
       return new UnauthorizedActionError();
     }
 
     const breakdown = await this.breakdownRepository.findById(breakdownId);
     if (!breakdown) {
       return new BreakdownNotFoundError();
+    }
+
+    if ((userRole === "company" || userRole === "dealership") && breakdown.companyOrDealerShipId !== userId) {
+      return new UnauthorizedActionError();
+    }
+
+    if (dataToUpdate.motorbikeId) {
+      breakdown.motorbikeId = dataToUpdate.motorbikeId;
     }
 
     if (dataToUpdate.description) {
@@ -32,8 +44,23 @@ export class BreakdownUpdateUsecase {
       breakdown.description = descriptionOrError;
     }
 
-    const updatedBreakdown = await this.breakdownRepository.update(breakdown);
+    if (dataToUpdate.actionTaken) {
+      const actionTakenOrError = ValidString.from(dataToUpdate.actionTaken);
+      if (actionTakenOrError instanceof Error) {
+        return actionTakenOrError;
+      }
+      breakdown.actionTaken = actionTakenOrError;
+    }
 
+    if (dataToUpdate.resolved !== undefined) {
+      breakdown.resolved = dataToUpdate.resolved;
+    }
+
+    if (dataToUpdate.resolutionDate !== undefined) {
+      breakdown.resolutionDate = dataToUpdate.resolutionDate ? new Date(dataToUpdate.resolutionDate) : undefined;
+    }
+
+    const updatedBreakdown = await this.breakdownRepository.update(breakdown);
     if (!updatedBreakdown) {
       return new BreakdownUpdateError();
     }

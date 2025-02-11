@@ -53,7 +53,6 @@ export default function PasswordResetForm({ code }: { code: string }) {
 
   const onSubmit = async (data: PasswordResetSchema) => {
     try {
-      console.log(data);
       await passwordReset(data);
     } catch (error) {
       console.error(error);

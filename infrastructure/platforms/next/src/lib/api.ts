@@ -17,6 +17,9 @@ import { Driver } from "../types/DriverResponses";
 import { Fleet } from "../types/FleetResponses";
 import { ModelMotorbike } from "../types/ModelMotorbikeResponses";
 import { Motorbike } from "../types/MotorbikeResponses";
+import { MaintenanceResponse } from "../types/MaintenanceResponses";
+import { Warranty } from "../types/WarrantyReponses";
+import { BreakdownResponse } from "../types/BreakdownResponses";
 
 export const login = async (data: LoginSchema) =>
   expressAPI.post<LoginResponse>("/auth/login", data);
@@ -206,3 +209,25 @@ export const partPurchaseUpdate = async (data: PartPurchaseRequest) =>
     `/part-purchase/receive-or-cancel/${data.identifier}`,
     data
   );
+
+// Maintenance
+export const maintenancesList = async () => expressAPI.get<MaintenanceResponse[], MaintenanceResponse[]>("/maintenance/list");
+export const maintenanceCreate = async (data: MaintenanceResponse) => expressAPI.post<{ message: string }>("/maintenance/create", data);
+export const maintenanceGetOne = async (maintenanceId: string) => expressAPI.get<MaintenanceResponse>(`/maintenance/${maintenanceId}`);
+export const maintenanceUpdate = async (maintenanceId: string, data: MaintenanceResponse) => expressAPI.put<MaintenanceResponse>(`/maintenance/update/${maintenanceId}`, data);
+export const maintenanceDelete = async (maintenanceId: string) => expressAPI.delete<{ message: string }>(`/maintenance/delete/${maintenanceId}`);
+
+
+// Warranties
+export const warrantiesList = async () => expressAPI.get<Warranty[], Warranty[]>("/warranty/list");
+export const warrantyCreate = async (data: Warranty) => expressAPI.post<{ message: string }>("/warranty/create", data);
+export const warrantyGetOne = async (warrantyId: string) => expressAPI.get<Warranty>(`/warranty/${warrantyId}`);
+export const warrantyUpdate = async (warrantyId: string, data: Warranty) => expressAPI.put<Warranty>(`/warranty/update/${warrantyId}`, data);
+export const warrantyDelete = async (warrantyId: string) => expressAPI.delete<{ message: string }>(`/warranty/delete/${warrantyId}`);
+
+//Breakdowns
+export const breakdownsList = async () => expressAPI.get<BreakdownResponse[], BreakdownResponse[]>("/breakdown/list");
+export const breakdownCreate = async (data: BreakdownResponse) => expressAPI.post<{ message: string }>("/breakdown/create", data);
+export const breakdownGetOne = async (breakdownId: string) => expressAPI.get<BreakdownResponse>(`/breakdown/${breakdownId}`);
+export const breakdownUpdate = async (breakdownId: string, data: BreakdownResponse) => expressAPI.put<BreakdownResponse>(`/breakdown/update/${breakdownId}`, data);
+export const breakdownDelete = async (breakdownId: string) => expressAPI.delete<{ message: string }>(`/breakdown/delete/${breakdownId}`);

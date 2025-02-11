@@ -31,9 +31,9 @@ export default function EditMotorbikeForm({
     setSelectedMotorbike: (value: Motorbike | null) => void;
     currentUserRole: string | undefined;
 }) {
-    const router = useRouter();
+    //    const router = useRouter();
     const queryClient = useQueryClient();
-    const userRole = currentUserRole?.value;
+    const userRole = currentUserRole;
 
     const isAdmin = userRole === "admin";
 
@@ -65,7 +65,7 @@ export default function EditMotorbikeForm({
         licensePlate: motorbike.licensePlate?.value || "",
         vehicleIdentificationNumber: motorbike.vehicleIdentificationNumber?.value || "",
         color: motorbike.color || "",
-        mileage: motorbike.mileage?.toString() || "",
+        mileage: motorbike.mileage || 0,
         status: motorbike.status?.value || "",
         fleetId: motorbike.fleetId || "",
         driverId: motorbike.driverId || "",
@@ -81,7 +81,7 @@ export default function EditMotorbikeForm({
     }, [motorbike]);
 
     const {mutateAsync: editMotorbikeAsync, isError, isPending} = useMutation({
-        mutationFn: async (data: Motorbike) => {
+        mutationFn: async (data: Partial<Motorbike>) => {
             return motorbikeUpdate(motorbike.identifier, data);
         },
         onSuccess: () => {
@@ -103,7 +103,7 @@ export default function EditMotorbikeForm({
         }
 
         const changedFields: Partial<Motorbike> = {};
-        Object.keys(data).forEach((key) => {
+        (Object.keys(data) as (keyof MotorbikeSchema)[]).forEach((key) => {
             if (data[key] !== defaultValues[key] || data[key] === null) {
                 changedFields[key] = data[key];
             }
@@ -145,18 +145,18 @@ export default function EditMotorbikeForm({
                                             <SelectTrigger>
                                                 <SelectValue>
                                                     {field.value
-                                                        ? drivers?.find(driver => driver.identifier === field.value)?.firstName.value +
-                                                        " " +
-                                                        drivers?.find(driver => driver.identifier === field.value)?.lastName.value
+                                                        ? drivers?.data.find((driver: any) => driver.identifier === field.value)?.firstName.value +
+                                                          " " +
+                                                          drivers?.data.find((driver: any) => driver.identifier === field.value)?.lastName.value
                                                         : "Sélectionnez un conducteur"}
                                                 </SelectValue>
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="none">Aucun conducteur</SelectItem>
                                                 {isLoadingDrivers ? (
-                                                    <SelectItem disabled>Chargement...</SelectItem>
+                                                    <SelectItem value="loading" disabled>Chargement...</SelectItem>
                                                 ) : (
-                                                    drivers?.map((driver) => (
+                                                    drivers?.data.map((driver: any) => (
                                                         <SelectItem key={driver.identifier}
                                                                     value={driver.identifier}>
                                                             {driver.firstName.value} {driver.lastName.value}
@@ -198,7 +198,7 @@ export default function EditMotorbikeForm({
                                             <SelectContent>
                                                 <SelectItem value="none">Aucune flotte</SelectItem>
                                                 {isLoadingFleets ? (
-                                                    <SelectItem disabled>Chargement...</SelectItem>
+                                                    <SelectItem value="loading" disabled>Chargement...</SelectItem>
                                                 ) : (
                                                     fleets?.map((fleet) => (
                                                         <SelectItem key={fleet.identifier} value={fleet.identifier}>
@@ -228,7 +228,6 @@ export default function EditMotorbikeForm({
                                             <Select
                                                 onValueChange={(value) => {
                                                     field.onChange(value);
-                                                    console.log("Entreprise ou concessionaire sélectionné :", value);
                                                 }}
                                                 value={field.value || ""}
                                             >
@@ -272,7 +271,7 @@ export default function EditMotorbikeForm({
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     {isLoadingModels ? (
-                                                        <SelectItem disabled>Chargement...</SelectItem>
+                                                        <SelectItem value="loading" disabled>Chargement...</SelectItem>
                                                     ) : (
                                                         models?.map((model) => (
                                                             <SelectItem key={model.identifier} value={model.identifier}>

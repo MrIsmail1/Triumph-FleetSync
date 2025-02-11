@@ -28,19 +28,19 @@ export default function EditDriverForm({
     const queryClient = useQueryClient();
 
     const defaultValues = {
-        firstName: driver.firstName || "",
-        lastName: driver.lastName || "",
-        email: driver.email || "",
-        frenchLicenseNumber: driver.frenchLicenseNumber || "",
+        firstName: driver.firstName.value || "",
+        lastName: driver.lastName.value || "",
+        email: driver.email.value || "",
+        frenchLicenseNumber: driver.frenchLicenseNumber.value || "",
         dateDeliveryLicence: driver.dateDeliveryLicence
             ? new Date(driver.dateDeliveryLicence).toISOString().split("T")[0]
             : "",
         dateExpirationLicense: driver.dateExpirationLicense
             ? new Date(driver.dateExpirationLicense).toISOString().split("T")[0]
             : "",
-        frenchTypeMotorbikeLicense: driver.frenchTypeMotorbikeLicense || "",
-        restrictionConditions: driver.restrictionConditions || "",
-        experience: driver.experience || "",
+        frenchTypeMotorbikeLicense: driver.frenchTypeMotorbikeLicense.value || "",
+        restrictionConditions: driver.restrictionConditions.value || "",
+        experience: driver.experience.value || "",
     };
 
     const form = useForm<DriverSchema>({
