@@ -26,7 +26,6 @@ export class ModelMotorbikeUpdateUsecase {
 
         const modelMotorbike = await this.modelMotorbikeRepository.findById(modelMotorbikeId);
         if (!modelMotorbike) {
-            console.log('tes un caca')
             return new ModelMotorbikeNotFoundError();
         }
 

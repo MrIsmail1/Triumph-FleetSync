@@ -1,6 +1,7 @@
 import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError";
 import { MaintenanceUpdateError } from "../../../domain/errors/MaintenanceUpdateError";
 import { UnauthorizedActionError } from "../../../domain/errors/UnauthorizedActionError";
+import { AccessDeniedError } from "../../../domain/errors/AccessDeniedError";
 import { ValidString } from "../../../domain/types/ValidString";
 import { MaintenanceRepository } from "../../repositories/MaintenanceRepository";
 
@@ -10,8 +11,8 @@ export class MaintenanceUpdateUsecase {
   ) {}
 
   public async execute(
-    userId: string,
-    userRole: string,
+    currentUserIdentifier: string,
+    currentUserRole: string,
     maintenanceId: string,
     dataToUpdate: Partial<{
       maintenanceDate: string;
@@ -23,15 +24,21 @@ export class MaintenanceUpdateUsecase {
       warrantyId: string | null;
     }>
   ) {
-    if (userRole === "client") {
-      return new UnauthorizedActionError();
+
+    if (currentUserRole === "technician") {
+      return new AccessDeniedError();
     }
 
-    const maintenance = await this.maintenanceRepository.findById(
-      maintenanceId
-    );
+    const maintenance = await this.maintenanceRepository.findById(maintenanceId);
     if (!maintenance) {
       return new MaintenanceNotFoundError();
+    }
+
+    if (
+      (currentUserRole === "company" || currentUserRole === "dealership") &&
+      maintenance.companyOrDealerShipId !== currentUserIdentifier
+    ) {
+      return new UnauthorizedActionError();
     }
 
     if (dataToUpdate.maintenanceDate) {
@@ -43,9 +50,7 @@ export class MaintenanceUpdateUsecase {
     }
 
     if (dataToUpdate.maintenanceType) {
-      const maintenanceTypeOrError = ValidString.from(
-        dataToUpdate.maintenanceType
-      );
+      const maintenanceTypeOrError = ValidString.from(dataToUpdate.maintenanceType);
       if (maintenanceTypeOrError instanceof Error) {
         return maintenanceTypeOrError;
       }
@@ -57,9 +62,7 @@ export class MaintenanceUpdateUsecase {
     }
 
     if (dataToUpdate.maintenanceDescription) {
-      const maintenanceDescriptionOrError = ValidString.from(
-        dataToUpdate.maintenanceDescription
-      );
+      const maintenanceDescriptionOrError = ValidString.from(dataToUpdate.maintenanceDescription);
       if (maintenanceDescriptionOrError instanceof Error) {
         return maintenanceDescriptionOrError;
       }
@@ -74,9 +77,7 @@ export class MaintenanceUpdateUsecase {
       maintenance.warrantyId = dataToUpdate.warrantyId;
     }
 
-    const updatedMaintenance = await this.maintenanceRepository.update(
-      maintenance
-    );
+    const updatedMaintenance = await this.maintenanceRepository.update(maintenance);
 
     if (!updatedMaintenance) {
       return new MaintenanceUpdateError();

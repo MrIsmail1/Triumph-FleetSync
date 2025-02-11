@@ -13,11 +13,14 @@ import userRoutes from "./routes/user.route";
 import maintenanceRoutes from "./routes/maintenance.route";
 import motorbikeRoutes from "./routes/motorbike.route";
 import fleetRoutes from "./routes/fleet.route";
-import modelMotorbikeRoute from "./routes/modelMotorbike.route.ts";
-import driverRoutes from "./routes/driver.route.ts";
-import driverHistoricalRoute from "./routes/driverHistorical.route.ts";
-import tryRoutes from "./routes/try.routes.ts";
-import motorbikeIncidentRoutes from "./routes/motorbikeIncident.route.ts";
+import modelMotorbikeRoute from "./routes/modelMotorbike.route";
+import driverRoutes from "./routes/driver.route";
+import driverHistoricalRoute from "./routes/driverHistorical.route";
+import tryRoutes from "./routes/try.routes";
+import motorbikeIncidentRoutes from "./routes/motorbikeIncident.route";
+import breakdownRoutes from "./routes/breakdown.route";
+import warrantyRoutes from "./routes/warranty.route";
+
 
 const app = express();
 app.use(express.json());
@@ -31,14 +34,15 @@ app.use(
 app.use(cookieParser());
 app.use(passport.initialize());
 
-//auth routes
 app.use("/api/auth", authRoutes);
 
-//protected routes
+// Protected routes
 app.use("/api/user", passport.authenticate("jwt", { session: false }), userRoutes);
 app.use("/api/session", passport.authenticate("jwt", { session: false }), sessionRoutes);
-app.use("/api/maintenance", maintenanceRoutes);
-app.use("/api/motorbike", passport.authenticate("jwt", { session: false }), motorbikeRoutes)
+app.use("/api/maintenance", passport.authenticate("jwt", { session: false }), maintenanceRoutes)
+app.use("/api/warranty", passport.authenticate("jwt", { session: false }), warrantyRoutes)
+app.use("/api/breakdown", passport.authenticate("jwt", { session: false }), breakdownRoutes);
+app.use("/api/motorbike", passport.authenticate("jwt", { session: false }), motorbikeRoutes);
 app.use("/api/modelmotorbike", passport.authenticate("jwt", { session: false }), modelMotorbikeRoute);
 app.use("/api/fleet", passport.authenticate("jwt", { session: false }), fleetRoutes);
 app.use("/api/driver", passport.authenticate("jwt", { session: false }), driverRoutes);
@@ -49,6 +53,6 @@ app.use("/api/motorbikeincident", passport.authenticate("jwt", { session: false 
 
 app.use(errorHandler);
 app.listen(PORT, async () => {
-  console.log(`Server is running on port ${PORT} in ${NODE_ENV} environment.`);
+  console.log(`🚀 Server is running on port ${PORT} in ${NODE_ENV} environment.`);
   await connectToMongoDB();
 });

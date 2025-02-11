@@ -12,14 +12,18 @@ export class MaintenancesListUsecase {
 
   async execute(
     currentUserIdentifier: string,
+    currentUserRole: string,
     maintenanceId?: string
   ): Promise<any> {
+
+    if (currentUserRole === "admin" || currentUserRole === "technician") {
+      return await this.maintenanceRepository.findAll();
+    }
+
     const currentUser = await this.userRepository.findById(currentUserIdentifier);
     if (!currentUser) {
       return new UserNotFoundError();
     }
-
-    const roleValue = currentUser.role.value;
 
     if (maintenanceId) {
       const maintenance = await this.maintenanceRepository.findById(maintenanceId);
@@ -27,17 +31,18 @@ export class MaintenancesListUsecase {
         return new MaintenanceNotFoundError();
       }
 
-      if (roleValue === "client" && maintenance.companyOrDealerShipId !== currentUser.identifier) {
+      if (
+        (currentUserRole === "company" || currentUserRole === "dealership") &&
+        maintenance.companyOrDealerShipId !== currentUserIdentifier
+      ) {
         return new AccessDeniedError();
       }
 
       return maintenance;
     }
 
-    if (roleValue === "admin" || roleValue === "technician") {
-      return await this.maintenanceRepository.findAll();
-    } else if (roleValue === "client") {
-      return await this.maintenanceRepository.findAllByClientId(currentUser.identifier);
+    if (currentUserRole === "company" || currentUserRole === "dealership") {
+      return await this.maintenanceRepository.findByCompanyOrDealershipId(currentUserIdentifier);
     }
 
     return new AccessDeniedError();

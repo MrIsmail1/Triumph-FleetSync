@@ -168,7 +168,7 @@ export function MotorbikeTable({ motorbikes }: { motorbikes: Motorbike[] }) {
                             description="Modifiez les informations de la moto."
                         >
                             {selectedMotorbike && currentUser && (
-                                <EditMotorbikeForm motorbike={selectedMotorbike} setOpen={setEditModalOpen} currentUserRole={currentUser?.role?.value ?? ""} />
+                                <EditMotorbikeForm motorbike={selectedMotorbike} setOpen={setEditModalOpen} setSelectedMotorbike={setSelectedMotorbike} currentUserRole={currentUser?.role?.value ?? ""} />
                             )}
                         </Modal>
 

@@ -92,9 +92,7 @@ export class FleetController {
     updateFleetHandler = catchErrors(async (request, response) => {
         const currentUser = request.user as AccessTokenPayload;
         const {fleetId} = request.params;
-        console.log(fleetId);
         const dataToUpdate = request.body;
-        console.log(dataToUpdate);
 
         const fleetUpdateUsecase = new FleetUpdateUsecase(this.fleetRepository);
 

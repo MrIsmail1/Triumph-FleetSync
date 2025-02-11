@@ -11,10 +11,34 @@ const prismaBreakdownRepository = new PrismaBreakdownRepository(prisma);
 const prismaUserRepository = new PrismaUserRepository(prisma);
 const breakdownController = new BreakdownController(prismaBreakdownRepository, prismaUserRepository);
 
-breakdownRoutes.post("/", authorize(["admin", "manager", "technician", "client"]), breakdownController.addBreakdownHandler);
-breakdownRoutes.get("/", authorize(["admin", "manager", "technician", "client"]), breakdownController.listBreakdownsHandler);
-breakdownRoutes.get("/:id", authorize(["admin", "manager", "technician", "client"]), breakdownController.listBreakdownsHandler);
-breakdownRoutes.put("/:id", authorize(["admin", "manager", "technician"]), breakdownController.updateBreakdownHandler);
-breakdownRoutes.delete("/:id", authorize(["admin"]), breakdownController.deleteBreakdownHandler);
+breakdownRoutes.post(
+  "/create",
+  authorize(["admin", "company", "technician", "client"]),
+  breakdownController.addBreakdownHandler
+);
+
+breakdownRoutes.get(
+  "/list",
+  authorize(["admin", "company", "technician", "client"]),
+  breakdownController.listBreakdownsHandler
+);
+
+breakdownRoutes.get(
+  "/breakdown/:id",
+  authorize(["admin", "company", "technician", "client"]),
+  breakdownController.listBreakdownsHandler
+);
+
+breakdownRoutes.put(
+  "/update/:id",
+  authorize(["admin", "company", "technician"]),
+  breakdownController.updateBreakdownHandler
+);
+
+breakdownRoutes.delete(
+  "/delete/:id",
+  authorize(["admin"]),
+  breakdownController.deleteBreakdownHandler
+);
 
 export default breakdownRoutes;

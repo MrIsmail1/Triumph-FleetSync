@@ -11,8 +11,28 @@ const prismaWarrantyRepository = new PrismaWarrantyRepository(prisma);
 const prismaUserRepository = new PrismaUserRepository(prisma);
 const warrantyController = new WarrantyController(prismaWarrantyRepository, prismaUserRepository);
 
-warrantyRoutes.post("/", authorize(["admin", "manager"]), warrantyController.addWarrantyHandler);
-warrantyRoutes.get("/", authorize(["admin", "technician", "manager"]), warrantyController.listWarrantiesHandler);
-warrantyRoutes.delete("/:id", authorize(["admin"]), warrantyController.deleteWarrantyHandler);
+warrantyRoutes.post(
+  "/create",
+  authorize(["admin", "company"]),
+  warrantyController.addWarrantyHandler
+);
+
+warrantyRoutes.get(
+  "/list",
+  authorize(["admin", "technician", "company"]),
+  warrantyController.listWarrantiesHandler
+);
+
+warrantyRoutes.delete(
+  "/delete/:id",
+  authorize(["admin"]),
+  warrantyController.deleteWarrantyHandler
+);
+
+warrantyRoutes.put(
+  "/update/:id",
+  authorize(["admin"]),
+  warrantyController.updateWarrantyHandler
+);
 
 export default warrantyRoutes;

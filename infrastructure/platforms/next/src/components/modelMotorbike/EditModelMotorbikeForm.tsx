@@ -28,8 +28,8 @@ export default function EditModelMotorbikeForm({
     const queryClient = useQueryClient();
 
     const defaultValues = {
-        name: modelMotorbike.name || "",
-        brand: modelMotorbike.brand || "",
+        name: modelMotorbike.name.value || "",
+        brand: modelMotorbike.brand.value || "",
         maintenanceIntervalKm: modelMotorbike.maintenanceIntervalKm?.toString() || "",
         maintenanceIntervalTimeMonths: modelMotorbike.maintenanceIntervalTimeMonths?.toString() || "",
     };
